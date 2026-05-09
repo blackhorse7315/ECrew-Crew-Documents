@@ -10,175 +10,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
         .aviation-blue { background-color: #0f172a; }
         .aviation-accent { color: #f59e0b; }
         .sidebar-active { border-right: 4px solid #f59e0b; background-color: #1e293b; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        .document-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            gap: 1.25rem;
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .document-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.25rem; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-backdrop { background-color: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px); }
         
-        .modal-backdrop {
-            background-color: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(8px);
-        }
-        .license-slot {
-            aspect-ratio: 3/4;
-            transition: all 0.25s ease;
-        }
-        /* Landscape slots for Passport, KTP, and KK */
-        .landscape-slot {
-            aspect-ratio: 16/10;
-            transition: all 0.25s ease;
-        }
-        .license-slot:hover, .landscape-slot:hover {
-            border-color: #f59e0b;
-            background-color: #fffbeb;
-        }
-
-        #pdfExportGrid {
-            width: 800px;
-            padding: 0;
-            background: white;
-            position: absolute;
-            left: -9999px;
-            top: 0;
-        }
-        /* A4 Portrait Grid (2x2) */
-        .pdf-page-wrapper {
-            width: 800px;
-            height: 1131px; 
-            padding: 50px; 
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 20px; 
-            background: white;
-            box-sizing: border-box;
-        }
-        /* A4 Portrait Vertical Stack (2 slots) */
-        .pdf-two-box-wrapper {
-            width: 800px;
-            height: 1131px; 
-            padding: 50px; 
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(2, 1fr);
-            gap: 20px; 
-            background: white;
-            box-sizing: border-box;
-        }
-        /* A4 Portrait Centered for KTP (ID Card Standard) */
-        .pdf-ktp-wrapper {
-            width: 800px;
-            height: 1131px; 
-            padding: 100px 50px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px; 
-            background: white;
-            box-sizing: border-box;
-        }
-        /* A4 Portrait Centered for Passport (Standard ID-3) */
-        .pdf-passport-wrapper {
-            width: 800px;
-            height: 1131px; 
-            padding: 80px 50px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px; 
-            background: white;
-            box-sizing: border-box;
-        }
-        /* A4 Landscape Wrapper for Family Card */
-        .pdf-landscape-wrapper {
-            width: 1131px;
-            height: 800px;
-            padding: 40px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-        .pdf-single-wrapper {
-            width: 800px;
-            height: 1131px;
-            padding: 40px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-
+        .license-slot, .landscape-slot { transition: all 0.25s ease; cursor: pointer; border-radius: 2rem; border-width: 4px; border-style: dashed; border-color: #cbd5e1; }
+        .license-slot { aspect-ratio: 3/4; }
+        .landscape-slot { aspect-ratio: 16/10; }
+        .license-slot:hover, .landscape-slot:hover { border-color: #f59e0b; background-color: #fffbeb; }
+        
+        #pdfExportGrid { width: 800px; position: absolute; left: -9999px; top: 0; background: white; }
+        .pdf-page-wrapper, .pdf-two-box-wrapper, .pdf-ktp-wrapper, .pdf-passport-wrapper { width: 800px; height: 1131px; padding: 50px; display: grid; background: white; box-sizing: border-box; }
+        .pdf-page-wrapper { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 20px; }
+        .pdf-two-box-wrapper { grid-template-columns: 1fr; grid-template-rows: repeat(2, 1fr); gap: 20px; }
+        .pdf-ktp-wrapper { flex-direction: column; align-items: center; gap: 40px; padding: 100px 50px; display: flex; }
+        .pdf-passport-wrapper { flex-direction: column; align-items: center; gap: 50px; padding: 80px 50px; display: flex; }
+        .pdf-landscape-wrapper { width: 1131px; height: 800px; padding: 40px; background: white; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+        
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-        #toast {
-            visibility: hidden;
-            min-width: 280px;
-            margin-left: -140px;
-            background-color: #059669;
-            color: #fff;
-            text-align: center;
-            border-radius: 12px;
-            padding: 16px;
-            position: fixed;
-            z-index: 300;
-            left: 50%;
-            bottom: 40px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
+        #toast { visibility: hidden; min-width: 280px; margin-left: -140px; background-color: #059669; color: #fff; text-align: center; border-radius: 12px; padding: 16px; position: fixed; z-index: 300; left: 50%; bottom: 40px; font-size: 14px; font-weight: 500; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 40px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 40px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        .card-preview-img {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.15;
-            z-index: 0;
-        }
-        .pdf-indicator-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(220, 38, 38, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 0;
-        }
-
-        .qual-checkbox:checked + label {
-            background-color: #f59e0b;
-            color: #0f172a;
-            border-color: #f59e0b;
-        }
+        
+        .sync-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-slate-800">
@@ -218,8 +81,8 @@
         <nav class="flex-1 overflow-y-auto custom-scrollbar" id="crewList"></nav>
         <div class="p-6 border-t border-slate-800 bg-slate-900/50">
             <div class="flex items-center gap-3">
-                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Ops Control Center</p>
+                <div id="syncIndicator" class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <p id="syncText" class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Cloud Synced</p>
             </div>
         </div>
     </aside>
@@ -250,17 +113,17 @@
         <div id="contentPlaceholder" class="p-6 md:p-10 flex-1">
             <!-- Dashboard Stats -->
             <div id="dashboardStats" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-indigo-600">
-                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Total Crew</p>
-                    <h3 class="text-2xl font-black text-slate-900" id="statTotalCrew">0</h3>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border-t-4 border-indigo-600 flex flex-col items-center text-center">
+                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-[0.2em] mb-2">Total Crew</p>
+                    <h3 class="text-3xl font-black text-slate-900" id="statTotalCrew">0</h3>
                 </div>
-                <div class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-amber-500">
-                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Compliance Rate</p>
-                    <h3 class="text-2xl font-black text-slate-900">98.4%</h3>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border-t-4 border-amber-500 flex flex-col items-center text-center">
+                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-[0.2em] mb-2">Compliance Rate</p>
+                    <h3 class="text-3xl font-black text-slate-900">98.4%</h3>
                 </div>
-                <div class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-emerald-500">
-                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Ops Status</p>
-                    <h3 class="text-2xl font-black text-emerald-600 uppercase italic">Ready</h3>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border-t-4 border-emerald-500 flex flex-col items-center text-center">
+                    <p class="text-slate-400 text-[9px] font-bold uppercase tracking-[0.2em] mb-2">Ops Status</p>
+                    <h3 class="text-3xl font-black text-emerald-600 uppercase italic">Ready</h3>
                 </div>
             </div>
 
@@ -313,7 +176,7 @@
                 <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
             <h3 class="text-xl font-black text-slate-900 mb-2">Hapus Personil?</h3>
-            <p class="text-sm text-slate-500 mb-8">Tindakan ini tidak dapat dibatalkan. Semua data dokumen kru ini akan hilang.</p>
+            <p class="text-sm text-slate-500 mb-8">Tindakan ini tidak dapat dibatalkan. Semua data lokal dan riwayat sinkronisasi akan hilang.</p>
             <div class="flex gap-3">
                 <button onclick="closeDeleteModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all">Batal</button>
                 <button id="confirmDeleteBtn" class="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-red-500/20">Hapus</button>
@@ -346,469 +209,237 @@
         </div>
     </div>
 
-    <!-- Single Document Modal -->
-    <div id="docPreviewModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 md:p-10">
-        <div class="modal-backdrop absolute inset-0" onclick="closeDocPreviewModal()"></div>
-        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl z-10 flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300">
-            <div class="px-8 py-6 aviation-blue text-white flex justify-between items-center shrink-0">
-                <div>
-                    <h3 class="font-black uppercase tracking-[0.2em] text-sm" id="previewDocTitle">Detail Dokumen</h3>
-                    <p class="text-[10px] text-slate-400 uppercase font-bold mt-1" id="previewCrewSubtitle"></p>
-                </div>
-                <div class="flex gap-4">
-                    <button id="btnExportSingleDoc" onclick="downloadSingleDocPDF()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 hidden shadow-lg shadow-emerald-500/20">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        Ekspor PDF
-                    </button>
-                    <button onclick="closeDocPreviewModal()" class="text-white/50 hover:text-white transition-colors">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="bg-slate-100 flex items-center justify-center flex-1 overflow-auto min-h-0 p-4 md:p-6">
-                <img id="previewImageElement" src="" class="max-w-full max-h-full object-contain rounded-2xl shadow-xl hidden">
-                <iframe id="previewPdfElement" src="" class="w-full h-full rounded-2xl shadow-xl hidden border-none" style="min-height: 400px;"></iframe>
-                <div id="previewEmptyState" class="text-center p-10">
-                    <div class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-                        <svg class="w-12 h-12 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                    </div>
-                    <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">Belum Ada File</p>
-                </div>
-            </div>
-            <div class="p-4 md:p-8 bg-white border-t border-slate-100 flex flex-col sm:flex-row gap-4 shrink-0">
-                <button onclick="triggerGenericUpload()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Pilih File Foto / PDF
-                </button>
-                <button onclick="closeDocPreviewModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all">Tutup</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Crew Form Modal -->
     <div id="crewFormModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div class="modal-backdrop absolute inset-0" onclick="closeCrewModal()"></div>
-        <div class="bg-white w-full max-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div class="bg-white w-full max-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden">
             <div class="px-8 py-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center shrink-0">
                 <h3 class="font-black text-slate-900 uppercase tracking-widest" id="crewFormTitle">Registrasi Kru</h3>
-                <button onclick="closeCrewModal()" class="text-slate-400 hover:text-slate-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+                <button onclick="closeCrewModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
             <form onsubmit="handleCrewSubmit(event)" class="p-8 space-y-6 max-h-[75vh] overflow-y-auto custom-scrollbar">
-                <div class="flex flex-col items-center mb-2">
+                <div class="flex flex-col items-center">
                     <div id="formPhotoPreviewContainer" class="w-24 h-24 rounded-3xl bg-slate-200 flex items-center justify-center mb-3 overflow-hidden border-4 border-white shadow-md relative group cursor-pointer" onclick="triggerProfilePhotoUpload()">
                         <img id="formPhotoPreview" src="" class="hidden w-full h-full object-cover">
-                        <div id="formPhotoIcon" class="flex flex-col items-center">
-                            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        </div>
+                        <div id="formPhotoIcon"><svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
                     </div>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Foto Profil</p>
                     <input type="file" id="crewProfilePhotoInput" class="hidden" accept="image/*" onchange="handleCrewProfileUpload(event)">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Nama Lengkap</label>
-                    <input type="text" id="crewName" required class="w-full px-5 py-3 bg-slate-100 border-none rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-amber-500/50 transition-all" placeholder="Contoh: Capt. Teddy">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">License No</label>
-                    <input type="text" id="crewLicenseNo" required class="w-full px-5 py-3 bg-slate-100 border-none rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-amber-500/50 transition-all" placeholder="ATPL-123">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Rank</label>
-                    <select id="crewRank" onchange="toggleManualRankInput(this.value)" class="w-full px-5 py-3 bg-slate-100 border-none rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-amber-500/50 transition-all">
-                        <option value="Captain">Captain</option>
-                        <option value="First Officer">First Officer</option>
-                        <option value="Cabin Service">Cabin Service</option>
-                        <option value="Engineer">Engineer</option>
-                        <option value="other">Lainnya (Tambah Manual)...</option>
-                    </select>
-                    <input type="text" id="crewRankManual" class="hidden w-full px-5 py-3 bg-slate-100 border-none rounded-2xl text-sm font-bold outline-none focus:ring-2 focus:ring-amber-500/50 transition-all mt-3" placeholder="Masukkan Rank Manual...">
-                </div>
+                <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Nama Lengkap</label><input type="text" id="crewName" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none" placeholder="Contoh: Capt. Teddy"></div>
+                <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">License No</label><input type="text" id="crewLicenseNo" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none" placeholder="ATPL-123"></div>
+                <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Rank</label><select id="crewRank" class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none"><option value="Captain">Captain</option><option value="First Officer">First Officer</option><option value="Cabin Service">Cabin Service</option><option value="Engineer">Engineer</option></select></div>
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Qualification</label>
                     <div class="grid grid-cols-3 gap-3">
-                        <div class="relative">
-                            <input type="checkbox" id="qualCCP" value="CCP" class="qual-checkbox hidden">
-                            <label for="qualCCP" class="flex items-center justify-center py-2.5 px-4 bg-slate-100 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all hover:bg-slate-200">CCP</label>
-                        </div>
-                        <div class="relative">
-                            <input type="checkbox" id="qualFI" value="FI" class="qual-checkbox hidden">
-                            <label for="qualFI" class="flex items-center justify-center py-2.5 px-4 bg-slate-100 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all hover:bg-slate-200">FI</label>
-                        </div>
-                        <div class="relative">
-                            <input type="checkbox" id="qualGI" value="GI" class="qual-checkbox hidden">
-                            <label for="qualGI" class="flex items-center justify-center py-2.5 px-4 bg-slate-100 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all hover:bg-slate-200">GI</label>
-                        </div>
+                        <input type="checkbox" id="qualCCP" value="CCP" class="qual-checkbox hidden"><label for="qualCCP" class="flex items-center justify-center py-2 px-4 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all">CCP</label>
+                        <input type="checkbox" id="qualFI" value="FI" class="qual-checkbox hidden"><label for="qualFI" class="flex items-center justify-center py-2 px-4 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all">FI</label>
+                        <input type="checkbox" id="qualGI" value="GI" class="qual-checkbox hidden"><label for="qualGI" class="flex items-center justify-center py-2 px-4 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all">GI</label>
                     </div>
                 </div>
-                <div class="shrink-0 pt-2">
-                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-amber-500/20" id="crewSubmitBtn">Simpan Kru</button>
-                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg" id="crewSubmitBtn">Simpan & Sinkron</button>
             </form>
         </div>
     </div>
 
-    <input type="file" id="genericFileInput" class="hidden" accept="image/*, application/pdf" onchange="handleGenericFile(event)">
-    <div id="toast">Berhasil!</div>
+    <!-- Simple Doc Modal -->
+    <div id="docPreviewModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
+        <div class="modal-backdrop absolute inset-0" onclick="closeDocPreviewModal()"></div>
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl z-10 flex flex-col overflow-hidden">
+            <div class="px-8 py-6 aviation-blue text-white flex justify-between items-center">
+                <h3 id="previewDocTitle" class="font-black uppercase tracking-widest">Preview</h3>
+                <button onclick="closeDocPreviewModal()" class="text-white/50 hover:text-white"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="bg-slate-100 flex-1 overflow-auto p-6 flex items-center justify-center">
+                <img id="previewImageElement" src="" class="max-w-full max-h-full object-contain rounded-2xl hidden">
+                <iframe id="previewPdfElement" src="" class="w-full h-full rounded-2xl hidden" style="min-height: 500px;"></iframe>
+                <div id="previewEmptyState" class="text-center p-10"><p class="text-slate-500 font-bold uppercase tracking-widest">Belum Ada File</p></div>
+            </div>
+            <div class="p-6 bg-white border-t flex gap-4">
+                <button onclick="triggerGenericUpload()" class="flex-1 bg-slate-900 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest">Pilih File Baru</button>
+                <button id="btnExportSingleDoc" onclick="downloadSingleDocPDF()" class="flex-1 bg-emerald-500 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hidden">Ekspor PDF</button>
+            </div>
+        </div>
+    </div>
+
     <div id="pdfExportGrid"></div>
+    <input type="file" id="genericFileInput" class="hidden" onchange="handleGenericFile(event)">
+    <div id="toast">Berhasil!</div>
 
     <script>
-        let crewData = [
-            { id: 1, name: "Capt. Aryo Wicaksono", licenseNo: "ATPL-123456", rank: "Captain", qualification: "CCP, FI", profilePhoto: null, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} },
-            { id: 2, name: "FO. Sarah Meilani", licenseNo: "CPL-789012", rank: "First Officer", qualification: "GI", profilePhoto: null, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} }
-        ];
+        /** * Langkah 1: Deploy Google Apps Script sebagai Web App.
+         * Langkah 2: Pilih "Anyone" pada "Who has access".
+         * Langkah 3: Tempelkan URL tersebut di bawah ini.
+         */
+        const DATABASE_URL = "https://script.google.com/macros/s/AKfycbxL0JZr-fC7L3x0dGwj7lNmUnTLKUoRoQ54LMo_VZNBsbGkH-tE5IMspz2S4XroYnDD/exec"; 
 
-        let selectedCrewId = null, activeDocId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license';
+        let crewData = JSON.parse(localStorage.getItem('crewData')) || [];
+        let selectedCrewId = null, activeDocId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license', crewToDeleteId = null;
 
         function init() { renderCrewList(crewData); updateStats(); }
-        function updateStats() { document.getElementById('statTotalCrew').innerText = crewData.length; }
+        function updateStats() { 
+            document.getElementById('statTotalCrew').innerText = crewData.length; 
+            localStorage.setItem('crewData', JSON.stringify(crewData)); 
+        }
 
         function renderCrewList(data) {
-            const list = document.getElementById('crewList');
-            if(!list) return;
-            list.innerHTML = '';
+            const list = document.getElementById('crewList'); list.innerHTML = '';
             data.forEach(crew => {
                 const item = document.createElement('div');
-                item.className = `p-5 border-b border-slate-800/50 cursor-pointer hover:bg-slate-800/30 transition-all group relative flex items-center justify-between ${selectedCrewId === crew.id ? 'sidebar-active' : ''}`;
-                const avatar = crew.profilePhoto ? `<img src="${crew.profilePhoto}" class="w-full h-full object-cover">` : crew.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+                item.className = `p-5 border-b border-slate-800/50 cursor-pointer hover:bg-slate-800/30 transition-all flex items-center justify-between group ${selectedCrewId === crew.id ? 'sidebar-active' : ''}`;
+                
+                const avatarContent = crew.profilePhoto ? 
+                    `<img src="${crew.profilePhoto}" class="w-full h-full object-cover">` : 
+                    '<span class="text-[10px] font-black aviation-accent">TW</span>';
+
                 item.innerHTML = `
                     <div class="flex items-center gap-4 flex-1" onclick="selectCrew(${crew.id})">
-                        <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center text-[10px] font-black aviation-accent border border-slate-700 overflow-hidden shrink-0">${avatar}</div>
+                        <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center border border-slate-700 overflow-hidden shrink-0">${avatarContent}</div>
                         <div class="overflow-hidden">
-                            <p class="text-sm font-bold text-white/90 truncate w-24 md:w-32">${crew.name}</p>
-                            <p class="text-[9px] text-slate-500 uppercase font-black tracking-widest">${crew.licenseNo}</p>
+                            <p class="text-sm font-bold text-white/90 truncate w-24 sm:w-32">${crew.name}</p>
+                            <p class="text-[9px] text-slate-500 font-black uppercase">${crew.licenseNo}</p>
                         </div>
                     </div>
-                    <div class="flex gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onclick="event.stopPropagation(); openEditCrewModal(${crew.id})" class="p-2 text-slate-400 hover:text-amber-500 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                        </button>
-                        <button onclick="event.stopPropagation(); openDeleteModal(${crew.id})" class="p-2 text-slate-400 hover:text-red-500 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path></svg>
-                        </button>
+                    <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="event.stopPropagation(); openEditCrewModal(${crew.id})" class="p-2 text-slate-500 hover:text-amber-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 00 2 2h14a2 2 0 00 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                        <button onclick="event.stopPropagation(); openDeleteModal(${crew.id})" class="p-2 text-slate-500 hover:text-red-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                     </div>`;
                 list.appendChild(item);
             });
         }
 
-        let crewToDeleteId = null;
+        // --- Logic Hapus ---
         function openDeleteModal(id) {
             crewToDeleteId = id;
             document.getElementById('deleteConfirmModal').classList.remove('hidden');
-            document.getElementById('confirmDeleteBtn').onclick = processDelete;
         }
         function closeDeleteModal() {
             document.getElementById('deleteConfirmModal').classList.add('hidden');
             crewToDeleteId = null;
         }
-        function processDelete() {
-            if(crewToDeleteId === null) return;
-            crewData = crewData.filter(c => c.id !== crewToDeleteId);
-            if(selectedCrewId === crewToDeleteId) {
-                selectedCrewId = null;
-                document.getElementById('welcomeScreen').classList.remove('hidden');
-                document.getElementById('crewDetailView').classList.add('hidden');
+        document.getElementById('confirmDeleteBtn').onclick = () => {
+            if(crewToDeleteId) {
+                crewData = crewData.filter(c => c.id !== crewToDeleteId);
+                if(selectedCrewId === crewToDeleteId) {
+                    selectedCrewId = null;
+                    document.getElementById('welcomeScreen').classList.remove('hidden');
+                    document.getElementById('crewDetailView').classList.add('hidden');
+                }
+                renderCrewList(crewData);
+                updateStats();
+                closeDeleteModal();
+                showToast("Data Dihapus Secara Lokal");
             }
-            renderCrewList(crewData);
-            updateStats();
-            closeDeleteModal();
-            showToast("Personil Telah Dihapus");
-        }
-
-        function filterCrew() { const q = document.getElementById('crewSearch').value.toLowerCase(); renderCrewList(crewData.filter(c => c.name.toLowerCase().includes(q) || c.rank.toLowerCase().includes(q))); }
-        function toggleMobileMenu() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
+        };
 
         function selectCrew(id) {
             selectedCrewId = id; const crew = crewData.find(c => c.id === id); if(!crew) return;
-            if(!crew.medicalPages) crew.medicalPages = new Array(2).fill(null);
-            if(!crew.passportPages) crew.passportPages = new Array(2).fill(null);
-            if(!crew.ktpPages) crew.ktpPages = new Array(2).fill(null);
-            if(!crew.kkPages) crew.kkPages = new Array(1).fill(null);
-            if(!crew.ccpPages) crew.ccpPages = new Array(2).fill(null);
-            if(!crew.loaPages) crew.loaPages = new Array(2).fill(null);
             renderCrewList(crewData); document.getElementById('welcomeScreen').classList.add('hidden'); document.getElementById('crewDetailView').classList.remove('hidden');
             document.getElementById('detName').innerText = crew.name; document.getElementById('detRank').innerText = crew.rank;
             document.getElementById('detLicenseNo').innerText = crew.licenseNo; document.getElementById('detQualification').innerText = crew.qualification || "GENERAL PILOT";
             const box = document.getElementById('detAvatarContainer');
             box.innerHTML = crew.profilePhoto ? `<img src="${crew.profilePhoto}" class="w-full h-full object-cover">` : `<svg class="w-24 h-24 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
             renderDocumentCards(crew);
-            if (window.innerWidth < 768) toggleMobileMenu();
         }
 
         function renderDocumentCards(crew) {
             const container = document.getElementById('documentContainer'); container.innerHTML = '';
-            const docs = [
+            const docTypes = [
                 { id: 'license', name: "License", type: 'grid' },
                 { id: 'medical', name: "Medical Certificate", type: 'grid' },
                 { id: 'passport', name: "Passport", type: 'grid' },
                 { id: 'ktp', name: "KTP", type: 'grid' },
                 { id: 'kk', name: "Family Card", type: 'grid' }
             ];
-            
-            const quals = crew.qualification ? crew.qualification.split(',').map(s => s.trim()) : [];
-            if (quals.includes('CCP')) {
-                docs.push({ id: 'ccp', name: "Certificate of CCP", type: 'grid' });
-            }
-            if (quals.includes('FI') || quals.includes('GI')) {
-                docs.push({ id: 'loa', name: "Letter Of Authorization", type: 'grid' });
-            }
+            const q = crew.qualification?.split(',').map(s => s.trim()) || [];
+            if(q.includes('CCP')) docTypes.push({ id: 'ccp', name: "Certificate of CCP", type: 'grid' });
+            if(q.includes('FI') || q.includes('GI')) docTypes.push({ id: 'loa', name: "Letter Of Authorization", type: 'grid' });
 
-            docs.forEach(doc => {
-                let hasFile = false, isPdf = false, previewData = null;
-                if(doc.type === 'grid') {
-                    const pages = doc.id === 'license' ? crew.licensePages : (doc.id === 'medical' ? crew.medicalPages : (doc.id === 'passport' ? crew.passportPages : (doc.id === 'ktp' ? crew.ktpPages : (doc.id === 'kk' ? crew.kkPages : (doc.id === 'ccp' ? crew.ccpPages : crew.loaPages)))));
-                    hasFile = pages.some(p => p !== null);
-                    const first = pages.find(p => p !== null); if(first) { isPdf = first.type === 'application/pdf'; previewData = first.data; }
-                } else {
-                    const f = crew.documents?.[doc.id]; hasFile = !!f; if(hasFile) { isPdf = f.type === 'application/pdf'; previewData = f.data; }
-                }
+            docTypes.forEach(doc => {
+                const pages = crew[`${doc.id}Pages`] || [];
+                const hasFile = pages.some(p => p !== null);
                 const card = document.createElement('div');
-                card.className = "glass-card p-6 rounded-3xl cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all border-b-4 hover:border-amber-500 group relative overflow-hidden flex flex-col items-center text-center";
-                card.onclick = () => doc.type === 'grid' ? openMultiPageModal(doc.id, doc.name) : openDocPreview(doc.id, doc.name);
-                card.innerHTML = `
-                    ${hasFile ? (isPdf ? `<div class="pdf-indicator-overlay"><svg class="w-10 h-10 text-red-500/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg></div>` : `<div class="card-preview-img" style="background-image: url('${previewData}')"></div>`) : ''}
-                    <div class="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-5 group-hover:bg-amber-50 transition-colors shadow-sm relative z-10"><svg class="w-7 h-7 text-slate-400 group-hover:text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
-                    <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest relative z-10 leading-tight">${doc.name}</h4>
-                    <div class="mt-4 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} relative z-10"><p class="text-[9px] font-black uppercase tracking-[0.15em]">${hasFile ? (isPdf ? 'PDF AKTIF' : 'FOTO AKTIF') : 'BELUM ADA FILE'}</p></div>`;
+                card.className = "glass-card p-6 rounded-3xl cursor-pointer hover:shadow-2xl transition-all border-b-4 flex flex-col items-center text-center relative overflow-hidden";
+                card.onclick = () => openMultiPageModal(doc.id, doc.name);
+                card.innerHTML = `<h4 class="text-xs font-black text-slate-800 uppercase tracking-widest z-10">${doc.name}</h4><div class="mt-4 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} z-10 text-[9px] font-black uppercase tracking-widest">${hasFile ? 'AKTIF' : 'KOSONG'}</div>`;
                 container.appendChild(card);
             });
         }
 
-        function openMultiPageModal(type, title) {
-            activeGridType = type; const crew = crewData.find(cr => cr.id === selectedCrewId);
-            document.getElementById('gridModalTitle').innerText = title; document.getElementById('gridModalCrewName').innerText = crew.name;
-            renderGridPages(crew, type); document.getElementById('gridModal').classList.remove('hidden');
-        }
-        function closeGridModal() { document.getElementById('gridModal').classList.add('hidden'); }
-
-        function renderGridPages(crew, type) {
-            const container = document.getElementById('gridPageContainer'); container.innerHTML = '';
-            const pages = type === 'license' ? crew.licensePages : (type === 'medical' ? crew.medicalPages : (type === 'passport' ? crew.passportPages : (type === 'ktp' ? crew.ktpPages : (type === 'kk' ? crew.kkPages : (type === 'ccp' ? crew.ccpPages : crew.loaPages)))));
-            
-            // Grid columns adjustment
-            if (type === 'passport' || type === 'ktp' || type === 'kk') {
-                container.className = "grid grid-cols-1 sm:grid-cols-2 gap-8";
-            } else {
-                container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8";
+        async function syncToGoogleSheet(crew) {
+            if(!DATABASE_URL || DATABASE_URL === "") {
+                console.warn("DATABASE_URL belum diatur. Sinkronisasi dibatalkan.");
+                return;
             }
+            const ind = document.getElementById('syncIndicator');
+            const txt = document.getElementById('syncText');
+            ind.classList.add('sync-pulse'); ind.classList.replace('bg-emerald-500', 'bg-amber-500');
+            txt.innerText = "Syncing...";
 
-            for(let i=0; i<pages.length; i++) {
-                const s = document.createElement('div'); const f = pages[i];
-                const isLandscapeUI = (type === 'passport' || type === 'ktp' || type === 'kk');
-                s.className = (isLandscapeUI ? "landscape-slot" : "license-slot") + " bg-white border-4 border-dashed border-slate-200 rounded-[2rem] p-4 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer shadow-sm";
-                s.onclick = () => { const inp = document.createElement('input'); inp.type='file'; inp.accept='image/*,application/pdf'; inp.onchange=(e)=>handleGridFileUpload(e, i, type); inp.click(); };
-                s.innerHTML = `<div class="absolute top-4 left-0 w-full bg-slate-900/90 py-1.5 z-20 pointer-events-none"><p class="text-[10px] font-black text-white text-center uppercase tracking-widest">Halaman ${i+1}</p></div>
-                    ${f ? (f.type==='application/pdf' ? '<svg class="w-12 h-12 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg>' : `<img src="${f.data}" class="absolute inset-0 w-full h-full object-cover">`) : '<svg class="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>'}
-                    ${f ? `<div class="absolute inset-0 bg-slate-900/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center z-10"><span class="text-[10px] font-black text-white uppercase border-2 border-white px-5 py-2 rounded-xl">Update</span></div>` : ''}`;
-                container.appendChild(s);
-            }
-        }
-
-        function handleGridFileUpload(e, index, type) {
-            const f = e.target.files[0]; if(!f) return; const r = new FileReader();
-            r.onload = (ev) => {
-                const idx = crewData.findIndex(c => c.id === selectedCrewId);
-                const pages = type === 'license' ? crewData[idx].licensePages : (type === 'medical' ? crewData[idx].medicalPages : (type === 'passport' ? crewData[idx].passportPages : (type === 'ktp' ? crewData[idx].ktpPages : (type === 'kk' ? crewData[idx].kkPages : (type === 'ccp' ? crewData[idx].ccpPages : crewData[idx].loaPages)))));
-                pages[index] = { data: ev.target.result, type: f.type };
-                renderGridPages(crewData[idx], type); renderDocumentCards(crewData[idx]); showToast("Berhasil Disimpan!");
-            };
-            r.readAsDataURL(f);
-        }
-
-        async function downloadMultiPagePDF() {
-            const { jsPDF } = window.jspdf; const crew = crewData.find(c => c.id === selectedCrewId); if(!crew) return;
-            const container = document.getElementById('pdfExportGrid'); container.innerHTML = '';
-            
-            const originalPages = activeGridType === 'license' ? crew.licensePages : (activeGridType === 'medical' ? crew.medicalPages : (activeGridType === 'passport' ? crew.passportPages : (activeGridType === 'ktp' ? crew.ktpPages : (activeGridType === 'kk' ? crew.kkPages : (activeGridType === 'ccp' ? crew.ccpPages : crew.loaPages)))));
-            
-            let pages = [...originalPages];
-            // Format detection
-            const isTwoBoxPortraitType = (activeGridType === 'passport' || activeGridType === 'ktp' || activeGridType === 'ccp' || activeGridType === 'loa');
-            const isKtpType = (activeGridType === 'ktp');
-            const isPassportType = (activeGridType === 'passport');
-            const isLandscapeType = (activeGridType === 'kk');
-            
-            const requiredSlots = isTwoBoxPortraitType ? 2 : (isLandscapeType ? 1 : 4);
-            while(pages.length < requiredSlots) pages.push(null);
-
-            const chunkSize = requiredSlots; 
-            const chunks = [];
-            for (let i = 0; i < pages.length; i += chunkSize) chunks.push(pages.slice(i, i + chunkSize));
-
-            // Determine page orientation
-            const orientation = isLandscapeType ? 'l' : 'p';
-            const doc = new jsPDF(orientation, 'mm', 'a4');
-
-            for (let i = 0; i < chunks.length; i++) {
-                const wrapper = document.createElement('div');
-                if (isKtpType) {
-                    wrapper.className = 'pdf-ktp-wrapper'; 
-                } else if (isPassportType) {
-                    wrapper.className = 'pdf-passport-wrapper'; // Specific wrapper for Passport
-                } else if (isLandscapeType) {
-                    wrapper.className = 'pdf-landscape-wrapper';
-                } else if (isTwoBoxPortraitType) {
-                    wrapper.className = 'pdf-two-box-wrapper';
-                } else {
-                    wrapper.className = 'pdf-page-wrapper';
-                }
-                wrapper.id = `export-page-${i}`;
-                
-                chunks[i].forEach(f => {
-                    const card = document.createElement('div'); 
-                    const hasContent = !!(f?.data);
-                    
-                    let cardStyles = `background:#fff; ${hasContent ? 'border:1px solid #e2e8f0;' : 'border:none;'} border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;`;
-                    
-                    if(isKtpType) {
-                        // ISO 7810 ID-1 standard size: 85.60 x 53.98 mm. (scale ~3.8px/mm)
-                        cardStyles += ` width: 325px; height: 205px; flex-shrink: 0;`;
-                    } else if (isPassportType) {
-                        // ISO/IEC 7810 ID-3 standard size: 125 x 88 mm. (125*3.8 = 475px, 88*3.8 = 334px)
-                        cardStyles += ` width: 475px; height: 334px; flex-shrink: 0;`;
-                    } else {
-                        cardStyles += ` width: 100%; height: 100%;`;
-                    }
-                    
-                    card.style.cssText = cardStyles;
-                    
-                    if (f?.data && f.type !== 'application/pdf') { 
-                        card.innerHTML = `<img src="${f.data}" style="width: 100%; height: 100%; object-fit: fill;">`; 
-                    } else if (f?.type === 'application/pdf') { 
-                        card.innerHTML = `<div style="text-align:center; font-family:sans-serif; background:#fef2f2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;"><svg width="40" height="40" fill="#ef4444" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg><p style="font-size:12px; font-weight:bold; color:#475569; margin-top:10px;">PDF DOC</p></div>`; 
-                    } else { 
-                        card.innerHTML = ``; 
-                    }
-                    wrapper.appendChild(card);
+            try {
+                const payload = JSON.stringify({
+                    id: crew.id,
+                    name: crew.name,
+                    licenseNo: crew.licenseNo,
+                    rank: crew.rank,
+                    qualification: crew.qualification,
+                    profilePhoto: crew.profilePhoto 
                 });
-                container.appendChild(wrapper);
-                
-                const canvas = await html2canvas(document.getElementById(`export-page-${i}`), { scale: 2, useCORS: true });
-                if (i > 0) doc.addPage();
-                
-                const pageWidth = isLandscapeType ? 297 : 210;
-                const pageHeight = isLandscapeType ? 210 : 297;
-                doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, pageWidth, pageHeight, null, 'FAST');
-            }
-            
-            doc.save(`${document.getElementById('gridModalTitle').innerText.replace(/\s+/g, '_')}_${crew.name.replace(/\s+/g, '_')}.pdf`);
-            container.innerHTML = '';
-        }
 
-        async function downloadSingleDocPDF() {
-            const crew = crewData.find(c => c.id === selectedCrewId); const f = crew?.documents?.[activeDocId]; if(!f) return;
-            if(f.type === 'application/pdf') { const l = document.createElement('a'); l.href = f.data; l.download = `${activeDocId}_${crew.name}.pdf`; l.click(); return; }
-            const container = document.getElementById('pdfExportGrid'); container.innerHTML = '';
-            const w = document.createElement('div'); w.className = 'pdf-single-wrapper'; 
-            w.innerHTML = `<img src="${f.data}" style="width:100%; height:100%; object-fit:fill; border:1px solid #e2e8f0; border-radius:4px;">`;
-            container.appendChild(w);
-            const canvas = await html2canvas(w, { scale: 2, useCORS: true });
-            const doc = new (window.jspdf.jsPDF)('p', 'mm', 'a4');
-            doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, 210, 297, null, 'FAST');
-            doc.save(`${activeDocId}_${crew.name}.pdf`); container.innerHTML = '';
-        }
+                await fetch(DATABASE_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    cache: 'no-cache',
+                    body: payload
+                });
 
-        function triggerProfilePhotoUpload() { document.getElementById('crewProfilePhotoInput').click(); }
-        function handleCrewProfileUpload(e) {
-            const r = new FileReader(); r.onload = (ev) => {
-                currentFormPhotoBase64 = ev.target.result; const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon');
-                p.src = currentFormPhotoBase64; p.classList.remove('hidden'); i.classList.add('hidden');
-            }; r.readAsDataURL(e.target.files[0]);
-        }
-        function triggerGenericUpload() { document.getElementById('genericFileInput').click(); }
-        function handleGenericFile(e) {
-            const f = e.target.files[0]; if(!f || !selectedCrewId || !activeDocId) return;
-            const r = new FileReader(); r.onload = (ev) => {
-                const idx = crewData.findIndex(c => c.id === selectedCrewId); if(!crewData[idx].documents) crewData[idx].documents = {};
-                crewData[idx].documents[activeDocId] = { data: ev.target.result, type: f.type };
-                showToast("Berhasil!"); renderDocumentCards(crewData[idx]); openDocPreview(activeDocId, document.getElementById('previewDocTitle').innerText);
-            }; r.readAsDataURL(f); e.target.value = '';
-        }
+                setTimeout(() => {
+                    ind.classList.remove('sync-pulse'); ind.classList.replace('bg-amber-500', 'bg-emerald-500');
+                    txt.innerText = "Cloud Synced";
+                    showToast("Sinkronisasi Cloud Berhasil");
+                }, 1500);
 
-        function toggleManualRankInput(val) {
-            const manualInp = document.getElementById('crewRankManual');
-            if(val === 'other') {
-                manualInp.classList.remove('hidden');
-            } else {
-                manualInp.classList.add('hidden');
-                manualInp.value = "";
+            } catch (err) {
+                console.error("Sync Error:", err);
+                txt.innerText = "Sync Failed";
+                ind.classList.replace('bg-emerald-500', 'bg-red-500');
             }
         }
-
-        function openAddCrewModal() { 
-            editingCrewId = null; currentFormPhotoBase64 = null;
-            document.getElementById('crewFormTitle').innerText = "Registrasi Kru"; 
-            document.getElementById('crewName').value = ""; 
-            document.getElementById('crewLicenseNo').value = "";
-            document.getElementById('crewRank').value = "Captain";
-            toggleManualRankInput("Captain");
-            document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = false);
-            document.getElementById('formPhotoPreview').classList.add('hidden'); document.getElementById('formPhotoIcon').classList.remove('hidden');
-            document.getElementById('crewFormModal').classList.remove('hidden'); 
-        }
-
-        function openEditCrewModal(id) {
-            const c = crewData.find(cr => cr.id === id); editingCrewId = id; currentFormPhotoBase64 = c.profilePhoto;
-            document.getElementById('crewFormTitle').innerText = "Edit Informasi Kru";
-            document.getElementById('crewName').value = c.name; 
-            document.getElementById('crewLicenseNo').value = c.licenseNo;
-            
-            const stdRanks = ['Captain', 'First Officer', 'Cabin Service', 'Engineer'];
-            if(stdRanks.includes(c.rank)) {
-                document.getElementById('crewRank').value = c.rank;
-                toggleManualRankInput(c.rank);
-            } else {
-                document.getElementById('crewRank').value = "other";
-                toggleManualRankInput("other");
-                document.getElementById('crewRankManual').value = c.rank;
-            }
-
-            document.querySelectorAll('.qual-checkbox').forEach(cb => {
-                cb.checked = (c.qualification && c.qualification.includes(cb.value));
-            });
-
-            const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon');
-            if(c.profilePhoto) { p.src = c.profilePhoto; p.classList.remove('hidden'); i.classList.add('hidden'); } else { p.classList.add('hidden'); i.classList.remove('hidden'); }
-            document.getElementById('crewFormModal').classList.remove('hidden');
-        }
-
-        function closeCrewModal() { document.getElementById('crewFormModal').classList.add('hidden'); }
 
         function handleCrewSubmit(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             const n = document.getElementById('crewName').value;
             const l = document.getElementById('crewLicenseNo').value;
-            const rSelect = document.getElementById('crewRank').value;
-            const rManual = document.getElementById('crewRankManual').value;
-            const finalRank = (rSelect === 'other') ? rManual : rSelect;
+            const r = document.getElementById('crewRank').value;
+            const quals = Array.from(document.querySelectorAll('.qual-checkbox:checked')).map(cb => cb.value).join(', ');
 
-            const selectedQuals = [];
-            document.querySelectorAll('.qual-checkbox:checked').forEach(cb => selectedQuals.push(cb.value));
-            const finalQual = selectedQuals.join(', ');
-
+            let crew;
             if (editingCrewId) {
                 const i = crewData.findIndex(c => c.id === editingCrewId);
-                crewData[i] = { ...crewData[i], name: n, licenseNo: l, rank: finalRank, qualification: finalQual, profilePhoto: currentFormPhotoBase64 };
-                if(selectedCrewId === editingCrewId) selectCrew(editingCrewId);
+                crewData[i] = { ...crewData[i], name: n, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64 };
+                crew = crewData[i];
             } else {
-                const nc = { id: Date.now(), name: n, licenseNo: l, rank: finalRank, qualification: finalQual, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} };
-                crewData.push(nc); selectCrew(nc.id);
+                crew = { id: Date.now(), name: n, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} };
+                crewData.push(crew);
             }
-            renderCrewList(crewData); updateStats(); closeCrewModal(); showToast("Berhasil!");
+            
+            renderCrewList(crewData); updateStats(); closeCrewModal();
+            selectCrew(crew.id);
+            syncToGoogleSheet(crew);
         }
 
-        function openDocPreview(id, name) {
-            activeDocId = id; const c = crewData.find(cr => cr.id === selectedCrewId); const f = c?.documents?.[id];
-            document.getElementById('previewDocTitle').innerText = name; document.getElementById('previewCrewSubtitle').innerText = c?.name || '-';
-            const img = document.getElementById('previewImageElement'), pdf = document.getElementById('previewPdfElement'), empty = document.getElementById('previewEmptyState'), btn = document.getElementById('btnExportSingleDoc');
-            img.classList.add('hidden'); pdf.classList.add('hidden'); empty.classList.add('hidden'); btn.classList.add('hidden');
-            if (f) { btn.classList.remove('hidden'); if (f.type === 'application/pdf') { pdf.src = f.data; pdf.classList.remove('hidden'); } else { img.src = f.data; img.classList.remove('hidden'); } } else { empty.classList.remove('hidden'); }
-            document.getElementById('docPreviewModal').classList.remove('hidden');
-        }
-        function closeDocPreviewModal() { document.getElementById('docPreviewModal').classList.add('hidden'); document.getElementById('previewPdfElement').src = ""; }
+        // --- UI & Helper Functions ---
+        function openAddCrewModal() { editingCrewId = null; currentFormPhotoBase64 = null; document.getElementById('crewFormTitle').innerText = "Registrasi Kru"; document.getElementById('crewName').value = ""; document.getElementById('crewLicenseNo').value = ""; document.getElementById('formPhotoPreview').classList.add('hidden'); document.getElementById('formPhotoIcon').classList.remove('hidden'); document.getElementById('crewFormModal').classList.remove('hidden'); }
+        function openEditCrewModal(id) { const c = crewData.find(cr => cr.id === id); editingCrewId = id; currentFormPhotoBase64 = c.profilePhoto; document.getElementById('crewName').value = c.name; document.getElementById('crewLicenseNo').value = c.licenseNo; document.getElementById('crewRank').value = c.rank; document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = c.qualification?.includes(cb.value)); const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon'); if(c.profilePhoto) { p.src = c.profilePhoto; p.classList.remove('hidden'); i.classList.add('hidden'); } else { p.classList.add('hidden'); i.classList.remove('hidden'); } document.getElementById('crewFormModal').classList.remove('hidden'); }
+        function closeCrewModal() { document.getElementById('crewFormModal').classList.add('hidden'); }
+        function triggerProfilePhotoUpload() { document.getElementById('crewProfilePhotoInput').click(); }
+        function handleCrewProfileUpload(e) { const r = new FileReader(); r.onload = (ev) => { currentFormPhotoBase64 = ev.target.result; const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon'); p.src = currentFormPhotoBase64; p.classList.remove('hidden'); i.classList.add('hidden'); }; r.readAsDataURL(e.target.files[0]); }
+        function openMultiPageModal(type, title) { activeGridType = type; const crew = crewData.find(cr => cr.id === selectedCrewId); document.getElementById('gridModalTitle').innerText = title; document.getElementById('gridModalCrewName').innerText = crew.name; renderGridPages(crew, type); document.getElementById('gridModal').classList.remove('hidden'); }
+        function closeGridModal() { document.getElementById('gridModal').classList.add('hidden'); }
+        function renderGridPages(crew, type) { const container = document.getElementById('gridPageContainer'); container.innerHTML = ''; const pages = crew[`${type}Pages`]; container.className = (['passport','ktp','kk'].includes(type)) ? "grid grid-cols-1 sm:grid-cols-2 gap-8" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"; for(let i=0; i<pages.length; i++) { const s = document.createElement('div'); s.className = (['passport','ktp','kk'].includes(type) ? "landscape-slot" : "license-slot") + " bg-white p-4 flex flex-col items-center justify-center relative overflow-hidden"; s.onclick = () => { const inp = document.createElement('input'); inp.type='file'; inp.onchange=(e)=>handleGridFileUpload(e, i, type); inp.click(); }; s.innerHTML = `<div class="absolute top-4 left-0 w-full bg-slate-900/80 py-1 z-10"><p class="text-[10px] text-white text-center font-black">HALAMAN ${i+1}</p></div>${pages[i] ? (pages[i].type === 'application/pdf' ? '<svg class="w-12 h-12 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg>' : `<img src="${pages[i].data}" class="absolute inset-0 w-full h-full object-cover">`) : '<svg class="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>'}`; container.appendChild(s); } }
+        function handleGridFileUpload(e, index, type) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ev) => { const idx = crewData.findIndex(c => c.id === selectedCrewId); crewData[idx][`${type}Pages`][index] = { data: ev.target.result, type: f.type }; renderGridPages(crewData[idx], type); renderDocumentCards(crewData[idx]); updateStats(); }; r.readAsDataURL(f); }
         function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-
+        function toggleMobileMenu() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
+        
         window.onload = init;
     </script>
 </body>
