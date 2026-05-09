@@ -43,7 +43,12 @@
             aspect-ratio: 3/4;
             transition: all 0.25s ease;
         }
-        .license-slot:hover {
+        /* Landscape slots for Passport, KTP, and KK */
+        .landscape-slot {
+            aspect-ratio: 16/10;
+            transition: all 0.25s ease;
+        }
+        .license-slot:hover, .landscape-slot:hover {
             border-color: #f59e0b;
             background-color: #fffbeb;
         }
@@ -56,7 +61,7 @@
             left: -9999px;
             top: 0;
         }
-        /* Layout Grid 2x2 (License, Medical, CCP, LOA) */
+        /* A4 Portrait Grid (2x2) */
         .pdf-page-wrapper {
             width: 800px;
             height: 1131px; 
@@ -66,6 +71,41 @@
             grid-template-rows: repeat(2, 1fr);
             gap: 20px; 
             background: white;
+            box-sizing: border-box;
+        }
+        /* A4 Portrait Vertical Stack (2 slots) */
+        .pdf-two-box-wrapper {
+            width: 800px;
+            height: 1131px; 
+            padding: 50px; 
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px; 
+            background: white;
+            box-sizing: border-box;
+        }
+        /* A4 Portrait Centered for KTP (ID Card Standard) */
+        .pdf-ktp-wrapper {
+            width: 800px;
+            height: 1131px; 
+            padding: 100px 50px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px; 
+            background: white;
+            box-sizing: border-box;
+        }
+        /* A4 Landscape Wrapper for Family Card */
+        .pdf-landscape-wrapper {
+            width: 1131px;
+            height: 800px;
+            padding: 40px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-sizing: border-box;
         }
         .pdf-single-wrapper {
@@ -122,7 +162,6 @@
             z-index: 0;
         }
 
-        /* Checkbox styling */
         .qual-checkbox:checked + label {
             background-color: #f59e0b;
             color: #0f172a;
@@ -134,12 +173,18 @@
 
     <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMobileMenu()"></div>
 
+    <!-- Sidebar -->
     <aside id="mainSidebar" class="w-80 aviation-blue text-white flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl">
         <div class="p-6 border-b border-slate-800">
             <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tighter uppercase aviation-accent italic">Transwisata</h1>
-                    <p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Prima Aviation</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-xl p-1 shadow-inner">
+                        <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold tracking-tighter uppercase aviation-accent italic leading-none">Transwisata</h1>
+                        <p class="text-[8px] text-slate-400 font-medium tracking-[0.2em] uppercase">Prima Aviation</p>
+                    </div>
                 </div>
                 <button class="md:hidden text-slate-400 p-2" onclick="toggleMobileMenu()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -167,6 +212,7 @@
         </div>
     </aside>
 
+    <!-- Main Content -->
     <main class="flex-1 overflow-y-auto flex flex-col w-full bg-slate-50">
         <header class="bg-white border-b border-slate-200 px-6 md:px-10 py-5 flex justify-between items-center sticky top-0 z-30 shadow-sm">
             <div class="flex items-center gap-4">
@@ -180,7 +226,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <div class="hidden sm:block text-right">
-                    <p class="text-sm font-bold text-slate-900">Flight Dispatch</p>
+                    <p class="text-sm font-bold text-slate-900">Chief Pilot</p>
                     <p class="text-[10px] text-emerald-600 font-extrabold uppercase tracking-widest">Authorized Access</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border-2 border-slate-100 shadow-sm overflow-hidden p-1">
@@ -190,6 +236,7 @@
         </header>
 
         <div id="contentPlaceholder" class="p-6 md:p-10 flex-1">
+            <!-- Dashboard Stats -->
             <div id="dashboardStats" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <div class="glass-card p-5 rounded-2xl shadow-sm border-l-4 border-indigo-600">
                     <p class="text-slate-400 text-[9px] font-bold uppercase tracking-widest mb-1">Total Crew</p>
@@ -206,8 +253,8 @@
             </div>
 
             <div id="welcomeScreen" class="flex flex-col items-center justify-center py-24 text-center">
-                <div class="w-24 h-24 bg-white rounded-[2rem] shadow-xl flex items-center justify-center mb-6">
-                    <svg class="w-12 h-12 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                <div class="w-32 h-32 bg-white rounded-[2.5rem] shadow-xl flex items-center justify-center mb-8 p-4">
+                    <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
                 </div>
                 <h3 class="text-2xl font-bold text-slate-800">Pilih Personil</h3>
                 <p class="text-slate-400 max-w-sm mt-3 font-medium">Klik nama kru di sidebar untuk mengelola dokumen operasional mereka.</p>
@@ -282,7 +329,7 @@
                 </div>
             </div>
             <div class="p-10 overflow-y-auto flex-1 bg-slate-50">
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8" id="gridPageContainer"></div>
+                <div id="gridPageContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
             </div>
         </div>
     </div>
@@ -396,8 +443,8 @@
 
     <script>
         let crewData = [
-            { id: 1, name: "Capt. Aryo Wicaksono", licenseNo: "ATPL-123456", rank: "Captain", qualification: "CCP, FI", profilePhoto: null, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} },
-            { id: 2, name: "FO. Sarah Meilani", licenseNo: "CPL-789012", rank: "First Officer", qualification: "GI", profilePhoto: null, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} }
+            { id: 1, name: "Capt. Aryo Wicaksono", licenseNo: "ATPL-123456", rank: "Captain", qualification: "CCP, FI", profilePhoto: null, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} },
+            { id: 2, name: "FO. Sarah Meilani", licenseNo: "CPL-789012", rank: "First Officer", qualification: "GI", profilePhoto: null, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} }
         ];
 
         let selectedCrewId = null, activeDocId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license';
@@ -463,6 +510,9 @@
         function selectCrew(id) {
             selectedCrewId = id; const crew = crewData.find(c => c.id === id); if(!crew) return;
             if(!crew.medicalPages) crew.medicalPages = new Array(2).fill(null);
+            if(!crew.passportPages) crew.passportPages = new Array(2).fill(null);
+            if(!crew.ktpPages) crew.ktpPages = new Array(2).fill(null);
+            if(!crew.kkPages) crew.kkPages = new Array(1).fill(null);
             if(!crew.ccpPages) crew.ccpPages = new Array(2).fill(null);
             if(!crew.loaPages) crew.loaPages = new Array(2).fill(null);
             renderCrewList(crewData); document.getElementById('welcomeScreen').classList.add('hidden'); document.getElementById('crewDetailView').classList.remove('hidden');
@@ -479,20 +529,15 @@
             const docs = [
                 { id: 'license', name: "License", type: 'grid' },
                 { id: 'medical', name: "Medical Certificate", type: 'grid' },
-                { id: 'passport', name: "Passport", type: 'single' },
-                { id: 'ktp', name: "KTP", type: 'single' },
-                { id: 'kk', name: "Family Card", type: 'single' }
+                { id: 'passport', name: "Passport", type: 'grid' },
+                { id: 'ktp', name: "KTP", type: 'grid' },
+                { id: 'kk', name: "Family Card", type: 'grid' }
             ];
             
-            // Logika Tampilan Kondisional CCP dan LOA
             const quals = crew.qualification ? crew.qualification.split(',').map(s => s.trim()) : [];
-            
-            // 1. Muncul jika CCP dipilih
             if (quals.includes('CCP')) {
                 docs.push({ id: 'ccp', name: "Certificate of CCP", type: 'grid' });
             }
-            
-            // 2. Muncul jika FI atau GI dipilih
             if (quals.includes('FI') || quals.includes('GI')) {
                 docs.push({ id: 'loa', name: "Letter Of Authorization", type: 'grid' });
             }
@@ -500,7 +545,7 @@
             docs.forEach(doc => {
                 let hasFile = false, isPdf = false, previewData = null;
                 if(doc.type === 'grid') {
-                    const pages = doc.id === 'license' ? crew.licensePages : (doc.id === 'medical' ? crew.medicalPages : (doc.id === 'ccp' ? crew.ccpPages : crew.loaPages));
+                    const pages = doc.id === 'license' ? crew.licensePages : (doc.id === 'medical' ? crew.medicalPages : (doc.id === 'passport' ? crew.passportPages : (doc.id === 'ktp' ? crew.ktpPages : (doc.id === 'kk' ? crew.kkPages : (doc.id === 'ccp' ? crew.ccpPages : crew.loaPages)))));
                     hasFile = pages.some(p => p !== null);
                     const first = pages.find(p => p !== null); if(first) { isPdf = first.type === 'application/pdf'; previewData = first.data; }
                 } else {
@@ -511,7 +556,7 @@
                 card.onclick = () => doc.type === 'grid' ? openMultiPageModal(doc.id, doc.name) : openDocPreview(doc.id, doc.name);
                 card.innerHTML = `
                     ${hasFile ? (isPdf ? `<div class="pdf-indicator-overlay"><svg class="w-10 h-10 text-red-500/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg></div>` : `<div class="card-preview-img" style="background-image: url('${previewData}')"></div>`) : ''}
-                    <div class="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-5 group-hover:bg-amber-50 transition-colors shadow-sm relative z-10"><svg class="w-7 h-7 text-slate-400 group-hover:text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1(0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                    <div class="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-5 group-hover:bg-amber-50 transition-colors shadow-sm relative z-10"><svg class="w-7 h-7 text-slate-400 group-hover:text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
                     <h4 class="text-xs font-black text-slate-800 uppercase tracking-widest relative z-10 leading-tight">${doc.name}</h4>
                     <div class="mt-4 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} relative z-10"><p class="text-[9px] font-black uppercase tracking-[0.15em]">${hasFile ? (isPdf ? 'PDF AKTIF' : 'FOTO AKTIF') : 'BELUM ADA FILE'}</p></div>`;
                 container.appendChild(card);
@@ -527,10 +572,19 @@
 
         function renderGridPages(crew, type) {
             const container = document.getElementById('gridPageContainer'); container.innerHTML = '';
-            const pages = type === 'license' ? crew.licensePages : (type === 'medical' ? crew.medicalPages : (type === 'ccp' ? crew.ccpPages : crew.loaPages));
+            const pages = type === 'license' ? crew.licensePages : (type === 'medical' ? crew.medicalPages : (type === 'passport' ? crew.passportPages : (type === 'ktp' ? crew.ktpPages : (type === 'kk' ? crew.kkPages : (type === 'ccp' ? crew.ccpPages : crew.loaPages)))));
+            
+            // Grid columns adjustment
+            if (type === 'passport' || type === 'ktp' || type === 'kk') {
+                container.className = "grid grid-cols-1 sm:grid-cols-2 gap-8";
+            } else {
+                container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8";
+            }
+
             for(let i=0; i<pages.length; i++) {
                 const s = document.createElement('div'); const f = pages[i];
-                s.className = "license-slot bg-white border-4 border-dashed border-slate-200 rounded-[2rem] p-4 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer shadow-sm";
+                const isLandscapeUI = (type === 'passport' || type === 'ktp' || type === 'kk');
+                s.className = (isLandscapeUI ? "landscape-slot" : "license-slot") + " bg-white border-4 border-dashed border-slate-200 rounded-[2rem] p-4 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer shadow-sm";
                 s.onclick = () => { const inp = document.createElement('input'); inp.type='file'; inp.accept='image/*,application/pdf'; inp.onchange=(e)=>handleGridFileUpload(e, i, type); inp.click(); };
                 s.innerHTML = `<div class="absolute top-4 left-0 w-full bg-slate-900/90 py-1.5 z-20 pointer-events-none"><p class="text-[10px] font-black text-white text-center uppercase tracking-widest">Halaman ${i+1}</p></div>
                     ${f ? (f.type==='application/pdf' ? '<svg class="w-12 h-12 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg>' : `<img src="${f.data}" class="absolute inset-0 w-full h-full object-cover">`) : '<svg class="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>'}
@@ -543,7 +597,7 @@
             const f = e.target.files[0]; if(!f) return; const r = new FileReader();
             r.onload = (ev) => {
                 const idx = crewData.findIndex(c => c.id === selectedCrewId);
-                const pages = type === 'license' ? crewData[idx].licensePages : (type === 'medical' ? crewData[idx].medicalPages : (type === 'ccp' ? crewData[idx].ccpPages : crewData[idx].loaPages));
+                const pages = type === 'license' ? crewData[idx].licensePages : (type === 'medical' ? crewData[idx].medicalPages : (type === 'passport' ? crewData[idx].passportPages : (type === 'ktp' ? crewData[idx].ktpPages : (type === 'kk' ? crewData[idx].kkPages : (type === 'ccp' ? crewData[idx].ccpPages : crewData[idx].loaPages)))));
                 pages[index] = { data: ev.target.result, type: f.type };
                 renderGridPages(crewData[idx], type); renderDocumentCards(crewData[idx]); showToast("Berhasil Disimpan!");
             };
@@ -554,47 +608,74 @@
             const { jsPDF } = window.jspdf; const crew = crewData.find(c => c.id === selectedCrewId); if(!crew) return;
             const container = document.getElementById('pdfExportGrid'); container.innerHTML = '';
             
-            const originalPages = activeGridType === 'license' ? crew.licensePages : (activeGridType === 'medical' ? crew.medicalPages : (activeGridType === 'ccp' ? crew.ccpPages : crew.loaPages));
+            const originalPages = activeGridType === 'license' ? crew.licensePages : (activeGridType === 'medical' ? crew.medicalPages : (activeGridType === 'passport' ? crew.passportPages : (activeGridType === 'ktp' ? crew.ktpPages : (activeGridType === 'kk' ? crew.kkPages : (activeGridType === 'ccp' ? crew.ccpPages : crew.loaPages)))));
             
             let pages = [...originalPages];
-            const isGridType = (activeGridType === 'medical' || activeGridType === 'ccp' || activeGridType === 'loa');
+            // Format detection
+            const isTwoBoxPortraitType = (activeGridType === 'passport' || activeGridType === 'ktp' || activeGridType === 'ccp' || activeGridType === 'loa');
+            const isKtpType = (activeGridType === 'ktp');
+            const isLandscapeType = (activeGridType === 'kk');
             
-            if(isGridType && pages.length < 4) {
-                while(pages.length < 4) pages.push(null);
-            }
+            const requiredSlots = isTwoBoxPortraitType ? 2 : (isLandscapeType ? 1 : 4);
+            while(pages.length < requiredSlots) pages.push(null);
 
-            const chunk = 4; 
+            const chunkSize = requiredSlots; 
             const chunks = [];
-            for (let i = 0; i < pages.length; i += chunk) chunks.push(pages.slice(i, i + chunk));
+            for (let i = 0; i < pages.length; i += chunkSize) chunks.push(pages.slice(i, i + chunkSize));
+
+            // Determine page orientation
+            const orientation = isLandscapeType ? 'l' : 'p';
+            const doc = new jsPDF(orientation, 'mm', 'a4');
 
             for (let i = 0; i < chunks.length; i++) {
                 const wrapper = document.createElement('div');
-                wrapper.className = 'pdf-page-wrapper';
+                if (isKtpType) {
+                    wrapper.className = 'pdf-ktp-wrapper'; // New Specific class for ID-size KTP
+                } else if (isLandscapeType) {
+                    wrapper.className = 'pdf-landscape-wrapper';
+                } else if (isTwoBoxPortraitType) {
+                    wrapper.className = 'pdf-two-box-wrapper';
+                } else {
+                    wrapper.className = 'pdf-page-wrapper';
+                }
                 wrapper.id = `export-page-${i}`;
                 
                 chunks[i].forEach(f => {
                     const card = document.createElement('div'); 
                     const hasContent = !!(f?.data);
-                    card.style.cssText = `background:#fff; ${hasContent ? 'border:1px solid #e2e8f0;' : 'border:none;'} border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden; width:100%; height:100%;`;
+                    
+                    let cardStyles = `background:#fff; ${hasContent ? 'border:1px solid #e2e8f0;' : 'border:none;'} border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;`;
+                    
+                    if(isKtpType) {
+                        // ISO 7810 ID-1 standard size: 85.60 x 53.98 mm. 
+                        // On an 800px width A4 (210mm), 1mm = 3.8px.
+                        // Width: 85.6 * 3.8 = ~325px. Height: 54 * 3.8 = ~205px.
+                        cardStyles += ` width: 325px; height: 205px; flex-shrink: 0;`;
+                    } else {
+                        cardStyles += ` width: 100%; height: 100%;`;
+                    }
+                    
+                    card.style.cssText = cardStyles;
                     
                     if (f?.data && f.type !== 'application/pdf') { 
                         card.innerHTML = `<img src="${f.data}" style="width: 100%; height: 100%; object-fit: fill;">`; 
                     } else if (f?.type === 'application/pdf') { 
-                        card.innerHTML = `<div style="text-align:center; font-family:sans-serif; background:#fef2f2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;"><svg width="60" height="60" fill="#ef4444" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg><p style="font-size:14px; font-weight:bold; color:#475569; margin-top:20px;">PDF DOC</p></div>`; 
+                        card.innerHTML = `<div style="text-align:center; font-family:sans-serif; background:#fef2f2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;"><svg width="40" height="40" fill="#ef4444" viewBox="0 0 24 24"><path d="M12 0L2 0v24h20V10l-10-10z"/></svg><p style="font-size:12px; font-weight:bold; color:#475569; margin-top:10px;">PDF DOC</p></div>`; 
                     } else { 
                         card.innerHTML = ``; 
                     }
                     wrapper.appendChild(card);
                 });
                 container.appendChild(wrapper);
-            }
-
-            const doc = new jsPDF('p', 'mm', 'a4');
-            for (let i = 0; i < chunks.length; i++) {
+                
                 const canvas = await html2canvas(document.getElementById(`export-page-${i}`), { scale: 2, useCORS: true });
                 if (i > 0) doc.addPage();
-                doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, 210, 297, null, 'FAST');
+                
+                const pageWidth = isLandscapeType ? 297 : 210;
+                const pageHeight = isLandscapeType ? 210 : 297;
+                doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, pageWidth, pageHeight, null, 'FAST');
             }
+            
             doc.save(`${document.getElementById('gridModalTitle').innerText.replace(/\s+/g, '_')}_${crew.name.replace(/\s+/g, '_')}.pdf`);
             container.innerHTML = '';
         }
@@ -629,7 +710,6 @@
             }; r.readAsDataURL(f); e.target.value = '';
         }
 
-        // --- Fitur Manual Rank ---
         function toggleManualRankInput(val) {
             const manualInp = document.getElementById('crewRankManual');
             if(val === 'other') {
@@ -647,7 +727,6 @@
             document.getElementById('crewLicenseNo').value = "";
             document.getElementById('crewRank').value = "Captain";
             toggleManualRankInput("Captain");
-            // Clear Checkboxes
             document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = false);
             document.getElementById('formPhotoPreview').classList.add('hidden'); document.getElementById('formPhotoIcon').classList.remove('hidden');
             document.getElementById('crewFormModal').classList.remove('hidden'); 
@@ -659,7 +738,6 @@
             document.getElementById('crewName').value = c.name; 
             document.getElementById('crewLicenseNo').value = c.licenseNo;
             
-            // Handle Rank
             const stdRanks = ['Captain', 'First Officer', 'Cabin Service', 'Engineer'];
             if(stdRanks.includes(c.rank)) {
                 document.getElementById('crewRank').value = c.rank;
@@ -670,7 +748,6 @@
                 document.getElementById('crewRankManual').value = c.rank;
             }
 
-            // Handle Qualification Checkboxes
             document.querySelectorAll('.qual-checkbox').forEach(cb => {
                 cb.checked = (c.qualification && c.qualification.includes(cb.value));
             });
@@ -690,7 +767,6 @@
             const rManual = document.getElementById('crewRankManual').value;
             const finalRank = (rSelect === 'other') ? rManual : rSelect;
 
-            // Get selected qualifications
             const selectedQuals = [];
             document.querySelectorAll('.qual-checkbox:checked').forEach(cb => selectedQuals.push(cb.value));
             const finalQual = selectedQuals.join(', ');
@@ -700,7 +776,7 @@
                 crewData[i] = { ...crewData[i], name: n, licenseNo: l, rank: finalRank, qualification: finalQual, profilePhoto: currentFormPhotoBase64 };
                 if(selectedCrewId === editingCrewId) selectCrew(editingCrewId);
             } else {
-                const nc = { id: Date.now(), name: n, licenseNo: l, rank: finalRank, qualification: finalQual, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} };
+                const nc = { id: Date.now(), name: n, licenseNo: l, rank: finalRank, qualification: finalQual, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} };
                 crewData.push(nc); selectCrew(nc.id);
             }
             renderCrewList(crewData); updateStats(); closeCrewModal(); showToast("Berhasil!");
