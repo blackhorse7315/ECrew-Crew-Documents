@@ -148,8 +148,8 @@
                 <div class="w-32 h-32 bg-white rounded-[2.5rem] shadow-xl flex items-center justify-center mb-8 p-4 border border-slate-100">
                     <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
                 </div>
-                <h3 class="text-2xl font-bold text-slate-800">Manajemen Dokumen Kru</h3>
-                <p class="text-slate-400 max-w-sm mt-3 font-medium">Pilih personil di sidebar untuk mengelola dokumen operasional dan kualifikasi.</p>
+                <h3 class="text-2xl font-bold text-slate-800">Crew Document Portal</h3>
+                <p class="text-slate-400 max-w-sm mt-3 font-medium">Select personnel from the sidebar to manage operational documents and qualifications.</p>
             </div>
 
             <div id="crewDetailView" class="hidden fade-in">
@@ -175,8 +175,8 @@
                     </div>
                     <div class="xl:w-2/3">
                         <div class="mb-8 px-1 md:px-0">
-                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">Dokumen Operasional</h3>
-                            <p class="text-xs text-slate-400 font-medium mt-1 uppercase tracking-wider">Silakan pilih kategori dokumen untuk mengunggah atau melihat file.</p>
+                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">Crew Document</h3>
+                            <p class="text-xs text-slate-400 font-medium mt-1 uppercase tracking-wider">see detail below</p>
                         </div>
                         <div class="document-grid" id="documentContainer"></div>
                     </div>
@@ -253,7 +253,7 @@
                         <label for="qualGI" class="flex items-center justify-center py-2 px-4 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all text-slate-500">GI</label>
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-amber-500 text-slate-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg hover:bg-amber-600" id="crewSubmitBtn">Simpan & Sinkron</button>
+                <button type="submit" class="w-full bg-amber-500 text-slate-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg hover:bg-amber-600 mb-4" id="crewSubmitBtn">Simpan & Sinkron</button>
             </form>
         </div>
     </div>
@@ -305,6 +305,7 @@
             return url;
         }
 
+        // Fixed: Removed statTotalCrew reference to prevent script crash
         function updateStats() { 
             localStorage.setItem('crewData', JSON.stringify(crewData)); 
         }
@@ -457,7 +458,11 @@
                 crew = { id: Date.now(), name: n, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null) };
                 crewData.push(crew);
             }
-            renderCrewList(crewData); updateStats(); closeCrewModal(); selectCrew(crew.id); syncToGoogleSheet(crew);
+            renderCrewList(crewData); 
+            updateStats(); 
+            closeCrewModal(); 
+            selectCrew(crew.id); 
+            syncToGoogleSheet(crew);
         }
 
         function selectCrew(id) {
@@ -531,7 +536,7 @@
         function openEditCrewModal(id) { const c = crewData.find(cr => cr.id === id); editingCrewId = id; currentFormPhotoBase64 = c.profilePhoto; document.getElementById('crewName').value = c.name; document.getElementById('crewLicenseNo').value = c.licenseNo; document.getElementById('crewRank').value = c.rank; document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = c.qualification?.includes(cb.value)); const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon'); const imgSrc = getDirectImgUrl(c.profilePhoto); if(imgSrc) { p.src = imgSrc; p.classList.remove('hidden'); i.classList.add('hidden'); } else { p.classList.add('hidden'); i.classList.remove('hidden'); } document.getElementById('crewFormModal').classList.remove('hidden'); }
         function closeCrewModal() { document.getElementById('crewFormModal').classList.add('hidden'); }
         function triggerProfilePhotoUpload() { document.getElementById('crewProfilePhotoInput').click(); }
-        function handleCrewProfileUpload(e) { const r = new FileReader(); r.onload = (ev) => { currentFormPhotoBase64 = ev.target.result; const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon'); p.src = currentFormPhotoBase64; p.classList.remove('hidden'); i.classList.add('hidden'); }; r.readAsDataURL(e.target.files[0]); }
+        function handleCrewProfileUpload(event) { const r = new FileReader(); r.onload = (ev) => { currentFormPhotoBase64 = ev.target.result; const p = document.getElementById('formPhotoPreview'), i = document.getElementById('formPhotoIcon'); p.src = currentFormPhotoBase64; p.classList.remove('hidden'); i.classList.add('hidden'); }; r.readAsDataURL(event.target.files[0]); }
         function openMultiPageModal(type, title) { activeGridType = type; const crew = crewData.find(cr => cr.id === selectedCrewId); document.getElementById('gridModalTitle').innerText = title; document.getElementById('gridModalCrewName').innerText = crew.name; renderGridPages(crew, type); document.getElementById('gridModal').classList.remove('hidden'); }
         function closeGridModal() { document.getElementById('gridModal').classList.add('hidden'); }
 
