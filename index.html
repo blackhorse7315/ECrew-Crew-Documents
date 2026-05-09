@@ -183,7 +183,7 @@
                 <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
             <h3 class="text-xl font-black text-slate-900 mb-2">Hapus Personil?</h3>
-            <p class="text-sm text-slate-500 mb-8">Data akan dihapus dari aplikasi dan sistem sinkronisasi.</p>
+            <p class="text-sm text-slate-500 mb-8">Data akan dihapus dari aplikasi dan sistem sinkronisasi Cloud.</p>
             <div class="flex gap-3">
                 <button onclick="closeDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all">Batal</button>
                 <button id="confirmDeleteBtn" class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-lg">Hapus</button>
@@ -254,7 +254,7 @@
     <div id="toast">Berhasil!</div>
 
     <script>
-        const DATABASE_URL = "https://script.google.com/macros/s/AKfycbyEKEjS_z81w-hFulJnAiZX2kXSdv9Iar5SpYwnhqlutRbVvRG3RmMtUgDNIGP1_tKO/exec"; 
+        const DATABASE_URL = "https://script.google.com/macros/s/AKfycbxLdlHZuug_jxinWMooArPg-awKw_U8o34caL8WdmYbN_wi0Va0A8PGLEGNF6Zyoj0v/exec"; 
 
         let crewData = JSON.parse(localStorage.getItem('crewData')) || [];
         let selectedCrewId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license', crewToDeleteId = null;
@@ -265,7 +265,6 @@
             if (DATABASE_URL) pullDataFromCloud(true);
         }
 
-        // --- Optimized Utility: Image Compression ---
         async function compressImage(base64Str, maxWidth = 1200, maxHeight = 1600, quality = 0.7) {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -331,13 +330,21 @@
                 const response = await fetch(DATABASE_URL);
                 const cloudData = await response.json();
                 if (Array.isArray(cloudData)) {
-                    cloudData.forEach(cloudCrew => {
-                        const localIndex = crewData.findIndex(c => c.id == cloudCrew.id);
-                        if (localIndex > -1) crewData[localIndex] = { ...crewData[localIndex], ...cloudCrew };
-                        else crewData.push(cloudCrew);
+                    // Overwrite local data dengan cloud data untuk memastikan sinkronisasi 100%
+                    crewData = cloudData.map(cloudCrew => {
+                        return {
+                            ...cloudCrew,
+                            licensePages: cloudCrew.licensePages || new Array(10).fill(null),
+                            medicalPages: cloudCrew.medicalPages || new Array(2).fill(null),
+                            passportPages: cloudCrew.passportPages || new Array(2).fill(null),
+                            ktpPages: cloudCrew.ktpPages || new Array(2).fill(null),
+                            kkPages: cloudCrew.kkPages || new Array(1).fill(null),
+                            ccpPages: cloudCrew.ccpPages || new Array(2).fill(null),
+                            loaPages: cloudCrew.loaPages || new Array(2).fill(null)
+                        };
                     });
                     renderCrewList(crewData); updateStats();
-                    if(!isInitial) showToast("Data Sinkron");
+                    if(!isInitial) showToast("Data Sinkron dengan Cloud");
                 }
                 ind.classList.remove('sync-pulse'); ind.classList.replace('bg-amber-500', 'bg-emerald-500');
                 txt.innerText = "Cloud Connected";
@@ -354,10 +361,7 @@
             txt.innerText = "Compressing & Syncing...";
             
             try {
-                // Clone crew to prevent mutating local state while processing
                 const crewCopy = JSON.parse(JSON.stringify(crew));
-                
-                // Compress images in document arrays before sending
                 const docKeys = ['licensePages', 'medicalPages', 'passportPages', 'ktpPages', 'kkPages', 'ccpPages', 'loaPages'];
                 for (const key of docKeys) {
                     if (crewCopy[key]) {
@@ -369,19 +373,37 @@
                         }
                     }
                 }
-                
                 if (crewCopy.profilePhoto && crewCopy.profilePhoto.startsWith("data:image")) {
                     crewCopy.profilePhoto = await compressImage(crewCopy.profilePhoto, 400, 400);
                 }
-
                 await fetch(DATABASE_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(crewCopy) });
-                
                 setTimeout(() => {
                     ind.classList.remove('sync-pulse'); ind.classList.replace('bg-amber-500', 'bg-emerald-500');
                     txt.innerText = "Cloud Connected"; showToast("Berhasil Sinkron");
                 }, 1000);
             } catch (err) {
                 txt.innerText = "Sync Error"; ind.classList.replace('bg-emerald-500', 'bg-red-500');
+            }
+        }
+
+        async function syncDeleteToCloud(id) {
+            if(!DATABASE_URL) return;
+            const ind = document.getElementById('syncIndicator');
+            const txt = document.getElementById('syncText');
+            ind.classList.add('sync-pulse'); ind.classList.replace('bg-emerald-500', 'bg-amber-500');
+            txt.innerText = "Deleting from Cloud...";
+            try {
+                await fetch(DATABASE_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({ action: 'delete', id: id }) 
+                });
+                setTimeout(() => {
+                    ind.classList.remove('sync-pulse'); ind.classList.replace('bg-amber-500', 'bg-emerald-500');
+                    txt.innerText = "Cloud Connected"; showToast("Data Dihapus dari Cloud");
+                }, 1000);
+            } catch (err) {
+                txt.innerText = "Delete Error"; ind.classList.replace('bg-emerald-500', 'bg-red-500');
             }
         }
 
@@ -393,11 +415,22 @@
 
         function openDeleteModal(id) { crewToDeleteId = id; document.getElementById('deleteConfirmModal').classList.remove('hidden'); }
         function closeDeleteModal() { document.getElementById('deleteConfirmModal').classList.add('hidden'); crewToDeleteId = null; }
+        
         document.getElementById('confirmDeleteBtn').onclick = () => {
             if(crewToDeleteId) {
-                crewData = crewData.filter(c => c.id !== crewToDeleteId);
-                if(selectedCrewId === crewToDeleteId) { selectedCrewId = null; document.getElementById('welcomeScreen').classList.remove('hidden'); document.getElementById('crewDetailView').classList.add('hidden'); }
-                renderCrewList(crewData); updateStats(); closeDeleteModal(); showToast("Data Dihapus");
+                const idToDelete = crewToDeleteId;
+                // Hapus lokal
+                crewData = crewData.filter(c => c.id !== idToDelete);
+                if(selectedCrewId === idToDelete) { 
+                    selectedCrewId = null; 
+                    document.getElementById('welcomeScreen').classList.remove('hidden'); 
+                    document.getElementById('crewDetailView').classList.add('hidden'); 
+                }
+                renderCrewList(crewData); 
+                updateStats(); 
+                closeDeleteModal();
+                // Hapus cloud
+                syncDeleteToCloud(idToDelete);
             }
         };
 
