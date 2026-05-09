@@ -54,7 +54,6 @@
 
     <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMobileMenu()"></div>
 
-    <!-- Sidebar -->
     <aside id="mainSidebar" class="w-80 aviation-blue text-white flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl">
         <div class="p-6 border-b border-slate-800">
             <div class="flex justify-between items-center mb-6">
@@ -98,7 +97,6 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 overflow-y-auto flex flex-col w-full bg-slate-50">
         <header class="bg-white border-b border-slate-200 px-6 md:px-10 py-5 flex justify-between items-center sticky top-0 z-30 shadow-sm">
             <div class="flex items-center gap-4">
@@ -178,7 +176,6 @@
         </div>
     </main>
 
-    <!-- Modal Konfirmasi Hapus -->
     <div id="deleteConfirmModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
         <div class="modal-backdrop absolute inset-0"></div>
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl z-10 p-8 text-center animate-in fade-in zoom-in duration-200">
@@ -194,7 +191,6 @@
         </div>
     </div>
 
-    <!-- Multi-Page Grid Modal -->
     <div id="gridModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 md:p-10">
         <div class="modal-backdrop absolute inset-0" onclick="closeGridModal()"></div>
         <div class="bg-white w-full max-w-6xl max-h-[90vh] rounded-[3rem] shadow-2xl z-10 flex flex-col overflow-hidden">
@@ -219,7 +215,6 @@
         </div>
     </div>
 
-    <!-- Crew Form Modal -->
     <div id="crewFormModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div class="modal-backdrop absolute inset-0" onclick="closeCrewModal()"></div>
         <div class="bg-white w-full max-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden">
@@ -255,19 +250,42 @@
     </div>
 
     <div id="pdfExportGrid"></div>
-    <input type="file" id="genericFileInput" class="hidden" onchange="handleGenericFile(event)">
+    <input type="file" id="genericFileInput" class="hidden">
     <div id="toast">Berhasil!</div>
 
     <script>
-        const DATABASE_URL = "https://script.google.com/macros/s/AKfycbwDWtUqyuzJbtVMVzZqza4feyCTgwalwih9qqjnrOjOSoOfqTLxwrIOd8NzSB7SzzK0/exec"; 
+        const DATABASE_URL = "https://script.google.com/macros/s/AKfycbyEKEjS_z81w-hFulJnAiZX2kXSdv9Iar5SpYwnhqlutRbVvRG3RmMtUgDNIGP1_tKO/exec"; 
 
         let crewData = JSON.parse(localStorage.getItem('crewData')) || [];
-        let selectedCrewId = null, activeDocId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license', crewToDeleteId = null;
+        let selectedCrewId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license', crewToDeleteId = null;
 
         function init() { 
             renderCrewList(crewData); 
             updateStats();
             if (DATABASE_URL) pullDataFromCloud(true);
+        }
+
+        // --- Optimized Utility: Image Compression ---
+        async function compressImage(base64Str, maxWidth = 1200, maxHeight = 1600, quality = 0.7) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = base64Str;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                    } else {
+                        if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+            });
         }
 
         function getDirectImgUrl(url) {
@@ -315,14 +333,11 @@
                 if (Array.isArray(cloudData)) {
                     cloudData.forEach(cloudCrew => {
                         const localIndex = crewData.findIndex(c => c.id == cloudCrew.id);
-                        if (localIndex > -1) {
-                            crewData[localIndex] = { ...crewData[localIndex], ...cloudCrew };
-                        } else {
-                            crewData.push(cloudCrew);
-                        }
+                        if (localIndex > -1) crewData[localIndex] = { ...crewData[localIndex], ...cloudCrew };
+                        else crewData.push(cloudCrew);
                     });
                     renderCrewList(crewData); updateStats();
-                    if(!isInitial) showToast("Data Cloud Sinkron");
+                    if(!isInitial) showToast("Data Sinkron");
                 }
                 ind.classList.remove('sync-pulse'); ind.classList.replace('bg-amber-500', 'bg-emerald-500');
                 txt.innerText = "Cloud Connected";
@@ -336,14 +351,35 @@
             const ind = document.getElementById('syncIndicator');
             const txt = document.getElementById('syncText');
             ind.classList.add('sync-pulse'); ind.classList.replace('bg-emerald-500', 'bg-amber-500');
-            txt.innerText = "Syncing...";
+            txt.innerText = "Compressing & Syncing...";
+            
             try {
-                const payload = JSON.stringify(crew);
-                await fetch(DATABASE_URL, { method: 'POST', mode: 'no-cors', body: payload });
+                // Clone crew to prevent mutating local state while processing
+                const crewCopy = JSON.parse(JSON.stringify(crew));
+                
+                // Compress images in document arrays before sending
+                const docKeys = ['licensePages', 'medicalPages', 'passportPages', 'ktpPages', 'kkPages', 'ccpPages', 'loaPages'];
+                for (const key of docKeys) {
+                    if (crewCopy[key]) {
+                        for (let i = 0; i < crewCopy[key].length; i++) {
+                            const p = crewCopy[key][i];
+                            if (p && p.data && p.data.startsWith("data:image")) {
+                                p.data = await compressImage(p.data);
+                            }
+                        }
+                    }
+                }
+                
+                if (crewCopy.profilePhoto && crewCopy.profilePhoto.startsWith("data:image")) {
+                    crewCopy.profilePhoto = await compressImage(crewCopy.profilePhoto, 400, 400);
+                }
+
+                await fetch(DATABASE_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(crewCopy) });
+                
                 setTimeout(() => {
                     ind.classList.remove('sync-pulse'); ind.classList.replace('bg-amber-500', 'bg-emerald-500');
-                    txt.innerText = "Cloud Connected"; showToast("Sinkron Berhasil");
-                }, 1500);
+                    txt.innerText = "Cloud Connected"; showToast("Berhasil Sinkron");
+                }, 1000);
             } catch (err) {
                 txt.innerText = "Sync Error"; ind.classList.replace('bg-emerald-500', 'bg-red-500');
             }
@@ -377,7 +413,7 @@
                 crewData[i] = { ...crewData[i], name: n, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64 };
                 crew = crewData[i];
             } else {
-                crew = { id: Date.now(), name: n, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null), documents: {} };
+                crew = { id: Date.now(), name: n, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null) };
                 crewData.push(crew);
             }
             renderCrewList(crewData); updateStats(); closeCrewModal(); selectCrew(crew.id); syncToGoogleSheet(crew);
@@ -461,18 +497,13 @@
         function renderGridPages(crew, type) {
             const container = document.getElementById('gridPageContainer');
             container.innerHTML = '';
-            
-            // Definisikan jumlah kotak wajib per tipe
             const counts = { license: 10, medical: 2, passport: 2, ktp: 2, kk: 1, ccp: 2, loa: 2 };
             const expectedCount = counts[type] || 2;
             
-            // Pastikan array ada dan memiliki panjang yang sesuai
             if (!crew[`${type}Pages`] || !Array.isArray(crew[`${type}Pages`])) {
                 crew[`${type}Pages`] = new Array(expectedCount).fill(null);
             }
-            while(crew[`${type}Pages`].length < expectedCount) {
-                crew[`${type}Pages`].push(null);
-            }
+            while(crew[`${type}Pages`].length < expectedCount) crew[`${type}Pages`].push(null);
 
             const pages = crew[`${type}Pages`];
             container.className = (['passport','ktp','kk'].includes(type)) ? "grid grid-cols-1 sm:grid-cols-2 gap-8" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8";
@@ -504,9 +535,9 @@
             };
             r.readAsDataURL(f);
         }
+
         function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
         function toggleMobileMenu() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
-        function handleGenericFile(e) { }
         function filterCrew() { const q = document.getElementById('crewSearch').value.toLowerCase(); const f = crewData.filter(c => c.name.toLowerCase().includes(q) || c.licenseNo.toLowerCase().includes(q)); renderCrewList(f); }
         window.onload = init;
     </script>
