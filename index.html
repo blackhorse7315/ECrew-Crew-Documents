@@ -193,7 +193,7 @@
                 </div>
             </div>
 
-            <nav class="flex-1 overflow-y-auto custom-scrollbar admin-only" id="crewList"></nav>
+            <nav class="flex-1 overflow-y-auto custom-scrollbar" id="crewList"></nav>
             
             <div class="p-6 border-t border-slate-800 bg-slate-900/50 space-y-4 mt-auto">
                 <div class="flex items-center gap-3 px-1 mb-2">
@@ -395,7 +395,13 @@
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Nama Lengkap</label><input type="text" id="crewName" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500" placeholder="Contoh: Muhamad Ramdani Masri"></div>
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Email</label><input type="email" id="crewEmail" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500" oninput="autoPopulateUsername(this.value)"></div>
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Username</label><input type="text" id="crewUsername" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500"></div>
-                <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Password</label><input type="password" id="crewPassword" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500"></div>
+                <div class="relative">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Password</label>
+                    <input type="password" id="crewPassword" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500 pr-12">
+                    <button type="button" onclick="togglePassword()" class="absolute right-3 top-[28px] p-2 text-slate-400 hover:text-amber-500 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </button>
+                </div>
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">License No</label><input type="text" id="crewLicenseNo" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500"></div>
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Rank</label><select id="crewRank" class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold border border-transparent focus:border-amber-500"><option value="Captain">Captain</option><option value="First Officer">First Officer</option><option value="Cabin Service">Cabin Service</option><option value="Engineer">Engineer</option></select></div>
                 <div>
@@ -640,11 +646,29 @@
             const list = document.getElementById('crewList'); 
             if(!list) return;
             list.innerHTML = '';
-            data.forEach(crew => {
+
+            let displayData = data;
+            // Jika yang login adalah crew, hanya tampilkan dirinya sendiri di list
+            if (currentUserRole === 'crew' && selectedCrewId) {
+                displayData = data.filter(c => c.id === selectedCrewId);
+            }
+
+            displayData.forEach(crew => {
                 const item = document.createElement('div');
                 item.className = `p-3 md:p-5 border-b border-slate-800/30 cursor-pointer hover:bg-slate-800/40 transition-all flex items-center justify-between group ${selectedCrewId === crew.id ? 'sidebar-active' : ''}`;
                 const imgSrc = getDirectImgUrl(crew.profilePhoto);
                 const avatar = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : '<span class="text-[10px] font-black aviation-accent">TW</span>';
+                
+                let actionButtons = "";
+                // Admin dapat melihat tombol link, edit, dan hapus
+                if (currentUserRole === 'admin') {
+                    actionButtons = `
+                    <button onclick="event.stopPropagation(); generateDirectLink(${crew.id})" class="p-2 text-slate-500 hover:text-emerald-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
+                    <button onclick="event.stopPropagation(); openEditCrewModal(${crew.id})" class="p-2 text-slate-500 hover:text-amber-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 00 2 2h14a2 2 0 00 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button onclick="event.stopPropagation(); openDeleteModal(${crew.id})" class="p-2 text-slate-500 hover:text-red-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                    `;
+                }
+
                 item.innerHTML = `<div class="flex items-center gap-3 flex-1 min-w-0" onclick="selectCrew(${crew.id})">
                     <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center border border-slate-700 overflow-hidden shrink-0">${avatar}</div>
                     <div class="min-w-0 flex-1">
@@ -652,9 +676,7 @@
                         <p class="text-[8px] text-slate-500 font-black uppercase">${crew.licenseNo}</p>
                     </div>
                 </div><div class="flex gap-1 opacity-0 group-hover:opacity-100">
-                    <button onclick="event.stopPropagation(); generateDirectLink(${crew.id})" class="p-2 text-slate-500 hover:text-emerald-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
-                    <button onclick="event.stopPropagation(); openEditCrewModal(${crew.id})" class="p-2 text-slate-500 hover:text-amber-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 00 2 2h14a2 2 0 00 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                    <button onclick="event.stopPropagation(); openDeleteModal(${crew.id})" class="p-2 text-slate-500 hover:text-red-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                    ${actionButtons}
                 </div>`;
                 list.appendChild(item);
             });
@@ -783,6 +805,7 @@
 
         function selectCrew(id) {
             selectedCrewId = id; const crew = crewData.find(c => c.id === id); if(!crew) return;
+            renderCrewList(crewData); // Selalu render ulang agar state "active" sidebar teraplikasi
             document.getElementById('welcomeScreen').classList.add('hidden'); 
             document.getElementById('crewDetailView').classList.remove('hidden');
             document.getElementById('detName').innerText = crew.name; 
@@ -887,7 +910,57 @@
         function openAddCrewModal() { 
             editingCrewId = null; currentFormPhotoBase64 = null; 
             document.getElementById('crewFormTitle').innerText = "Registrasi Kru";
+            
+            document.getElementById('crewName').value = "";
+            document.getElementById('crewEmail').value = "";
+            document.getElementById('crewUsername').value = "";
+            document.getElementById('crewPassword').value = "";
+            document.getElementById('crewLicenseNo').value = "";
+            document.getElementById('crewRank').value = "Captain";
+            
+            document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = false);
+            
+            document.getElementById('formPhotoPreview').src = "";
+            document.getElementById('formPhotoPreview').classList.add('hidden');
+            document.getElementById('formPhotoIcon').classList.remove('hidden');
+            
             document.getElementById('crewFormModal').classList.remove('hidden'); 
+        }
+
+        function openEditCrewModal(id) {
+            const crew = crewData.find(c => c.id === id);
+            if (!crew) return;
+            
+            editingCrewId = id;
+            currentFormPhotoBase64 = crew.profilePhoto || null;
+            document.getElementById('crewFormTitle').innerText = "Edit Kru";
+            
+            document.getElementById('crewName').value = crew.name || "";
+            document.getElementById('crewEmail').value = crew.email || "";
+            document.getElementById('crewUsername').value = crew.username || "";
+            document.getElementById('crewPassword').value = crew.password || "";
+            document.getElementById('crewLicenseNo').value = crew.licenseNo || "";
+            document.getElementById('crewRank').value = crew.rank || "Captain";
+            
+            const quals = crew.qualification ? crew.qualification.split(', ') : [];
+            document.getElementById('qualCCP').checked = quals.includes('CCP');
+            document.getElementById('qualFI').checked = quals.includes('FI');
+            document.getElementById('qualGI').checked = quals.includes('GI');
+            
+            const previewImg = document.getElementById('formPhotoPreview');
+            const photoIcon = document.getElementById('formPhotoIcon');
+            
+            if (currentFormPhotoBase64) {
+                previewImg.src = getDirectImgUrl(currentFormPhotoBase64);
+                previewImg.classList.remove('hidden');
+                photoIcon.classList.add('hidden');
+            } else {
+                previewImg.src = "";
+                previewImg.classList.add('hidden');
+                photoIcon.classList.remove('hidden');
+            }
+            
+            document.getElementById('crewFormModal').classList.remove('hidden');
         }
 
         function handleCrewSubmit(e) {
@@ -923,6 +996,7 @@
         function openFileDeleteModal(i, t) { fileToDeleteIndex = i; fileToDeleteType = t; document.getElementById('fileDeleteConfirmModal').classList.remove('hidden'); }
         function closeFileDeleteModal() { document.getElementById('fileDeleteConfirmModal').classList.add('hidden'); }
         function toggleMobileMenu() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
+        function togglePassword() { const p = document.getElementById('crewPassword'); p.type = p.type === 'password' ? 'text' : 'password'; }
         function autoPopulateUsername(v) { document.getElementById('crewUsername').value = v; }
         function populatePageSelect() { const s = document.getElementById('newDocPages'); for(let i=1; i<=15; i++) { const o = document.createElement('option'); o.value = i; o.innerText = i + " Halaman"; s.appendChild(o); } }
         function triggerProfilePhotoUpload() { document.getElementById('crewProfilePhotoInput').click(); }
