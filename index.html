@@ -15,7 +15,6 @@
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7">
     <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7">
     
-    <!-- Manifest Dynamic Generation -->
     <script id="pwa-manifest">
         const manifest = {
             "name": "Air Crew Document Portal",
@@ -135,24 +134,25 @@
                 </div>
                 <h2 class="text-2xl font-black text-slate-900 tracking-tight">Crew Document Portal</h2>
                 <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1 italic aviation-accent">Transwisata Prima Aviation</p>
+                <div id="authStatus" class="mt-4 text-[10px] font-bold text-amber-500 animate-pulse">Menghubungkan ke Database...</div>
             </div>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
+            <form onsubmit="window.handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Username / Email</label>
-                    <input type="text" id="loginUsername" required class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:border-amber-500 transition-all" placeholder="admin atau email anda">
+                    <input type="text" id="loginUsername" required class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:border-amber-500 transition-all" placeholder="admin atau email anda" disabled>
                 </div>
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Password</label>
-                    <input type="password" id="loginPassword" required class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:border-amber-500 transition-all" placeholder="********">
+                    <input type="password" id="loginPassword" required class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:border-amber-500 transition-all" placeholder="********" disabled>
                 </div>
-                <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-slate-900/20 hover:bg-slate-800">Masuk Aplikasi</button>
+                <button type="submit" id="loginBtn" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-slate-900/20 hover:bg-slate-800 disabled:opacity-50" disabled>Masuk Aplikasi</button>
             </form>
         </div>
     </div>
 
     <!-- MAIN APP WRAPPER -->
     <div id="mainApp" class="flex w-full h-full hidden">
-        <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMobileMenu()"></div>
+        <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="window.toggleMobileMenu()"></div>
 
         <aside id="mainSidebar" class="w-80 aviation-blue text-white flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl">
             <div class="p-6 border-b border-slate-800">
@@ -166,20 +166,25 @@
                             <p class="text-[8px] text-slate-400 font-medium tracking-[0.2em] uppercase">Prima Aviation</p>
                         </div>
                     </div>
-                    <button class="md:hidden text-slate-400 p-2" onclick="toggleMobileMenu()">
+                    <button class="md:hidden text-slate-400 p-2" onclick="window.toggleMobileMenu()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
                 
                 <!-- Admin Only Actions -->
                 <div class="space-y-3 admin-only">
-                    <button onclick="openAddCrewModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
+                    <button onclick="window.openAddCrewModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
                         Tambah Crew
                     </button>
-                    <button onclick="openAddDocModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-500 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-slate-700">
+                    <button onclick="window.openAddDocModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-500 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-slate-700">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         Tambah Dokument
+                    </button>
+                    <!-- Tombol Migrasi Sementara -->
+                    <button onclick="window.migrateFromGoogleSheets()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Migrasi G-Sheets
                     </button>
                 </div>
             </div>
@@ -189,7 +194,7 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </span>
-                    <input type="text" id="crewSearch" placeholder="Cari Personil..." class="w-full bg-slate-800 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all border-none placeholder-slate-500" onkeyup="filterCrew()">
+                    <input type="text" id="crewSearch" placeholder="Cari Personil..." class="w-full bg-slate-800 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all border-none placeholder-slate-500" onkeyup="window.filterCrew()">
                 </div>
             </div>
 
@@ -197,15 +202,15 @@
             
             <div class="p-6 border-t border-slate-800 bg-slate-900/50 space-y-4 mt-auto">
                 <div class="flex items-center gap-3 px-1 mb-2">
-                    <div id="syncIndicator" class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                    <p id="syncText" class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Cloud Connected</p>
+                    <div id="syncIndicator" class="w-2 h-2 rounded-full bg-amber-500 sync-pulse"></div>
+                    <p id="syncText" class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Connecting...</p>
                 </div>
                 
-                <button onclick="pullDataFromCloud()" class="w-full flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-amber-500 transition-colors group admin-only">
-                    <span>Sinkronisasi Cloud</span>
-                    <svg id="sidebarSyncIcon" class="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <button class="w-full flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 transition-colors group cursor-default">
+                    <span>Firebase Status</span>
+                    <svg id="sidebarSyncIcon" class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                 </button>
-                <button onclick="handleLogout()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-red-500/20">
+                <button onclick="window.handleLogout()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-red-500/20">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Keluar Aplikasi
                 </button>
@@ -215,7 +220,7 @@
         <main class="flex-1 overflow-y-auto flex flex-col w-full bg-slate-50">
             <header class="bg-white border-b border-slate-200 px-6 md:px-10 py-5 flex justify-between items-center sticky top-0 z-30 shadow-sm">
                 <div class="flex items-center gap-4">
-                    <button class="md:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-xl transition-colors" onclick="toggleMobileMenu()">
+                    <button class="md:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-xl transition-colors" onclick="window.toggleMobileMenu()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                     </button>
                     <div>
@@ -224,10 +229,10 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button onclick="pullDataFromCloud()" id="headerSyncBtn" class="flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border border-emerald-100 shadow-sm">
-                        <svg id="headerSyncIcon" class="w-3 h-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        <span class="hidden md:inline">Sync Cloud</span>
-                    </button>
+                    <div id="headerSyncBtn" class="flex items-center gap-2 bg-emerald-50 text-emerald-600 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest border border-emerald-100 shadow-sm">
+                        <svg id="headerSyncIcon" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        <span class="hidden md:inline">Realtime Sync</span>
+                    </div>
                     <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border border-slate-200 shadow-sm overflow-hidden p-1">
                        <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
                     </div>
@@ -287,9 +292,9 @@
                 <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
             <h3 class="text-xl font-black text-slate-900 mb-2">Hapus Personil?</h3>
-            <p class="text-sm text-slate-500 mb-8">Data akan dihapus permanen dari aplikasi dan Google Sheets.</p>
+            <p class="text-sm text-slate-500 mb-8">Data akan dihapus permanen dari Firebase Database.</p>
             <div class="flex gap-3">
-                <button onclick="closeDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
+                <button onclick="window.closeDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
                 <button id="confirmDeleteBtn" class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg">Hapus</button>
             </div>
         </div>
@@ -304,7 +309,7 @@
             <h3 class="text-xl font-black text-slate-900 mb-2">Hapus Menu Dokument?</h3>
             <p class="text-sm text-slate-500 mb-8">Kategori ini akan dihapus dari seluruh personil di cloud.</p>
             <div class="flex gap-3">
-                <button onclick="closeDocDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
+                <button onclick="window.closeDocDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
                 <button id="confirmDocDeleteBtn" class="flex-1 bg-orange-500 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg">Hapus Menu</button>
             </div>
         </div>
@@ -317,22 +322,22 @@
                 <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
             <h3 class="text-xl font-black text-slate-900 mb-2">Kosongkan Berkas?</h3>
-            <p class="text-sm text-slate-500 mb-8">Gambar di halaman ini akan dihapus. Aplikasi akan segera sinkron ke Google Sheet setelah Anda menekan tombol Hapus.</p>
+            <p class="text-sm text-slate-500 mb-8">Gambar di halaman ini akan dihapus permanen.</p>
             <div class="flex gap-3">
-                <button onclick="closeFileDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
+                <button onclick="window.closeFileDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
                 <button id="confirmFileDeleteBtn" class="flex-1 bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg">Hapus</button>
             </div>
         </div>
     </div>
 
     <div id="docFormModal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
-        <div class="modal-backdrop absolute inset-0" onclick="closeDocModal()"></div>
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeDocModal()"></div>
         <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden">
             <div class="px-8 py-6 bg-slate-50 border-b flex justify-between items-center">
                 <h3 class="font-black text-slate-900 uppercase tracking-widest">Tambah Menu Dokument</h3>
-                <button onclick="closeDocModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                <button onclick="window.closeDocModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
-            <form onsubmit="handleDocSubmit(event)" class="p-8 space-y-6">
+            <form onsubmit="window.handleDocSubmit(event)" class="p-8 space-y-6">
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Nama Dokument</label>
                     <input type="text" id="newDocName" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500" placeholder="Contoh: Visa, Sertifikat Training">
@@ -358,7 +363,7 @@
     </div>
 
     <div id="gridModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-2 md:p-10">
-        <div class="modal-backdrop absolute inset-0" onclick="closeGridModal()"></div>
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeGridModal()"></div>
         <div class="bg-white w-full max-w-6xl max-h-[90vh] rounded-[2rem] md:rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden">
             <div class="px-4 md:px-8 py-5 md:py-8 aviation-blue text-white flex justify-between items-center shrink-0">
                 <div>
@@ -366,39 +371,47 @@
                     <p class="text-[8px] md:text-[10px] text-amber-500 uppercase tracking-[0.2em] font-bold mt-1 md:mt-2" id="gridModalCrewName">-</p>
                 </div>
                 <div class="flex gap-2 md:gap-4">
-                    <button onclick="syncAndCloseGrid()" class="bg-emerald-500 text-white px-3 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-lg hover:bg-emerald-600">Simpan</button>
-                    <button onclick="downloadMultiPagePDF()" class="bg-amber-500 text-slate-900 px-3 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-lg hover:bg-amber-600">PDF</button>
-                    <button onclick="closeGridModal()" class="text-white/50 hover:text-white ml-2"><svg class="w-6 h-6 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    <button onclick="window.syncAndCloseGrid()" class="bg-emerald-500 text-white px-3 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-lg hover:bg-emerald-600">Selesai</button>
+                    <button onclick="window.downloadMultiPagePDF()" class="bg-amber-500 text-slate-900 px-3 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-lg hover:bg-amber-600">Unduh PDF</button>
+                    <button onclick="window.closeGridModal()" class="text-white/50 hover:text-white ml-2"><svg class="w-6 h-6 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
             </div>
-            <div class="p-6 md:p-12 overflow-y-auto flex-1 bg-slate-50">
+            <div class="p-6 md:p-12 overflow-y-auto flex-1 bg-slate-50 relative">
+                <div id="uploadingOverlay" class="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 hidden flex-col items-center justify-center">
+                    <div class="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="mt-4 font-bold text-slate-800 text-sm tracking-widest uppercase">Mengunggah...</p>
+                </div>
                 <div id="gridPageContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"></div>
             </div>
         </div>
     </div>
 
     <div id="crewFormModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
-        <div class="modal-backdrop absolute inset-0" onclick="closeCrewModal()"></div>
-        <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeCrewModal()"></div>
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden relative">
+            <div id="savingCrewOverlay" class="absolute inset-0 bg-white/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center rounded-[2.5rem]">
+                <div class="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-4 font-bold text-slate-800 text-xs tracking-widest uppercase">Menyimpan...</p>
+            </div>
             <div class="px-8 py-6 bg-slate-50 border-b flex justify-between items-center">
                 <h3 class="font-black text-slate-900 uppercase tracking-widest" id="crewFormTitle">Registrasi Kru</h3>
-                <button onclick="closeCrewModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                <button onclick="window.closeCrewModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
-            <form onsubmit="handleCrewSubmit(event)" class="p-8 space-y-5 max-h-[75vh] overflow-y-auto custom-scrollbar">
+            <form onsubmit="window.handleCrewSubmit(event)" class="p-8 space-y-5 max-h-[75vh] overflow-y-auto custom-scrollbar">
                 <div class="flex flex-col items-center">
-                    <div id="formPhotoPreviewContainer" class="w-24 h-24 rounded-3xl bg-slate-100 flex items-center justify-center mb-3 overflow-hidden border-4 border-white shadow-md relative group cursor-pointer" onclick="triggerProfilePhotoUpload()">
+                    <div id="formPhotoPreviewContainer" class="w-24 h-24 rounded-3xl bg-slate-100 flex items-center justify-center mb-3 overflow-hidden border-4 border-white shadow-md relative group cursor-pointer" onclick="window.triggerProfilePhotoUpload()">
                         <img id="formPhotoPreview" src="" class="hidden w-full h-full object-cover" alt="Preview">
                         <div id="formPhotoIcon"><svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
                     </div>
-                    <input type="file" id="crewProfilePhotoInput" class="hidden" accept="image/*" onchange="handleCrewProfileUpload(event)">
+                    <input type="file" id="crewProfilePhotoInput" class="hidden" accept="image/*" onchange="window.handleCrewProfileUpload(event)">
                 </div>
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Nama Lengkap</label><input type="text" id="crewName" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500" placeholder="Contoh: Muhamad Ramdani Masri"></div>
-                <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Email</label><input type="email" id="crewEmail" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500" oninput="autoPopulateUsername(this.value)"></div>
+                <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Email</label><input type="email" id="crewEmail" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500" oninput="window.autoPopulateUsername(this.value)"></div>
                 <div><label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Username</label><input type="text" id="crewUsername" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500"></div>
                 <div class="relative">
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Password</label>
                     <input type="password" id="crewPassword" required class="w-full px-5 py-3 bg-slate-100 rounded-2xl text-sm font-bold outline-none border border-transparent focus:border-amber-500 pr-12">
-                    <button type="button" onclick="togglePassword()" class="absolute right-3 top-[28px] p-2 text-slate-400 hover:text-amber-500 transition-colors">
+                    <button type="button" onclick="window.togglePassword()" class="absolute right-3 top-[28px] p-2 text-slate-400 hover:text-amber-500 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     </button>
                 </div>
@@ -415,7 +428,7 @@
                         <label for="qualGI" class="flex items-center justify-center py-2 px-4 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 border-transparent transition-all text-slate-500">GI</label>
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-amber-500 text-slate-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg hover:bg-amber-600 mb-4" id="crewSubmitBtn">Simpan & Sinkron</button>
+                <button type="submit" class="w-full bg-amber-500 text-slate-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg hover:bg-amber-600 mb-4" id="crewSubmitBtn">Simpan Data</button>
             </form>
         </div>
     </div>
@@ -423,22 +436,43 @@
     <div id="pdfExportGrid"></div>
     <div id="toast">Berhasil!</div>
 
-    <script>
-        // Register Dummy Service Worker for PWA Criteria
-        if ('serviceWorker' in navigator) {
-            const swCode = "self.addEventListener('fetch', function(event) {});";
-            const swBlob = new Blob([swCode], {type: 'application/javascript'});
-            const swURL = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swURL).catch(() => {});
-        }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const DATABASE_URL = "https://script.google.com/macros/s/AKfycbyVMKuv7QTeYrsLeUganZzZ-mZGV4hw2l9CGwStBtF5LEUAeUNlWlXcxH-WUmi_A-3g/exec"; 
+        // Konfigurasi Firebase Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiiTUcULMRCM_4FyAX8nSx1Rj1xCdJGSw",
+            authDomain: "ecrew-absensi-183ac.firebaseapp.com",
+            projectId: "ecrew-absensi-183ac",
+            storageBucket: "ecrew-absensi-183ac.firebasestorage.app",
+            messagingSenderId: "1080047836290",
+            appId: "1:1080047836290:web:164781934c5f5272e1289b",
+            measurementId: "G-364B6CND69"
+        };
+        
+        // Agar sesuai dengan standard rule Immersive Platform (jika digunakan) 
+        // namun tetap di project Firebase Anda
+        const appId = "ecrew-absensi";
 
-        let crewData = JSON.parse(localStorage.getItem('crewData')) || [];
-        let customDocTypes = JSON.parse(localStorage.getItem('customDocTypes')) || [];
-        let selectedCrewId = null, editingCrewId = null, currentFormPhotoBase64 = null, activeGridType = 'license', crewToDeleteId = null, docToDeleteId = null;
-        let fileToDeleteIndex = null, fileToDeleteType = null;
-        let currentUserRole = null;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Global State Binding for HTML accessibility
+        window.crewData = [];
+        window.customDocTypes = [];
+        window.selectedCrewId = null;
+        window.editingCrewId = null;
+        window.currentFormPhotoBase64 = null;
+        window.activeGridType = 'license';
+        window.crewToDeleteId = null;
+        window.docToDeleteId = null;
+        window.fileToDeleteIndex = null;
+        window.fileToDeleteType = null;
+        window.currentUserRole = null;
+        let firebaseUser = null;
 
         const defaultDocTypes = [
             { id: 'license', name: "License", pages: 10, layout: 'portrait' },
@@ -448,29 +482,206 @@
             { id: 'kk', name: "Family Card", pages: 1, layout: 'landscape' }
         ];
 
-        function init() { 
-            populatePageSelect();
-            setupConfirmButtons();
-            checkDirectAccess();
-            if (DATABASE_URL) pullDataFromCloud(true);
+        async function initFirebase() {
+            try {
+                const statusEl = document.getElementById('authStatus');
+                
+                // Sign in anonymously to secure the connection
+                const cred = await signInAnonymously(auth);
+                firebaseUser = cred.user;
+                
+                if (statusEl) {
+                    statusEl.innerText = "Database Terhubung";
+                    statusEl.classList.remove('animate-pulse', 'text-amber-500');
+                    statusEl.classList.add('text-emerald-500');
+                    setTimeout(() => statusEl.classList.add('hidden'), 2000);
+                }
+
+                // Enable Login UI
+                const btn = document.getElementById('loginBtn');
+                if(btn) {
+                    btn.disabled = false;
+                    document.getElementById('loginUsername').disabled = false;
+                    document.getElementById('loginPassword').disabled = false;
+                }
+
+                setupFirestoreListeners();
+                
+            } catch (error) {
+                console.error("Firebase Init Error:", error);
+                window.showToast("Gagal terhubung ke Database");
+                const statusEl = document.getElementById('authStatus');
+                if(statusEl) {
+                    statusEl.innerText = "Koneksi Gagal. Muat ulang halaman.";
+                    statusEl.classList.remove('text-amber-500');
+                    statusEl.classList.add('text-red-500');
+                }
+            }
         }
 
-        function setupConfirmButtons() {
+        function updateSyncStatus(isSyncing, hasError = false) {
+            const ind = document.getElementById('syncIndicator');
+            const txt = document.getElementById('syncText');
+            
+            if (!ind || !txt) return;
+
+            ind.className = 'w-2 h-2 rounded-full';
+            if (hasError) {
+                ind.classList.add('bg-red-500');
+                txt.innerText = "Sync Error";
+            } else if (isSyncing) {
+                ind.classList.add('bg-amber-500', 'sync-pulse');
+                txt.innerText = "Syncing...";
+            } else {
+                ind.classList.add('bg-emerald-500');
+                txt.innerText = "Online";
+            }
+        }
+
+        function setupFirestoreListeners() {
+            if (!firebaseUser) return;
+            
+            // Listen to Crew Profiles. Path: /artifacts/ecrew-absensi/public/data/crewProfiles
+            const crewRef = collection(db, 'artifacts', appId, 'public', 'data', 'crewProfiles');
+            onSnapshot(crewRef, (snapshot) => {
+                updateSyncStatus(true);
+                window.crewData = [];
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    // Ensure arrays structures are intact from Firestore
+                    data = {
+                        ...data,
+                        licensePages: data.licensePages || new Array(10).fill(null),
+                        medicalPages: data.medicalPages || new Array(2).fill(null),
+                        passportPages: data.passportPages || new Array(2).fill(null),
+                        ktpPages: data.ktpPages || new Array(2).fill(null),
+                        kkPages: data.kkPages || new Array(1).fill(null),
+                        ccpPages: data.ccpPages || new Array(2).fill(null),
+                        loaPages: data.loaPages || new Array(2).fill(null)
+                    };
+                    window.crewData.push(data);
+                });
+                
+                // Update UI based on current state
+                if (window.currentUserRole === 'admin') {
+                    window.renderCrewList(window.crewData);
+                } else if (window.selectedCrewId) {
+                    window.selectCrew(window.selectedCrewId);
+                }
+                
+                setTimeout(() => updateSyncStatus(false), 500);
+            }, (error) => {
+                console.error("Crew Listener Error:", error);
+                updateSyncStatus(false, true);
+            });
+
+            // Listen to Custom Document Types
+            const customDocsRef = collection(db, 'artifacts', appId, 'public', 'data', 'customDocTypes');
+            onSnapshot(customDocsRef, (snapshot) => {
+                window.customDocTypes = [];
+                snapshot.forEach(doc => {
+                    window.customDocTypes.push(doc.data());
+                });
+                if (window.selectedCrewId) {
+                    const currentCrew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
+                    if (currentCrew) window.renderDocumentCards(currentCrew);
+                }
+            }, (error) => console.error("Custom Docs Error:", error));
+        }
+
+        async function saveCrewToFirestore(crewObj) {
+            if (!firebaseUser) return;
+            try {
+                // Ensure data is clean (no undefined properties)
+                const cleanData = JSON.parse(JSON.stringify(crewObj));
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewObj.id)), cleanData);
+            } catch (e) {
+                console.error("Save Error:", e);
+                window.showToast("Gagal menyimpan ke cloud");
+                throw e; 
+            }
+        }
+
+        async function deleteCrewFromFirestore(id) {
+            if (!firebaseUser) return;
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(id)));
+            } catch (e) {
+                console.error("Delete Error:", e);
+                window.showToast("Gagal menghapus dari cloud");
+            }
+        }
+
+        async function saveCustomDocToFirestore(docObj) {
+            if (!firebaseUser) return;
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'customDocTypes', docObj.id), docObj);
+            } catch (e) { console.error("Save Doc Error", e); }
+        }
+        
+        async function deleteCustomDocFromFirestore(id) {
+            if (!firebaseUser) return;
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'customDocTypes', id));
+            } catch (e) { console.error("Delete Doc Error", e); }
+        }
+
+        // Compression is crucial to avoid Firestore's 1MB document limit
+        function compressImage(file, maxSize = 1000) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Maintain aspect ratio, scale down if exceeds maxSize
+                        if (width > height && width > maxSize) {
+                            height *= maxSize / width;
+                            width = maxSize;
+                        } else if (height > maxSize) {
+                            width *= maxSize / height;
+                            height = maxSize;
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Convert to JPEG with 0.7 quality to save massive space
+                        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                    };
+                };
+            });
+        }
+
+        window.initApp = function() {
+            window.populatePageSelect();
+            window.setupConfirmButtons();
+            window.checkDirectAccess();
+            initFirebase(); 
+        }
+
+        window.setupConfirmButtons = function() {
             const btnDel = document.getElementById('confirmDeleteBtn');
             if (btnDel) {
                 btnDel.onclick = async () => {
-                    if(crewToDeleteId) {
-                        const idToDelete = crewToDeleteId;
-                        crewData = crewData.filter(c => c.id !== idToDelete);
-                        if(selectedCrewId === idToDelete) { 
-                            selectedCrewId = null; 
-                            document.getElementById('welcomeScreen').classList.remove('hidden'); 
-                            document.getElementById('crewDetailView').classList.add('hidden'); 
-                        }
-                        renderCrewList(crewData); 
-                        updateStats(); 
-                        closeDeleteModal();
-                        await syncDeleteToCloud(idToDelete);
+                    if(window.crewToDeleteId) {
+                        const idToDelete = window.crewToDeleteId;
+                        if(window.selectedCrewId == idToDelete) { 
+                             window.selectedCrewId = null; 
+                             document.getElementById('welcomeScreen').classList.remove('hidden'); 
+                             document.getElementById('crewDetailView').classList.add('hidden'); 
+                         }
+                        window.closeDeleteModal();
+                        await deleteCrewFromFirestore(idToDelete);
+                        window.showToast("Personil Dihapus");
                     }
                 };
             }
@@ -478,23 +689,22 @@
             const btnDocDel = document.getElementById('confirmDocDeleteBtn');
             if (btnDocDel) {
                 btnDocDel.onclick = async () => {
-                    if(docToDeleteId) {
-                        const id = docToDeleteId;
-                        customDocTypes = customDocTypes.filter(d => d.id !== id);
-                        crewData.forEach(crew => { 
-                            if (crew[`${id}Pages`]) {
-                                crew[`${id}Pages`] = null;
-                            }
-                        });
-                        updateStats();
-                        closeDocDeleteModal();
-                        showToast("Menu Dokument Dihapus");
+                    if(window.docToDeleteId) {
+                        const id = window.docToDeleteId;
                         
-                        if (selectedCrewId) {
-                            const current = crewData.find(c => c.id === selectedCrewId);
-                            if (current) await syncToGoogleSheet(current);
-                            selectCrew(selectedCrewId);
+                        // Remove from custom docs collection
+                        await deleteCustomDocFromFirestore(id);
+                        
+                        // Clean up this doc from all crews in Firestore
+                        for(let i = 0; i < window.crewData.length; i++) {
+                            if (window.crewData[i][`${id}Pages`]) {
+                                window.crewData[i][`${id}Pages`] = null;
+                                await saveCrewToFirestore(window.crewData[i]);
+                            }
                         }
+
+                        window.closeDocDeleteModal();
+                        window.showToast("Menu Dokument Dihapus");
                     }
                 };
             }
@@ -502,33 +712,506 @@
             const btnFileDel = document.getElementById('confirmFileDeleteBtn');
             if (btnFileDel) {
                 btnFileDel.onclick = async () => {
-                    if (fileToDeleteIndex !== null && fileToDeleteType !== null) {
-                        const idx = crewData.findIndex(c => c.id === selectedCrewId);
+                    if (window.fileToDeleteIndex !== null && window.fileToDeleteType !== null) {
+                        const idx = window.crewData.findIndex(c => String(c.id) === String(window.selectedCrewId));
                         if (idx !== -1) {
-                            crewData[idx][`${fileToDeleteType}Pages`][fileToDeleteIndex] = null;
-                            renderGridPages(crewData[idx], fileToDeleteType); 
-                            renderDocumentCards(crewData[idx]); 
-                            updateStats();
-                            await syncToGoogleSheet(crewData[idx]);
-                            showToast("Berkas berhasil dihapus");
+                            window.crewData[idx][`${window.fileToDeleteType}Pages`][window.fileToDeleteIndex] = null;
+                            window.renderGridPages(window.crewData[idx], window.fileToDeleteType); 
+                            window.renderDocumentCards(window.crewData[idx]); 
+                            
+                            // Save update to firestore
+                            await saveCrewToFirestore(window.crewData[idx]);
+                            window.showToast("Berkas berhasil dihapus");
                         }
                     }
-                    closeFileDeleteModal();
+                    window.closeFileDeleteModal();
                 };
             }
         }
 
-        async function downloadMultiPagePDF() {
+        window.handleLogin = function(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUsername').value;
+            const p = document.getElementById('loginPassword').value;
+            
+            // Hardcoded Admin
+            if (u === 'admin' && p === 'TWA119-021') { window.enterApp('admin'); return; }
+            
+            // Check against loaded crew data
+            const foundCrew = window.crewData.find(c => (c.email === u || c.username === u) && c.password === p);
+            if (foundCrew) window.enterApp('crew', foundCrew);
+            else window.showToast("Login Gagal! Periksa kredensial.");
+        }
+
+        window.enterApp = function(role, crewObj = null) {
+            window.currentUserRole = role;
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            if (role === 'admin') {
+                document.getElementById('headerSubtext').innerText = "Administrator Panel";
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                window.renderCrewList(window.crewData);
+                document.getElementById('welcomeScreen').classList.remove('hidden');
+                document.getElementById('crewDetailView').classList.add('hidden');
+            } else {
+                document.getElementById('headerSubtext').innerText = "Crew Personnel Portal";
+                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+                window.selectCrew(crewObj.id);
+            }
+            window.showToast(`Halo, ${role === 'admin' ? 'Admin' : crewObj.name}`);
+        }
+
+        window.handleLogout = function() {
+            window.currentUserRole = null; 
+            window.selectedCrewId = null;
+            const url = new URL(window.location);
+            url.searchParams.delete('crewId');
+            window.history.replaceState({}, '', url);
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginPassword').value = '';
+        }
+        
+        window.generateDirectLink = function(crewId) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const fullLink = `${baseUrl}?crewId=${crewId}`;
+            const el = document.createElement('textarea');
+            el.value = fullLink;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            window.showToast("Tautan langsung disalin!");
+        }
+
+        window.checkDirectAccess = function() {
+            const params = new URLSearchParams(window.location.search);
+            const directCrewId = params.get('crewId');
+            if (directCrewId) {
+                // Wait for data to load from firestore
+                const checkInterval = setInterval(() => {
+                    const found = window.crewData.find(c => String(c.id) === String(directCrewId));
+                    if (found) { 
+                        window.enterApp('crew', found); 
+                        clearInterval(checkInterval); 
+                    }
+                }, 500);
+                setTimeout(() => clearInterval(checkInterval), 8000);
+            }
+        }
+
+        window.renderCrewList = function(data) {
+            const list = document.getElementById('crewList'); 
+            if(!list) return;
+            list.innerHTML = '';
+
+            let displayData = data;
+            if (window.currentUserRole === 'crew' && window.selectedCrewId) {
+                displayData = data.filter(c => String(c.id) === String(window.selectedCrewId));
+            }
+
+            displayData.forEach(crew => {
+                const item = document.createElement('div');
+                const isSelected = String(window.selectedCrewId) === String(crew.id);
+                item.className = `p-3 md:p-5 border-b border-slate-800/30 cursor-pointer hover:bg-slate-800/40 transition-all flex items-center justify-between group ${isSelected ? 'sidebar-active' : ''}`;
+                
+                const imgSrc = window.getDirectImgUrl(crew.profilePhoto);
+                const avatar = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : '<span class="text-[10px] font-black aviation-accent">TW</span>';
+                
+                let actionButtons = "";
+                if (window.currentUserRole === 'admin') {
+                    actionButtons = `
+                    <button onclick="event.stopPropagation(); window.generateDirectLink('${crew.id}')" class="p-2 text-slate-500 hover:text-emerald-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
+                    <button onclick="event.stopPropagation(); window.openEditCrewModal('${crew.id}')" class="p-2 text-slate-500 hover:text-amber-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 00 2 2h14a2 2 0 00 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button onclick="event.stopPropagation(); window.openDeleteModal('${crew.id}')" class="p-2 text-slate-500 hover:text-red-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                    `;
+                }
+
+                item.innerHTML = `<div class="flex items-center gap-3 flex-1 min-w-0" onclick="window.selectCrew('${crew.id}')">
+                    <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center border border-slate-700 overflow-hidden shrink-0">${avatar}</div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs font-bold text-white/90 truncate">${crew.name}</p>
+                        <p class="text-[8px] text-slate-500 font-black uppercase">${crew.licenseNo}</p>
+                    </div>
+                </div><div class="flex gap-1 opacity-0 group-hover:opacity-100">
+                    ${actionButtons}
+                </div>`;
+                list.appendChild(item);
+            });
+        }
+
+        window.selectCrew = function(id) {
+            window.selectedCrewId = id; 
+            const crew = window.crewData.find(c => String(c.id) === String(id)); 
+            if(!crew) return;
+            
+            window.renderCrewList(window.crewData); 
+            
+            document.getElementById('welcomeScreen').classList.add('hidden'); 
+            document.getElementById('crewDetailView').classList.remove('hidden');
+            
+            document.getElementById('detName').innerText = crew.name; 
+            document.getElementById('detRank').innerText = crew.rank;
+            document.getElementById('detLicenseNo').innerText = crew.licenseNo; 
+            document.getElementById('detQualification').innerText = crew.qualification || "GENERAL PILOT";
+            
+            const box = document.getElementById('detAvatarContainer'); 
+            const imgSrc = window.getDirectImgUrl(crew.profilePhoto);
+            box.innerHTML = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : `<svg class="w-24 h-24 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+            
+            window.renderDocumentCards(crew);
+        }
+
+        window.renderDocumentCards = function(crew) {
+            const container = document.getElementById('documentContainer'); 
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const q = crew.qualification?.split(',').map(s => s.trim()) || [];
+            let activeDocs = [...defaultDocTypes.map(d => ({...d, isCustom: false}))];
+            
+            if(q.includes('CCP')) activeDocs.push({ id: 'ccp', name: "CCP Certificate", pages: 2, layout: 'portrait' });
+            if(q.includes('FI') || q.includes('GI')) activeDocs.push({ id: 'loa', name: "LOA", pages: 2, layout: 'portrait' });
+            
+            const customActive = window.customDocTypes.filter(dt => crew[`${dt.id}Pages`] !== undefined);
+            activeDocs = [...activeDocs, ...customActive];
+
+            activeDocs.forEach(doc => {
+                const pages = crew[`${doc.id}Pages`] || [];
+                const hasFile = Array.isArray(pages) && pages.some(p => p !== null);
+                const card = document.createElement('div');
+                card.className = "glass-card p-4 rounded-3xl cursor-pointer hover:border-amber-500 transition-all border flex flex-col items-center text-center relative group";
+                
+                let deleteMenuBtn = (doc.id.startsWith('custom_') && window.currentUserRole === 'admin') ? 
+                    `<button onclick="event.stopPropagation(); window.openDocDeleteModal('${doc.id}')" class="absolute top-2 right-2 p-2 text-slate-300 hover:text-orange-500 z-20"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : "";
+
+                card.onclick = () => window.openMultiPageModal(doc.id, doc.name);
+                card.innerHTML = `${deleteMenuBtn}<h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">${doc.name}</h4><div class="mt-3 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} text-[8px] font-black uppercase">${hasFile ? 'Tersedia' : 'Kosong'}</div>`;
+                container.appendChild(card);
+            });
+        }
+
+        window.openMultiPageModal = function(type, title) { 
+            window.activeGridType = type; 
+            const crew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId)); 
+            if(!crew) return;
+            
+            document.getElementById('gridModalTitle').innerText = title; 
+            document.getElementById('gridModalCrewName').innerText = crew.name; 
+            window.renderGridPages(crew, type); 
+            document.getElementById('gridModal').classList.remove('hidden'); 
+        }
+
+        window.renderGridPages = function(crew, type) {
+            const container = document.getElementById('gridPageContainer'); 
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const docDef = [...defaultDocTypes, ...window.customDocTypes, {id:'ccp', pages:2, layout:'portrait'}, {id:'loa', pages:2, layout:'portrait'}].find(d => d.id === type);
+            const expectedCount = docDef?.pages || 2;
+            const layoutType = docDef?.layout || 'portrait';
+
+            let slotClass = "license-slot"; 
+            if (layoutType === 'landscape') slotClass = "landscape-slot";
+            else if (layoutType === 'idcard') slotClass = "idcard-slot";
+            else if (layoutType === 'passport') slotClass = "passport-slot";
+
+            container.className = (layoutType === 'landscape' || layoutType === 'idcard' || layoutType === 'passport') 
+                ? "grid grid-cols-1 sm:grid-cols-2 gap-4" 
+                : "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8";
+
+            if (!crew[`${type}Pages`]) crew[`${type}Pages`] = new Array(expectedCount).fill(null);
+            const pages = crew[`${type}Pages`];
+            
+            for(let i=0; i < expectedCount; i++) {
+                const s = document.createElement('div');
+                s.className = `${slotClass} flex flex-col items-center justify-center overflow-hidden`;
+                
+                s.onclick = () => { 
+                    const inp = document.createElement('input'); 
+                    inp.type='file'; 
+                    inp.accept="image/*"; 
+                    inp.onchange=(e) => window.handleGridFileUpload(e, i, type); 
+                    inp.click(); 
+                };
+                
+                const pData = pages[i];
+                let delBtn = pData ? `<button onclick="event.stopPropagation(); window.openFileDeleteModal(${i}, '${type}')" class="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-lg shadow-lg z-20"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : "";
+                
+                s.innerHTML = `<div class="absolute top-2 left-0 w-full bg-slate-900/60 py-1 z-10"><p class="text-[7px] text-white text-center font-bold uppercase">Page ${i+1}</p></div>${delBtn}${pData ? `<img src="${window.getDirectImgUrl(pData.data)}" class="absolute inset-0 w-full h-full object-cover">` : '<svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>'}`;
+                container.appendChild(s);
+            }
+        }
+
+        window.handleGridFileUpload = async function(e, index, type) {
+            const f = e.target.files[0]; if(!f) return;
+            
+            // Show uploading overlay
+            const overlay = document.getElementById('uploadingOverlay');
+            if(overlay) overlay.classList.replace('hidden', 'flex');
+
+            try {
+                // Compress image before saving to avoid 1MB Firestore limit
+                const compressedBase64 = await compressImage(f, 1200); 
+                
+                const idx = window.crewData.findIndex(c => String(c.id) === String(window.selectedCrewId));
+                if (idx === -1) return;
+                
+                window.crewData[idx][`${type}Pages`][index] = { data: compressedBase64, type: 'image/jpeg' };
+                
+                // Immediately update local UI
+                window.renderGridPages(window.crewData[idx], type); 
+                window.renderDocumentCards(window.crewData[idx]);
+                
+                // Save to Firestore silently
+                await saveCrewToFirestore(window.crewData[idx]);
+            } catch (err) {
+                console.error(err);
+                window.showToast("Gagal mengolah gambar");
+            } finally {
+                if(overlay) overlay.classList.replace('flex', 'hidden');
+            }
+        }
+
+        window.handleCrewSubmit = async function(e) {
+            e.preventDefault();
+            
+            const overlay = document.getElementById('savingCrewOverlay');
+            if(overlay) overlay.classList.replace('hidden', 'flex');
+
+            try {
+                const n = document.getElementById('crewName').value;
+                const em = document.getElementById('crewEmail').value;
+                const u = document.getElementById('crewUsername').value;
+                const p = document.getElementById('crewPassword').value;
+                const l = document.getElementById('crewLicenseNo').value;
+                const r = document.getElementById('crewRank').value;
+                const quals = Array.from(document.querySelectorAll('.qual-checkbox:checked')).map(cb => cb.value).join(', ');
+                
+                let crewObj;
+                if (window.editingCrewId) {
+                    const i = window.crewData.findIndex(c => String(c.id) === String(window.editingCrewId));
+                    crewObj = { 
+                        ...window.crewData[i], 
+                        name: n, email: em, username: u, password: p, licenseNo: l, rank: r, 
+                        qualification: quals, profilePhoto: window.currentFormPhotoBase64 
+                    };
+                } else {
+                    crewObj = { 
+                        id: Date.now().toString(), // Ensure ID is string for firestore
+                        name: n, email: em, username: u, password: p, licenseNo: l, rank: r, 
+                        qualification: quals, profilePhoto: window.currentFormPhotoBase64, 
+                        licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), 
+                        passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), 
+                        kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null) 
+                    };
+                    // Ensure custom doc arrays exist for new user
+                    window.customDocTypes.forEach(dt => {
+                        crewObj[`${dt.id}Pages`] = new Array(dt.pages).fill(null);
+                    });
+                }
+
+                await saveCrewToFirestore(crewObj);
+                window.closeCrewModal(); 
+                window.showToast("Data Kru Tersimpan");
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if(overlay) overlay.classList.replace('flex', 'hidden');
+            }
+        }
+
+        window.handleDocSubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('newDocName').value;
+            const pages = parseInt(document.getElementById('newDocPages').value);
+            const layout = document.getElementById('newDocLayout').value;
+            const id = 'custom_' + Date.now();
+            
+            const newDoc = { id, name, pages, layout, isCustom: true };
+            
+            await saveCustomDocToFirestore(newDoc);
+            
+            // Initialize arrays for all existing crews
+            for (let i = 0; i < window.crewData.length; i++) {
+                if (!window.crewData[i][`${id}Pages`]) {
+                    window.crewData[i][`${id}Pages`] = new Array(pages).fill(null);
+                    await saveCrewToFirestore(window.crewData[i]); // Background save
+                }
+            }
+
+            window.closeDocModal();
+            window.showToast("Menu Dokument Ditambahkan");
+        }
+
+        window.getDirectImgUrl = function(u) { 
+            if (!u) return null; 
+            if (u.startsWith('data:image')) return u; 
+            const m = u.match(/[-\w]{25,}/); 
+            return m ? `https://lh3.googleusercontent.com/d/${m[0]}` : u; 
+        }
+        
+        window.showToast = function(m) { 
+            const t = document.getElementById('toast'); 
+            t.innerText = m; 
+            t.classList.add('show'); 
+            setTimeout(() => t.classList.remove('show'), 3000); 
+        }
+
+        window.syncAndCloseGrid = function() { window.closeGridModal(); }
+        window.closeGridModal = function() { document.getElementById('gridModal').classList.add('hidden'); }
+        window.openAddDocModal = function() { document.getElementById('docFormModal').classList.remove('hidden'); }
+        window.closeDocModal = function() { document.getElementById('docFormModal').classList.add('hidden'); }
+        window.closeCrewModal = function() { document.getElementById('crewFormModal').classList.add('hidden'); }
+        window.openDeleteModal = function(id) { window.crewToDeleteId = id; document.getElementById('deleteConfirmModal').classList.remove('hidden'); }
+        window.closeDeleteModal = function() { document.getElementById('deleteConfirmModal').classList.add('hidden'); }
+        window.openDocDeleteModal = function(id) { window.docToDeleteId = id; document.getElementById('docDeleteConfirmModal').classList.remove('hidden'); }
+        window.closeDocDeleteModal = function() { document.getElementById('docDeleteConfirmModal').classList.add('hidden'); window.docToDeleteId = null; }
+        window.openFileDeleteModal = function(i, t) { window.fileToDeleteIndex = i; window.fileToDeleteType = t; document.getElementById('fileDeleteConfirmModal').classList.remove('hidden'); }
+        window.closeFileDeleteModal = function() { document.getElementById('fileDeleteConfirmModal').classList.add('hidden'); }
+        window.toggleMobileMenu = function() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
+        window.togglePassword = function() { const p = document.getElementById('crewPassword'); p.type = p.type === 'password' ? 'text' : 'password'; }
+        window.autoPopulateUsername = function(v) { document.getElementById('crewUsername').value = v; }
+        window.populatePageSelect = function() { const s = document.getElementById('newDocPages'); for(let i=1; i<=15; i++) { const o = document.createElement('option'); o.value = i; o.innerText = i + " Halaman"; s.appendChild(o); } }
+        window.triggerProfilePhotoUpload = function() { document.getElementById('crewProfilePhotoInput').click(); }
+        
+        window.migrateFromGoogleSheets = async function() {
+            if(!confirm("Proses ini akan menarik data dari Google Sheets lama dan memasukkannya ke Firebase. Pastikan koneksi stabil. Lanjutkan?")) return;
+            
+            // Endpoint App Script Google lama Anda
+            const OLD_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVMKuv7QTeYrsLeUganZzZ-mZGV4hw2l9CGwStBtF5LEUAeUNlWlXcxH-WUmi_A-3g/exec";
+            window.showToast("Mengunduh data dari G-Sheets...");
+            
+            try {
+                const response = await fetch(OLD_APP_SCRIPT_URL);
+                const cloudData = await response.json();
+                
+                if (Array.isArray(cloudData)) {
+                    window.showToast(`Ditemukan ${cloudData.length} data. Memulai migrasi...`);
+                    
+                    let successCount = 0;
+                    for (const c of cloudData) {
+                        try {
+                            // Format ulang struktur array yang mungkin kosong/corrupt dari G-Sheets
+                            const crewObj = {
+                                ...c,
+                                id: String(c.id || Date.now() + Math.random().toString(36).substr(2, 9)),
+                                licensePages: c.licensePages || new Array(10).fill(null),
+                                medicalPages: c.medicalPages || new Array(2).fill(null),
+                                passportPages: c.passportPages || new Array(2).fill(null),
+                                ktpPages: c.ktpPages || new Array(2).fill(null),
+                                kkPages: c.kkPages || new Array(1).fill(null),
+                                ccpPages: c.ccpPages || new Array(2).fill(null),
+                                loaPages: c.loaPages || new Array(2).fill(null)
+                            };
+                            
+                            // Eksekusi save routine Firebase yang ada (menyesuaikan tipe custom doc)
+                            window.customDocTypes.forEach(dt => {
+                                if (!crewObj[`${dt.id}Pages`]) {
+                                    crewObj[`${dt.id}Pages`] = new Array(dt.pages).fill(null);
+                                }
+                            });
+
+                            // Simpan ke Firestore
+                            await saveCrewToFirestore(crewObj);
+                            
+                            successCount++;
+                            console.log(`Berhasil migrasi: ${crewObj.name}`);
+                        } catch (err) {
+                            console.error(`Gagal memigrasi data kru: ${c.name}`, err);
+                        }
+                    }
+                    
+                    window.showToast(`Migrasi Selesai! ${successCount} kru berhasil dipindahkan ke Firebase.`);
+                } else {
+                    window.showToast("Format data dari G-Sheets tidak sesuai atau kosong.");
+                }
+            } catch (err) {
+                console.error("Migration Error:", err);
+                window.showToast("Gagal mengambil data dari G-Sheets.");
+            }
+        }
+
+        window.handleCrewProfileUpload = async function(e) { 
+            const f = e.target.files[0]; 
+            if(!f) return;
+            // Compress profile photo to max 400px width/height
+            window.currentFormPhotoBase64 = await compressImage(f, 400); 
+            const p = document.getElementById('formPhotoPreview'); 
+            p.src = window.currentFormPhotoBase64; 
+            p.classList.remove('hidden'); 
+            document.getElementById('formPhotoIcon').classList.add('hidden');
+        }
+        
+        window.filterCrew = function() { 
+            const q = document.getElementById('crewSearch').value.toLowerCase(); 
+            const f = window.crewData.filter(c => c.name.toLowerCase().includes(q) || c.licenseNo.toLowerCase().includes(q)); 
+            window.renderCrewList(f); 
+        }
+
+        window.openAddCrewModal = function() { 
+            window.editingCrewId = null; 
+            window.currentFormPhotoBase64 = null; 
+            document.getElementById('crewFormTitle').innerText = "Registrasi Kru";
+            document.getElementById('crewName').value = "";
+            document.getElementById('crewEmail').value = "";
+            document.getElementById('crewUsername').value = "";
+            document.getElementById('crewPassword').value = "";
+            document.getElementById('crewLicenseNo').value = "";
+            document.getElementById('crewRank').value = "Captain";
+            document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('formPhotoPreview').src = "";
+            document.getElementById('formPhotoPreview').classList.add('hidden');
+            document.getElementById('formPhotoIcon').classList.remove('hidden');
+            document.getElementById('crewFormModal').classList.remove('hidden'); 
+        }
+
+        window.openEditCrewModal = function(id) {
+            const crew = window.crewData.find(c => String(c.id) === String(id));
+            if (!crew) return;
+            
+            window.editingCrewId = id;
+            window.currentFormPhotoBase64 = crew.profilePhoto || null;
+            document.getElementById('crewFormTitle').innerText = "Edit Kru";
+            document.getElementById('crewName').value = crew.name || "";
+            document.getElementById('crewEmail').value = crew.email || "";
+            document.getElementById('crewUsername').value = crew.username || "";
+            document.getElementById('crewPassword').value = crew.password || "";
+            document.getElementById('crewLicenseNo').value = crew.licenseNo || "";
+            document.getElementById('crewRank').value = crew.rank || "Captain";
+            
+            const quals = crew.qualification ? crew.qualification.split(', ') : [];
+            document.getElementById('qualCCP').checked = quals.includes('CCP');
+            document.getElementById('qualFI').checked = quals.includes('FI');
+            document.getElementById('qualGI').checked = quals.includes('GI');
+            
+            const previewImg = document.getElementById('formPhotoPreview');
+            const photoIcon = document.getElementById('formPhotoIcon');
+            
+            if (window.currentFormPhotoBase64) {
+                previewImg.src = window.getDirectImgUrl(window.currentFormPhotoBase64);
+                previewImg.classList.remove('hidden');
+                photoIcon.classList.add('hidden');
+            } else {
+                previewImg.src = "";
+                previewImg.classList.add('hidden');
+                photoIcon.classList.remove('hidden');
+            }
+            document.getElementById('crewFormModal').classList.remove('hidden');
+        }
+
+        window.downloadMultiPagePDF = async function() {
             const { jsPDF } = window.jspdf;
-            const crew = crewData.find(c => c.id === selectedCrewId);
+            const crew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
             if(!crew) return;
 
             const container = document.getElementById('pdfExportGrid');
             container.innerHTML = '';
             
-            const docDef = [...defaultDocTypes, ...customDocTypes, {id:'ccp', pages:2, layout:'portrait'}, {id:'loa', pages:2, layout:'portrait'}].find(d => d.id === activeGridType);
+            const docDef = [...defaultDocTypes, ...window.customDocTypes, {id:'ccp', pages:2, layout:'portrait'}, {id:'loa', pages:2, layout:'portrait'}].find(d => d.id === window.activeGridType);
             const layoutType = docDef?.layout || 'portrait';
-            const pages = [...(crew[`${activeGridType}Pages`] || [])];
+            const pages = [...(crew[`${window.activeGridType}Pages`] || [])];
             
             const isID = layoutType === 'idcard', isPassport = layoutType === 'passport', isLandscape = layoutType === 'landscape';
             const reqSlots = (isID || isPassport) ? 2 : (isLandscape ? 1 : 4);
@@ -557,7 +1240,7 @@
                     else styles += ` width: 100%; height: 100%;`;
                     card.style.cssText = styles;
                     if (f?.data) {
-                        card.innerHTML = `<img src="${getDirectImgUrl(f.data)}" style="width:100%; height:100%; object-fit:fill;">`;
+                        card.innerHTML = `<img src="${window.getDirectImgUrl(f.data)}" style="width:100%; height:100%; object-fit:fill;">`;
                     }
                     wrapper.appendChild(card);
                 });
@@ -568,442 +1251,12 @@
                 pdfDoc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, (isLandscape ? 297 : 210), (isLandscape ? 210 : 297), null, 'FAST');
             }
             
-            pdfDoc.save(`${activeGridType}_${crew.name}.pdf`);
+            pdfDoc.save(`${window.activeGridType}_${crew.name}.pdf`);
             container.innerHTML = '';
         }
 
-        function checkDirectAccess() {
-            const params = new URLSearchParams(window.location.search);
-            const directCrewId = params.get('crewId');
-            if (directCrewId) {
-                const crew = crewData.find(c => c.id == directCrewId);
-                if (crew) enterApp('crew', crew);
-                else {
-                    const checkInterval = setInterval(() => {
-                        const found = crewData.find(c => c.id == directCrewId);
-                        if (found) { enterApp('crew', found); clearInterval(checkInterval); }
-                    }, 500);
-                    setTimeout(() => clearInterval(checkInterval), 5000);
-                }
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const u = document.getElementById('loginUsername').value;
-            const p = document.getElementById('loginPassword').value;
-            if (u === 'admin' && p === 'TWA119-021') { enterApp('admin'); return; }
-            const foundCrew = crewData.find(c => (c.email === u || c.username === u) && c.password === p);
-            if (foundCrew) enterApp('crew', foundCrew);
-            else showToast("Login Gagal!");
-        }
-
-        function enterApp(role, crewObj = null) {
-            currentUserRole = role;
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-            if (role === 'admin') {
-                document.getElementById('headerSubtext').innerText = "Administrator Panel";
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
-                renderCrewList(crewData);
-                document.getElementById('welcomeScreen').classList.remove('hidden');
-                document.getElementById('crewDetailView').classList.add('hidden');
-            } else {
-                document.getElementById('headerSubtext').innerText = "Crew Personnel Portal";
-                document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
-                selectCrew(crewObj.id);
-            }
-            showToast(`Halo, ${role === 'admin' ? 'Admin' : crewObj.name}`);
-        }
-
-        function handleLogout() {
-            currentUserRole = null; selectedCrewId = null;
-            const url = new URL(window.location);
-            url.searchParams.delete('crewId');
-            window.history.replaceState({}, '', url);
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('mainApp').classList.add('hidden');
-        }
-
-        function generateDirectLink(crewId) {
-            const baseUrl = window.location.origin + window.location.pathname;
-            const fullLink = `${baseUrl}?crewId=${crewId}`;
-            const el = document.createElement('textarea');
-            el.value = fullLink;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            showToast("Tautan langsung disalin!");
-        }
-
-        function updateStats() { 
-            localStorage.setItem('crewData', JSON.stringify(crewData)); 
-            localStorage.setItem('customDocTypes', JSON.stringify(customDocTypes));
-        }
-
-        function renderCrewList(data) {
-            const list = document.getElementById('crewList'); 
-            if(!list) return;
-            list.innerHTML = '';
-
-            let displayData = data;
-            // Jika yang login adalah crew, hanya tampilkan dirinya sendiri di list
-            if (currentUserRole === 'crew' && selectedCrewId) {
-                displayData = data.filter(c => c.id === selectedCrewId);
-            }
-
-            displayData.forEach(crew => {
-                const item = document.createElement('div');
-                item.className = `p-3 md:p-5 border-b border-slate-800/30 cursor-pointer hover:bg-slate-800/40 transition-all flex items-center justify-between group ${selectedCrewId === crew.id ? 'sidebar-active' : ''}`;
-                const imgSrc = getDirectImgUrl(crew.profilePhoto);
-                const avatar = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : '<span class="text-[10px] font-black aviation-accent">TW</span>';
-                
-                let actionButtons = "";
-                // Admin dapat melihat tombol link, edit, dan hapus
-                if (currentUserRole === 'admin') {
-                    actionButtons = `
-                    <button onclick="event.stopPropagation(); generateDirectLink(${crew.id})" class="p-2 text-slate-500 hover:text-emerald-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
-                    <button onclick="event.stopPropagation(); openEditCrewModal(${crew.id})" class="p-2 text-slate-500 hover:text-amber-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 00 2 2h14a2 2 0 00 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                    <button onclick="event.stopPropagation(); openDeleteModal(${crew.id})" class="p-2 text-slate-500 hover:text-red-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                    `;
-                }
-
-                item.innerHTML = `<div class="flex items-center gap-3 flex-1 min-w-0" onclick="selectCrew(${crew.id})">
-                    <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center border border-slate-700 overflow-hidden shrink-0">${avatar}</div>
-                    <div class="min-w-0 flex-1">
-                        <p class="text-xs font-bold text-white/90 truncate">${crew.name}</p>
-                        <p class="text-[8px] text-slate-500 font-black uppercase">${crew.licenseNo}</p>
-                    </div>
-                </div><div class="flex gap-1 opacity-0 group-hover:opacity-100">
-                    ${actionButtons}
-                </div>`;
-                list.appendChild(item);
-            });
-        }
-
-        async function pullDataFromCloud(isInitial = false) {
-            if(!DATABASE_URL) return;
-            const ind = document.getElementById('syncIndicator'), txt = document.getElementById('syncText');
-            const hIcon = document.getElementById('headerSyncIcon'), sIcon = document.getElementById('sidebarSyncIcon');
-            const hBtn = document.getElementById('headerSyncBtn');
-            
-            if(ind) {
-                ind.classList.remove('bg-emerald-500', 'bg-red-500');
-                ind.classList.add('bg-amber-500', 'sync-pulse');
-            }
-            if(txt) txt.innerText = "Syncing...";
-            if(hIcon) hIcon.classList.add('animate-spin');
-            if(sIcon) sIcon.classList.add('animate-spin');
-            if(hBtn) hBtn.classList.replace('bg-emerald-50', 'bg-amber-50');
-
-            try {
-                const response = await fetch(DATABASE_URL);
-                const cloudData = await response.json();
-                if (Array.isArray(cloudData)) {
-                    crewData = cloudData.map(c => ({
-                        ...c,
-                        licensePages: c.licensePages || new Array(10).fill(null),
-                        medicalPages: c.medicalPages || new Array(2).fill(null),
-                        passportPages: c.passportPages || new Array(2).fill(null),
-                        ktpPages: c.ktpPages || new Array(2).fill(null),
-                        kkPages: c.kkPages || new Array(1).fill(null),
-                        ccpPages: c.ccpPages || new Array(2).fill(null),
-                        loaPages: c.loaPages || new Array(2).fill(null)
-                    }));
-                    if (currentUserRole === 'admin') renderCrewList(crewData);
-                    else if (selectedCrewId) selectCrew(selectedCrewId);
-                    updateStats();
-                }
-                if(ind) {
-                    ind.classList.remove('bg-amber-500', 'sync-pulse');
-                    ind.classList.add('bg-emerald-500');
-                }
-                if(txt) txt.innerText = "Cloud Connected";
-                if(!isInitial) showToast("Data Diperbarui!");
-            } catch (err) { 
-                if(ind) {
-                    ind.classList.remove('bg-amber-500', 'sync-pulse');
-                    ind.classList.add('bg-red-500');
-                }
-                if(txt) txt.innerText = "Sync Error";
-                showToast("Gagal Sinkron!");
-            } finally {
-                if(hIcon) hIcon.classList.remove('animate-spin');
-                if(sIcon) sIcon.classList.remove('animate-spin');
-                if(hBtn) hBtn.classList.replace('bg-amber-50', 'bg-emerald-50');
-            }
-        }
-
-        async function syncToGoogleSheet(crew) {
-            if(!DATABASE_URL) return;
-            const ind = document.getElementById('syncIndicator'), txt = document.getElementById('syncText');
-            const hIcon = document.getElementById('headerSyncIcon'), sIcon = document.getElementById('sidebarSyncIcon');
-            const hBtn = document.getElementById('headerSyncBtn');
-            
-            if(ind) {
-                ind.classList.remove('bg-emerald-500', 'bg-red-500');
-                ind.classList.add('bg-amber-500', 'sync-pulse');
-            }
-            if(txt) txt.innerText = "Sync Cloud...";
-            if(hIcon) hIcon.classList.add('animate-spin');
-            if(sIcon) sIcon.classList.add('animate-spin');
-            if(hBtn) hBtn.classList.replace('bg-emerald-50', 'bg-amber-50');
-
-            try {
-                const crewCopy = JSON.parse(JSON.stringify(crew));
-                await fetch(DATABASE_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    body: JSON.stringify(crewCopy) 
-                });
-                
-                showToast("Sinkron Berhasil!");
-                if(ind) {
-                    ind.classList.remove('bg-amber-500', 'sync-pulse');
-                    ind.classList.add('bg-emerald-500');
-                }
-                if(txt) txt.innerText = "Cloud Connected";
-            } catch (err) { 
-                if(ind) {
-                    ind.classList.remove('bg-amber-500', 'sync-pulse');
-                    ind.classList.add('bg-red-500');
-                }
-                showToast("Gagal Sinkron!"); 
-            } finally {
-                setTimeout(() => {
-                    if(hIcon) hIcon.classList.remove('animate-spin');
-                    if(sIcon) sIcon.classList.remove('animate-spin');
-                    if(hBtn) hBtn.classList.replace('bg-amber-50', 'bg-emerald-50');
-                }, 500);
-            }
-        }
-
-        async function syncDeleteToCloud(id) {
-            if(!DATABASE_URL) return;
-            const ind = document.getElementById('syncIndicator'), txt = document.getElementById('syncText');
-            const hIcon = document.getElementById('headerSyncIcon');
-            
-            if(ind) ind.classList.add('bg-amber-500', 'sync-pulse');
-            if(hIcon) hIcon.classList.add('animate-spin');
-            
-            try {
-                await fetch(DATABASE_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    body: JSON.stringify({ action: 'delete', id }) 
-                });
-                showToast("Data Terhapus di Cloud");
-            } catch (err) {
-                showToast("Gagal hapus di cloud");
-            } finally {
-                if(ind) ind.classList.remove('bg-amber-500', 'sync-pulse');
-                if(hIcon) hIcon.classList.remove('animate-spin');
-                pullDataFromCloud(true);
-            }
-        }
-
-        function selectCrew(id) {
-            selectedCrewId = id; const crew = crewData.find(c => c.id === id); if(!crew) return;
-            renderCrewList(crewData); // Selalu render ulang agar state "active" sidebar teraplikasi
-            document.getElementById('welcomeScreen').classList.add('hidden'); 
-            document.getElementById('crewDetailView').classList.remove('hidden');
-            document.getElementById('detName').innerText = crew.name; 
-            document.getElementById('detRank').innerText = crew.rank;
-            document.getElementById('detLicenseNo').innerText = crew.licenseNo; 
-            document.getElementById('detQualification').innerText = crew.qualification || "GENERAL PILOT";
-            const box = document.getElementById('detAvatarContainer'); 
-            const imgSrc = getDirectImgUrl(crew.profilePhoto);
-            box.innerHTML = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : `<svg class="w-24 h-24 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
-            renderDocumentCards(crew);
-        }
-
-        function renderDocumentCards(crew) {
-            const container = document.getElementById('documentContainer'); 
-            if(!container) return;
-            container.innerHTML = '';
-            const q = crew.qualification?.split(',').map(s => s.trim()) || [];
-            let activeDocs = [...defaultDocTypes.map(d => ({...d, isCustom: false}))];
-            if(q.includes('CCP')) activeDocs.push({ id: 'ccp', name: "CCP Certificate", pages: 2, layout: 'portrait' });
-            if(q.includes('FI') || q.includes('GI')) activeDocs.push({ id: 'loa', name: "LOA", pages: 2, layout: 'portrait' });
-            
-            const customActive = customDocTypes.filter(dt => crew[`${dt.id}Pages`] !== null);
-            activeDocs = [...activeDocs, ...customActive];
-
-            activeDocs.forEach(doc => {
-                const pages = crew[`${doc.id}Pages`] || [];
-                const hasFile = Array.isArray(pages) && pages.some(p => p !== null);
-                const card = document.createElement('div');
-                card.className = "glass-card p-4 rounded-3xl cursor-pointer hover:border-amber-500 transition-all border flex flex-col items-center text-center relative group";
-                
-                let deleteMenuBtn = (doc.id.startsWith('custom_') && currentUserRole === 'admin') ? 
-                    `<button onclick="event.stopPropagation(); openDocDeleteModal('${doc.id}')" class="absolute top-2 right-2 p-2 text-slate-300 hover:text-orange-500 z-20"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : "";
-
-                card.onclick = () => openMultiPageModal(doc.id, doc.name);
-                card.innerHTML = `${deleteMenuBtn}<h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">${doc.name}</h4><div class="mt-3 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} text-[8px] font-black uppercase">${hasFile ? 'Tersedia' : 'Kosong'}</div>`;
-                container.appendChild(card);
-            });
-        }
-
-        function openMultiPageModal(type, title) { 
-            activeGridType = type; 
-            const crew = crewData.find(c => c.id === selectedCrewId); if(!crew) return;
-            document.getElementById('gridModalTitle').innerText = title; 
-            document.getElementById('gridModalCrewName').innerText = crew.name; 
-            renderGridPages(crew, type); 
-            document.getElementById('gridModal').classList.remove('hidden'); 
-        }
-
-        function renderGridPages(crew, type) {
-            const container = document.getElementById('gridPageContainer'); if(!container) return;
-            container.innerHTML = '';
-            
-            // Get Layout Type from doc definitions
-            const docDef = [...defaultDocTypes, ...customDocTypes, {id:'ccp', pages:2, layout:'portrait'}, {id:'loa', pages:2, layout:'portrait'}].find(d => d.id === type);
-            const expectedCount = docDef?.pages || 2;
-            const layoutType = docDef?.layout || 'portrait';
-
-            // Determine appropriate CSS class for slot based on layout
-            let slotClass = "license-slot"; // Default portrait
-            if (layoutType === 'landscape') slotClass = "landscape-slot";
-            else if (layoutType === 'idcard') slotClass = "idcard-slot";
-            else if (layoutType === 'passport') slotClass = "passport-slot";
-
-            // Adjust container grid columns for better landscape viewing on mobile
-            container.className = (layoutType === 'landscape' || layoutType === 'idcard' || layoutType === 'passport') 
-                ? "grid grid-cols-1 sm:grid-cols-2 gap-4" 
-                : "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8";
-
-            if (!crew[`${type}Pages`]) crew[`${type}Pages`] = new Array(expectedCount).fill(null);
-            const pages = crew[`${type}Pages`];
-            
-            for(let i=0; i < expectedCount; i++) {
-                const s = document.createElement('div');
-                s.className = `${slotClass} flex flex-col items-center justify-center overflow-hidden`;
-                s.onclick = () => { const inp = document.createElement('input'); inp.type='file'; inp.onchange=(e)=>handleGridFileUpload(e, i, type); inp.click(); };
-                const pData = pages[i];
-                let delBtn = pData ? `<button onclick="event.stopPropagation(); openFileDeleteModal(${i}, '${type}')" class="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-lg shadow-lg z-20"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : "";
-                s.innerHTML = `<div class="absolute top-2 left-0 w-full bg-slate-900/60 py-1 z-10"><p class="text-[7px] text-white text-center font-bold uppercase">Page ${i+1}</p></div>${delBtn}${pData ? `<img src="${getDirectImgUrl(pData.data)}" class="absolute inset-0 w-full h-full object-cover">` : '<svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>'}`;
-                container.appendChild(s);
-            }
-        }
-
-        function handleGridFileUpload(e, index, type) {
-            const f = e.target.files[0]; if(!f) return;
-            const r = new FileReader(); r.onload = (ev) => {
-                const idx = crewData.findIndex(c => c.id === selectedCrewId);
-                if (idx === -1) return;
-                crewData[idx][`${type}Pages`][index] = { data: ev.target.result, type: f.type };
-                renderGridPages(crewData[idx], type); 
-                renderDocumentCards(crewData[idx]); 
-                updateStats(); 
-            };
-            r.readAsDataURL(f);
-        }
-
-        function syncAndCloseGrid() {
-            const crew = crewData.find(c => c.id === selectedCrewId);
-            if(crew) { updateStats(); syncToGoogleSheet(crew); }
-            closeGridModal();
-        }
-
-        function openAddCrewModal() { 
-            editingCrewId = null; currentFormPhotoBase64 = null; 
-            document.getElementById('crewFormTitle').innerText = "Registrasi Kru";
-            
-            document.getElementById('crewName').value = "";
-            document.getElementById('crewEmail').value = "";
-            document.getElementById('crewUsername').value = "";
-            document.getElementById('crewPassword').value = "";
-            document.getElementById('crewLicenseNo').value = "";
-            document.getElementById('crewRank').value = "Captain";
-            
-            document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = false);
-            
-            document.getElementById('formPhotoPreview').src = "";
-            document.getElementById('formPhotoPreview').classList.add('hidden');
-            document.getElementById('formPhotoIcon').classList.remove('hidden');
-            
-            document.getElementById('crewFormModal').classList.remove('hidden'); 
-        }
-
-        function openEditCrewModal(id) {
-            const crew = crewData.find(c => c.id === id);
-            if (!crew) return;
-            
-            editingCrewId = id;
-            currentFormPhotoBase64 = crew.profilePhoto || null;
-            document.getElementById('crewFormTitle').innerText = "Edit Kru";
-            
-            document.getElementById('crewName').value = crew.name || "";
-            document.getElementById('crewEmail').value = crew.email || "";
-            document.getElementById('crewUsername').value = crew.username || "";
-            document.getElementById('crewPassword').value = crew.password || "";
-            document.getElementById('crewLicenseNo').value = crew.licenseNo || "";
-            document.getElementById('crewRank').value = crew.rank || "Captain";
-            
-            const quals = crew.qualification ? crew.qualification.split(', ') : [];
-            document.getElementById('qualCCP').checked = quals.includes('CCP');
-            document.getElementById('qualFI').checked = quals.includes('FI');
-            document.getElementById('qualGI').checked = quals.includes('GI');
-            
-            const previewImg = document.getElementById('formPhotoPreview');
-            const photoIcon = document.getElementById('formPhotoIcon');
-            
-            if (currentFormPhotoBase64) {
-                previewImg.src = getDirectImgUrl(currentFormPhotoBase64);
-                previewImg.classList.remove('hidden');
-                photoIcon.classList.add('hidden');
-            } else {
-                previewImg.src = "";
-                previewImg.classList.add('hidden');
-                photoIcon.classList.remove('hidden');
-            }
-            
-            document.getElementById('crewFormModal').classList.remove('hidden');
-        }
-
-        function handleCrewSubmit(e) {
-            e.preventDefault();
-            const n = document.getElementById('crewName').value, em = document.getElementById('crewEmail').value;
-            const u = document.getElementById('crewUsername').value, p = document.getElementById('crewPassword').value;
-            const l = document.getElementById('crewLicenseNo').value, r = document.getElementById('crewRank').value;
-            const quals = Array.from(document.querySelectorAll('.qual-checkbox:checked')).map(cb => cb.value).join(', ');
-            let crew;
-            if (editingCrewId) {
-                const i = crewData.findIndex(c => c.id === editingCrewId);
-                crewData[i] = { ...crewData[i], name: n, email: em, username: u, password: p, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64 };
-                crew = crewData[i];
-            } else {
-                crew = { id: Date.now(), name: n, email: em, username: u, password: p, licenseNo: l, rank: r, qualification: quals, profilePhoto: currentFormPhotoBase64, licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null) };
-                crewData.push(crew);
-            }
-            updateStats(); closeCrewModal(); renderCrewList(crewData); syncToGoogleSheet(crew);
-        }
-
-        function getDirectImgUrl(u) { if (!u) return null; if (u.startsWith('data:image')) return u; const m = u.match(/[-\w]{25,}/); return m ? `https://lh3.googleusercontent.com/d/${m[0]}` : u; }
-        function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-        function closeGridModal() { document.getElementById('gridModal').classList.add('hidden'); }
-        function openAddDocModal() { document.getElementById('docFormModal').classList.remove('hidden'); }
-        function closeDocModal() { document.getElementById('docFormModal').classList.add('hidden'); }
-        function closeCrewModal() { document.getElementById('crewFormModal').classList.add('hidden'); }
-        function openDeleteModal(id) { crewToDeleteId = id; document.getElementById('deleteConfirmModal').classList.remove('hidden'); }
-        function closeDeleteModal() { document.getElementById('deleteConfirmModal').classList.add('hidden'); }
-        
-        function openDocDeleteModal(id) { docToDeleteId = id; document.getElementById('docDeleteConfirmModal').classList.remove('hidden'); }
-        function closeDocDeleteModal() { document.getElementById('docDeleteConfirmModal').classList.add('hidden'); docToDeleteId = null; }
-        
-        function openFileDeleteModal(i, t) { fileToDeleteIndex = i; fileToDeleteType = t; document.getElementById('fileDeleteConfirmModal').classList.remove('hidden'); }
-        function closeFileDeleteModal() { document.getElementById('fileDeleteConfirmModal').classList.add('hidden'); }
-        function toggleMobileMenu() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
-        function togglePassword() { const p = document.getElementById('crewPassword'); p.type = p.type === 'password' ? 'text' : 'password'; }
-        function autoPopulateUsername(v) { document.getElementById('crewUsername').value = v; }
-        function populatePageSelect() { const s = document.getElementById('newDocPages'); for(let i=1; i<=15; i++) { const o = document.createElement('option'); o.value = i; o.innerText = i + " Halaman"; s.appendChild(o); } }
-        function triggerProfilePhotoUpload() { document.getElementById('crewProfilePhotoInput').click(); }
-        function handleCrewProfileUpload(e) { const f = e.target.files[0]; const r = new FileReader(); r.onload = (ev) => { currentFormPhotoBase64 = ev.target.result; const p = document.getElementById('formPhotoPreview'); p.src = ev.target.result; p.classList.remove('hidden'); document.getElementById('formPhotoIcon').classList.add('hidden'); }; r.readAsDataURL(f); }
-        function filterCrew() { const q = document.getElementById('crewSearch').value.toLowerCase(); const f = crewData.filter(c => c.name.toLowerCase().includes(q) || c.licenseNo.toLowerCase().includes(q)); renderCrewList(f); }
-
-        window.onload = init;
+        // Initialize Application
+        window.onload = window.initApp;
     </script>
 </body>
 </html>
