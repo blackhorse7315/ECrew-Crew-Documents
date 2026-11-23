@@ -15,6 +15,7 @@
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7">
     <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7">
     
+    <!-- Dynamic PWA Manifest -->
     <script id="pwa-manifest">
         const manifest = {
             "name": "Air Crew Document Portal",
@@ -130,11 +131,11 @@
         <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 fade-in">
             <div class="flex flex-col items-center mb-8">
                 <div class="w-20 h-20 bg-slate-50 rounded-2xl p-2 shadow-inner mb-4 border border-slate-100">
-                    <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
+                    <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/80x80/0f172a/f59e0b?text=TWA'" />
                 </div>
                 <h2 class="text-2xl font-black text-slate-900 tracking-tight">Crew Document Portal</h2>
                 <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1 italic aviation-accent">Transwisata Prima Aviation</p>
-                <div id="authStatus" class="mt-4 text-[10px] font-bold text-amber-500 animate-pulse">Menghubungkan ke Database...</div>
+                <div id="authStatus" class="mt-4 text-[10px] font-bold text-amber-500 animate-pulse">Menghubungkan ke Firebase...</div>
             </div>
             <form onsubmit="window.handleLogin(event)" class="space-y-4">
                 <div>
@@ -159,7 +160,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-white rounded-xl p-1 shadow-inner">
-                            <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
+                            <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/40x40/0f172a/f59e0b?text=TW'" />
                         </div>
                         <div>
                             <h1 class="text-lg font-bold tracking-tighter uppercase aviation-accent italic leading-none">Transwisata</h1>
@@ -181,7 +182,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         Tambah Dokument
                     </button>
-                    <!-- Tombol Migrasi Sementara -->
+                    <!-- Tombol Migrasi dari Google Sheets -->
                     <button onclick="window.migrateFromGoogleSheets()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                         Migrasi G-Sheets
@@ -206,10 +207,10 @@
                     <p id="syncText" class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Connecting...</p>
                 </div>
                 
-                <button class="w-full flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 transition-colors group cursor-default">
+                <div class="w-full flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
                     <span>Firebase Status</span>
                     <svg id="sidebarSyncIcon" class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                </button>
+                </div>
                 <button onclick="window.handleLogout()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-red-500/20">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Keluar Aplikasi
@@ -234,7 +235,7 @@
                         <span class="hidden md:inline">Realtime Sync</span>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border border-slate-200 shadow-sm overflow-hidden p-1">
-                       <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
+                       <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/48x48/0f172a/f59e0b?text=TW'" />
                     </div>
                 </div>
             </header>
@@ -242,7 +243,7 @@
             <div id="contentPlaceholder" class="p-6 md:p-10 flex-1">
                 <div id="welcomeScreen" class="flex flex-col items-center justify-center py-32 text-center fade-in">
                     <div class="w-32 h-32 bg-white rounded-[2.5rem] shadow-xl flex items-center justify-center mb-8 p-4 border border-slate-100">
-                        <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" />
+                        <img src="https://lh3.googleusercontent.com/d/1WNcGjsZ9_Fp54xzOl01EYRqM6-wY5Zh7" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/128x128/0f172a/f59e0b?text=TWA'" />
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800">Selamat Datang</h3>
                     <p class="text-slate-400 max-w-sm mt-3 font-medium">Pilih personil dari sidebar untuk mengelola dokumen operasional dan kualifikasi.</p>
@@ -286,7 +287,7 @@
 
     <!-- MODALS -->
     <div id="deleteConfirmModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeDeleteModal()"></div>
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl z-10 p-8 text-center">
             <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -301,7 +302,7 @@
     </div>
 
     <div id="docDeleteConfirmModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4">
-        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeDocDeleteModal()"></div>
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl z-10 p-8 text-center">
             <div class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -316,16 +317,31 @@
     </div>
 
     <div id="fileDeleteConfirmModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
-        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeFileDeleteModal()"></div>
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl z-10 p-8 text-center">
             <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
             <h3 class="text-xl font-black text-slate-900 mb-2">Kosongkan Berkas?</h3>
-            <p class="text-sm text-slate-500 mb-8">Gambar di halaman ini akan dihapus permanen.</p>
+            <p class="text-sm text-slate-500 mb-8">Gambar di halaman ini akan dihapus permanen dari Firebase.</p>
             <div class="flex gap-3">
                 <button onclick="window.closeFileDeleteModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
                 <button id="confirmFileDeleteBtn" class="flex-1 bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="migrateConfirmModal" class="fixed inset-0 z-[130] hidden flex items-center justify-center p-4">
+        <div class="modal-backdrop absolute inset-0" onclick="window.closeMigrateModal()"></div>
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl z-10 p-8 text-center">
+            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-2">Migrasi dari G-Sheets?</h3>
+            <p class="text-sm text-slate-500 mb-8">Proses ini akan menarik data dari Google Sheets lama dan menyimpannya ke Firebase secara terpisah agar tidak melebihi batas 1MB.</p>
+            <div class="flex gap-3">
+                <button onclick="window.closeMigrateModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Batal</button>
+                <button id="confirmMigrateBtn" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg">Lanjutkan</button>
             </div>
         </div>
     </div>
@@ -335,7 +351,7 @@
         <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl z-10 flex flex-col overflow-hidden">
             <div class="px-8 py-6 bg-slate-50 border-b flex justify-between items-center">
                 <h3 class="font-black text-slate-900 uppercase tracking-widest">Tambah Menu Dokument</h3>
-                <button onclick="window.closeDocModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                <button onclick="window.closeDocModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
             <form onsubmit="window.handleDocSubmit(event)" class="p-8 space-y-6">
                 <div>
@@ -373,7 +389,7 @@
                 <div class="flex gap-2 md:gap-4">
                     <button onclick="window.syncAndCloseGrid()" class="bg-emerald-500 text-white px-3 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-lg hover:bg-emerald-600">Selesai</button>
                     <button onclick="window.downloadMultiPagePDF()" class="bg-amber-500 text-slate-900 px-3 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-lg hover:bg-amber-600">Unduh PDF</button>
-                    <button onclick="window.closeGridModal()" class="text-white/50 hover:text-white ml-2"><svg class="w-6 h-6 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    <button onclick="window.closeGridModal()" class="text-white/50 hover:text-white ml-2"><svg class="w-6 h-6 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
             </div>
             <div class="p-6 md:p-12 overflow-y-auto flex-1 bg-slate-50 relative">
@@ -395,7 +411,7 @@
             </div>
             <div class="px-8 py-6 bg-slate-50 border-b flex justify-between items-center">
                 <h3 class="font-black text-slate-900 uppercase tracking-widest" id="crewFormTitle">Registrasi Kru</h3>
-                <button onclick="window.closeCrewModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                <button onclick="window.closeCrewModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
             <form onsubmit="window.handleCrewSubmit(event)" class="p-8 space-y-5 max-h-[75vh] overflow-y-auto custom-scrollbar">
                 <div class="flex flex-col items-center">
@@ -439,7 +455,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Konfigurasi Firebase Anda
         const firebaseConfig = {
@@ -451,16 +467,13 @@
             appId: "1:1080047836290:web:164781934c5f5272e1289b",
             measurementId: "G-364B6CND69"
         };
-        
-        // Agar sesuai dengan standard rule Immersive Platform (jika digunakan) 
-        // namun tetap di project Firebase Anda
-        const appId = "ecrew-absensi";
 
+        const appId = 'ecrew-absensi';
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        
-        // Global State Binding for HTML accessibility
+
+        // State global aplikasi
         window.crewData = [];
         window.customDocTypes = [];
         window.selectedCrewId = null;
@@ -472,7 +485,10 @@
         window.fileToDeleteIndex = null;
         window.fileToDeleteType = null;
         window.currentUserRole = null;
-        let firebaseUser = null;
+
+        let firebaseReady = false;
+        let unsubscribePages = null;
+        let directAccessHandled = false;
 
         const defaultDocTypes = [
             { id: 'license', name: "License", pages: 10, layout: 'portrait' },
@@ -482,164 +498,219 @@
             { id: 'kk', name: "Family Card", pages: 1, layout: 'landscape' }
         ];
 
-        async function initFirebase() {
+        // Daftarkan Service Worker ringan untuk PWA
+        if ('serviceWorker' in navigator) {
             try {
-                const statusEl = document.getElementById('authStatus');
-                
-                // Sign in anonymously to secure the connection
-                const cred = await signInAnonymously(auth);
-                firebaseUser = cred.user;
-                
-                if (statusEl) {
-                    statusEl.innerText = "Database Terhubung";
-                    statusEl.classList.remove('animate-pulse', 'text-amber-500');
-                    statusEl.classList.add('text-emerald-500');
-                    setTimeout(() => statusEl.classList.add('hidden'), 2000);
-                }
-
-                // Enable Login UI
-                const btn = document.getElementById('loginBtn');
-                if(btn) {
-                    btn.disabled = false;
-                    document.getElementById('loginUsername').disabled = false;
-                    document.getElementById('loginPassword').disabled = false;
-                }
-
-                setupFirestoreListeners();
-                
-            } catch (error) {
-                console.error("Firebase Init Error:", error);
-                window.showToast("Gagal terhubung ke Database");
-                const statusEl = document.getElementById('authStatus');
-                if(statusEl) {
-                    statusEl.innerText = "Koneksi Gagal. Muat ulang halaman.";
-                    statusEl.classList.remove('text-amber-500');
-                    statusEl.classList.add('text-red-500');
-                }
+                const swCode = "self.addEventListener('fetch', function(event) {});";
+                const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                const swURL = URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swURL).catch(() => {});
+            } catch (e) {
+                // Abaikan jika browser membatasi blob service worker
             }
         }
 
-        function updateSyncStatus(isSyncing, hasError = false) {
+        // Perbarui indikator status sinkronisasi di UI
+        function updateSyncStatus(isSyncing, isError = false) {
             const ind = document.getElementById('syncIndicator');
             const txt = document.getElementById('syncText');
-            
-            if (!ind || !txt) return;
+            const hBtn = document.getElementById('headerSyncBtn');
 
-            ind.className = 'w-2 h-2 rounded-full';
-            if (hasError) {
-                ind.classList.add('bg-red-500');
-                txt.innerText = "Sync Error";
-            } else if (isSyncing) {
-                ind.classList.add('bg-amber-500', 'sync-pulse');
-                txt.innerText = "Syncing...";
+            if (isError) {
+                if (ind) {
+                    ind.className = 'w-2 h-2 rounded-full bg-red-500';
+                }
+                if (txt) txt.innerText = 'Sync Error';
+                if (hBtn) {
+                    hBtn.classList.remove('bg-emerald-50', 'text-emerald-600', 'border-emerald-100');
+                    hBtn.classList.add('bg-red-50', 'text-red-600', 'border-red-100');
+                }
+                return;
+            }
+
+            if (isSyncing) {
+                if (ind) ind.className = 'w-2 h-2 rounded-full bg-amber-500 sync-pulse';
+                if (txt) txt.innerText = 'Syncing...';
             } else {
-                ind.classList.add('bg-emerald-500');
-                txt.innerText = "Online";
+                if (ind) ind.className = 'w-2 h-2 rounded-full bg-emerald-500';
+                if (txt) txt.innerText = 'Firebase Connected';
+                if (hBtn) {
+                    hBtn.classList.remove('bg-red-50', 'text-red-600', 'border-red-100');
+                    hBtn.classList.add('bg-emerald-50', 'text-emerald-600', 'border-emerald-100');
+                }
             }
         }
 
-        function setupFirestoreListeners() {
-            if (!firebaseUser) return;
-            
-            // Listen to Crew Profiles. Path: /artifacts/ecrew-absensi/public/data/crewProfiles
+        // Inisialisasi koneksi Firebase & Autentikasi Anonim
+        async function initApp() {
+            window.populatePageSelect();
+            setupConfirmButtons();
+
+            const authStatus = document.getElementById('authStatus');
+            const enableLoginForm = () => {
+                document.getElementById('loginUsername').disabled = false;
+                document.getElementById('loginPassword').disabled = false;
+                document.getElementById('loginBtn').disabled = false;
+            };
+
+            try {
+                await signInAnonymously(auth);
+                firebaseReady = true;
+                if (authStatus) {
+                    authStatus.innerText = "Firebase Terhubung";
+                    authStatus.className = "mt-4 text-[10px] font-bold text-emerald-500";
+                }
+            } catch (err) {
+                console.warn("Anonymous Auth tidak aktif atau gagal, melanjutkan koneksi Firestore langsung:", err);
+                firebaseReady = true;
+                if (authStatus) {
+                    authStatus.innerText = "Database Siap";
+                    authStatus.className = "mt-4 text-[10px] font-bold text-emerald-500";
+                }
+            }
+
+            enableLoginForm();
+            startRealtimeListeners();
+        }
+
+        // Mulai mendengarkan perubahan real-time dari Firestore
+        function startRealtimeListeners() {
             const crewRef = collection(db, 'artifacts', appId, 'public', 'data', 'crewProfiles');
             onSnapshot(crewRef, (snapshot) => {
                 updateSyncStatus(true);
+                const prevMap = new Map(window.crewData.map(c => [String(c.id), c]));
                 window.crewData = [];
-                snapshot.forEach(doc => {
-                    let data = doc.data();
-                    // Ensure arrays structures are intact from Firestore
-                    data = {
-                        ...data,
-                        licensePages: data.licensePages || new Array(10).fill(null),
-                        medicalPages: data.medicalPages || new Array(2).fill(null),
-                        passportPages: data.passportPages || new Array(2).fill(null),
-                        ktpPages: data.ktpPages || new Array(2).fill(null),
-                        kkPages: data.kkPages || new Array(1).fill(null),
-                        ccpPages: data.ccpPages || new Array(2).fill(null),
-                        loaPages: data.loaPages || new Array(2).fill(null)
+
+                snapshot.forEach(docSnap => {
+                    const prev = prevMap.get(String(docSnap.id)) || {};
+                    const rawData = docSnap.data();
+                    const legacyPages = {};
+
+                    // Simpan data *Pages lama yang masih tersimpan di dokumen utama agar tidak hilang
+                    Object.keys(rawData).forEach(key => {
+                        if (key.endsWith('Pages') && Array.isArray(rawData[key])) {
+                            const docType = key.replace(/Pages$/, '');
+                            legacyPages[docType] = rawData[key];
+                        }
+                    });
+
+                    const data = {
+                        ...prev,
+                        ...rawData,
+                        id: String(rawData.id || docSnap.id),
+                        _legacyPages: legacyPages,
+                        _subcollectionPages: prev._subcollectionPages || {}
                     };
+                    mergeCrewPages(data);
                     window.crewData.push(data);
                 });
-                
-                // Update UI based on current state
+
+                // Cek akses langsung via URL (?crewId=...)
+                if (!directAccessHandled && window.crewData.length > 0) {
+                    checkDirectAccess();
+                }
+
+                // Perbarui UI sesuai role aktif
                 if (window.currentUserRole === 'admin') {
                     window.renderCrewList(window.crewData);
-                } else if (window.selectedCrewId) {
-                    window.selectCrew(window.selectedCrewId);
                 }
-                
-                setTimeout(() => updateSyncStatus(false), 500);
+                if (window.selectedCrewId) {
+                    const selected = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
+                    if (selected) window.updateCrewDetailUI(selected);
+                }
+
+                setTimeout(() => updateSyncStatus(false), 400);
             }, (error) => {
                 console.error("Crew Listener Error:", error);
                 updateSyncStatus(false, true);
             });
 
-            // Listen to Custom Document Types
             const customDocsRef = collection(db, 'artifacts', appId, 'public', 'data', 'customDocTypes');
             onSnapshot(customDocsRef, (snapshot) => {
                 window.customDocTypes = [];
-                snapshot.forEach(doc => {
-                    window.customDocTypes.push(doc.data());
+                snapshot.forEach(docSnap => {
+                    window.customDocTypes.push(docSnap.data());
                 });
                 if (window.selectedCrewId) {
                     const currentCrew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
-                    if (currentCrew) window.renderDocumentCards(currentCrew);
+                    if (currentCrew) {
+                        mergeCrewPages(currentCrew);
+                        window.renderDocumentCards(currentCrew);
+                    }
                 }
             }, (error) => console.error("Custom Docs Error:", error));
         }
 
-        async function saveCrewToFirestore(crewObj) {
-            if (!firebaseUser) return;
-            try {
-                // Ensure data is clean (no undefined properties)
-                const cleanData = JSON.parse(JSON.stringify(crewObj));
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewObj.id)), cleanData);
-            } catch (e) {
-                console.error("Save Error:", e);
-                window.showToast("Gagal menyimpan ke cloud");
-                throw e; 
+        // Menggabungkan berkas lama (di dokumen utama) dengan berkas baru (di subkoleksi pages)
+        function mergeCrewPages(crew) {
+            const allDefs = [
+                ...defaultDocTypes,
+                ...window.customDocTypes,
+                { id: 'ccp', pages: 2 },
+                { id: 'loa', pages: 2 }
+            ];
+
+            const docTypesSet = new Set(allDefs.map(d => d.id));
+            if (crew._legacyPages) {
+                Object.keys(crew._legacyPages).forEach(t => docTypesSet.add(t));
             }
-        }
-
-        async function deleteCrewFromFirestore(id) {
-            if (!firebaseUser) return;
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(id)));
-            } catch (e) {
-                console.error("Delete Error:", e);
-                window.showToast("Gagal menghapus dari cloud");
+            if (crew._subcollectionPages) {
+                Object.keys(crew._subcollectionPages).forEach(t => docTypesSet.add(t));
             }
+
+            docTypesSet.forEach(docType => {
+                const def = allDefs.find(d => d.id === docType);
+                const legacyArr = Array.isArray(crew._legacyPages?.[docType]) ? crew._legacyPages[docType] : [];
+                const subMap = crew._subcollectionPages?.[docType] || {};
+                const maxSubIdx = Object.keys(subMap).reduce((m, k) => Math.max(m, Number(k) + 1), 0);
+                const len = Math.max(def?.pages || 2, legacyArr.length, maxSubIdx);
+
+                const merged = new Array(len).fill(null);
+
+                // 1. Masukkan data lama (legacy) terlebih dahulu agar tidak hilang
+                for (let i = 0; i < legacyArr.length; i++) {
+                    const item = legacyArr[i];
+                    if (item) {
+                        merged[i] = typeof item === 'string' ? { data: item, type: 'image/jpeg' } : item;
+                    }
+                }
+
+                // 2. Timpa dengan data terbaru dari subkoleksi pages (termasuk penanda hapus)
+                Object.keys(subMap).forEach(idxStr => {
+                    const idx = Number(idxStr);
+                    const p = subMap[idxStr];
+                    if (p && p.deleted) {
+                        merged[idx] = null;
+                    } else if (p && p.data) {
+                        merged[idx] = { data: p.data, type: p.type || 'image/jpeg' };
+                    }
+                });
+
+                crew[`${docType}Pages`] = merged;
+            });
         }
 
-        async function saveCustomDocToFirestore(docObj) {
-            if (!firebaseUser) return;
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'customDocTypes', docObj.id), docObj);
-            } catch (e) { console.error("Save Doc Error", e); }
-        }
-        
-        async function deleteCustomDocFromFirestore(id) {
-            if (!firebaseUser) return;
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'customDocTypes', id));
-            } catch (e) { console.error("Delete Doc Error", e); }
+        // Memisahkan data profil dari array *Pages dan field internal agar ukuran dokumen profil selalu jauh di bawah 1MB
+        function stripPagesFromCrew(crewObj) {
+            const profileOnly = {};
+            Object.keys(crewObj).forEach(key => {
+                if (!key.endsWith('Pages') && !key.startsWith('_') && crewObj[key] !== undefined) {
+                    profileOnly[key] = crewObj[key];
+                }
+            });
+            return profileOnly;
         }
 
-        // Compression is crucial to avoid Firestore's 1MB document limit
-        function compressImage(file, maxSize = 1000) {
-            return new Promise((resolve) => {
+        // Kompresi file gambar (File/Blob) ke Base64 JPEG
+        function compressImage(file, maxSize = 1100, quality = 0.7) {
+            return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
+                reader.onload = (e) => {
                     const img = new Image();
-                    img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        
-                        // Maintain aspect ratio, scale down if exceeds maxSize
                         if (width > height && width > maxSize) {
                             height *= maxSize / width;
                             width = maxSize;
@@ -647,41 +718,234 @@
                             width *= maxSize / height;
                             height = maxSize;
                         }
-                        
                         canvas.width = width;
                         canvas.height = height;
-                        
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // Convert to JPEG with 0.7 quality to save massive space
-                        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                        resolve(canvas.toDataURL('image/jpeg', quality));
                     };
+                    img.onerror = reject;
+                    img.src = e.target.result;
                 };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
             });
         }
 
-        window.initApp = function() {
-            window.populatePageSelect();
-            window.setupConfirmButtons();
-            window.checkDirectAccess();
-            initFirebase(); 
+        // Kompresi ulang string Base64 jika ukurannya terlalu besar untuk 1 dokumen Firestore
+        function compressBase64Image(base64Str, maxSize = 1000, quality = 0.65) {
+            return new Promise((resolve) => {
+                if (!base64Str || typeof base64Str !== 'string' || !base64Str.startsWith('data:image')) {
+                    resolve(base64Str);
+                    return;
+                }
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height && width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
+                    } else if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = () => resolve(base64Str);
+                img.src = base64Str;
+            });
         }
 
-        window.setupConfirmButtons = function() {
+        // Mendengarkan perubahan halaman dokumen di subkoleksi pages untuk kru yang sedang dipilih
+        function listenToCrewPages(crewId) {
+            if (unsubscribePages) {
+                unsubscribePages();
+                unsubscribePages = null;
+            }
+            if (!firebaseReady || !crewId) return;
+
+            const pagesRef = collection(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewId), 'pages');
+            unsubscribePages = onSnapshot(pagesRef, (snapshot) => {
+                const idx = window.crewData.findIndex(c => String(c.id) === String(crewId));
+                if (idx === -1) return;
+
+                const crew = window.crewData[idx];
+                const subcollectionPages = {};
+
+                snapshot.forEach(docSnap => {
+                    const p = docSnap.data();
+                    if (!p || !p.docType || typeof p.pageIndex !== 'number') return;
+                    if (!subcollectionPages[p.docType]) {
+                        subcollectionPages[p.docType] = {};
+                    }
+                    subcollectionPages[p.docType][p.pageIndex] = p;
+                });
+
+                crew._subcollectionPages = subcollectionPages;
+                mergeCrewPages(crew);
+
+                window.renderDocumentCards(crew);
+                const gridModal = document.getElementById('gridModal');
+                if (gridModal && !gridModal.classList.contains('hidden')) {
+                    window.renderGridPages(crew, window.activeGridType);
+                }
+            }, (error) => {
+                console.error("Pages Listener Error:", error);
+            });
+        }
+
+        // Simpan dokumen profil kru (ringan, tanpa array halaman)
+        async function saveCrewProfileToFirestore(crewObj) {
+            if (!firebaseReady) return;
+            try {
+                // Jika kru masih memiliki dokumen lama (legacy) di dokumen utama, pindahkan dulu ke subkoleksi pages
+                if (crewObj._legacyPages) {
+                    for (const docType of Object.keys(crewObj._legacyPages)) {
+                        const legacyArr = crewObj._legacyPages[docType];
+                        if (!Array.isArray(legacyArr)) continue;
+                        for (let i = 0; i < legacyArr.length; i++) {
+                            const hasSub = crewObj._subcollectionPages?.[docType]?.[i];
+                            const item = legacyArr[i];
+                            if (!hasSub && item) {
+                                const pageObj = typeof item === 'string' ? { data: item, type: 'image/jpeg' } : item;
+                                if (pageObj && pageObj.data) {
+                                    await saveCrewPageToFirestore(crewObj.id, docType, i, pageObj);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                const profileData = stripPagesFromCrew(crewObj);
+                if (profileData.profilePhoto && typeof profileData.profilePhoto === 'string' && profileData.profilePhoto.startsWith('data:image')) {
+                    profileData.profilePhoto = await compressBase64Image(profileData.profilePhoto, 400, 0.7);
+                }
+                const cleanData = JSON.parse(JSON.stringify(profileData));
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewObj.id)), cleanData);
+            } catch (e) {
+                console.error("Save Profile Error:", e);
+                window.showToast("Gagal menyimpan profil ke cloud");
+                throw e;
+            }
+        }
+
+        // Simpan 1 halaman berkas ke subkoleksi pages
+        async function saveCrewPageToFirestore(crewId, docType, pageIndex, pageObj) {
+            if (!firebaseReady) return;
+            try {
+                let pageData = pageObj.data;
+                if (pageData && typeof pageData === 'string' && pageData.startsWith('data:image') && pageData.length > 700000) {
+                    pageData = await compressBase64Image(pageData, 1000, 0.6);
+                }
+                const pageDocId = `${docType}_${pageIndex}`;
+                await setDoc(
+                    doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewId), 'pages', pageDocId),
+                    {
+                        docType: docType,
+                        pageIndex: pageIndex,
+                        data: pageData,
+                        type: pageObj.type || 'image/jpeg',
+                        deleted: false,
+                        updatedAt: Date.now()
+                    }
+                );
+            } catch (e) {
+                console.error("Save Page Error:", e);
+                window.showToast("Gagal menyimpan halaman ke cloud");
+                throw e;
+            }
+        }
+
+        // Hapus 1 halaman berkas dari subkoleksi pages (atau tandai terhapus jika berasal dari data lama)
+        async function deleteCrewPageFromFirestore(crewId, docType, pageIndex) {
+            if (!firebaseReady) return;
+            try {
+                const pageDocId = `${docType}_${pageIndex}`;
+                const crew = window.crewData.find(c => String(c.id) === String(crewId));
+                const hasLegacy = Boolean(crew?._legacyPages?.[docType]?.[pageIndex]);
+
+                if (hasLegacy) {
+                    await setDoc(
+                        doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewId), 'pages', pageDocId),
+                        {
+                            docType: docType,
+                            pageIndex: pageIndex,
+                            data: null,
+                            deleted: true,
+                            updatedAt: Date.now()
+                        }
+                    );
+                } else {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crewId), 'pages', pageDocId));
+                }
+            } catch (e) {
+                console.error("Delete Page Error:", e);
+                window.showToast("Gagal menghapus halaman di cloud");
+            }
+        }
+
+        // Hapus profil kru beserta seluruh subkoleksi pages miliknya
+        async function deleteCrewFromFirestore(id) {
+            if (!firebaseReady) return;
+            try {
+                const pagesRef = collection(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(id), 'pages');
+                const pagesSnap = await getDocs(pagesRef);
+                for (const pDoc of pagesSnap.docs) {
+                    await deleteDoc(pDoc.ref);
+                }
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(id)));
+            } catch (e) {
+                console.error("Delete Crew Error:", e);
+                window.showToast("Gagal menghapus dari cloud");
+            }
+        }
+
+        // Simpan kategori dokumen kustom
+        async function saveCustomDocToFirestore(docObj) {
+            if (!firebaseReady) return;
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'customDocTypes', String(docObj.id)), docObj);
+            } catch (e) {
+                console.error("Save Custom Doc Error:", e);
+                window.showToast("Gagal menyimpan menu dokumen");
+            }
+        }
+
+        // Hapus kategori dokumen kustom
+        async function deleteCustomDocFromFirestore(id) {
+            if (!firebaseReady) return;
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'customDocTypes', String(id)));
+            } catch (e) {
+                console.error("Delete Custom Doc Error:", e);
+            }
+        }
+
+        // Setup tombol konfirmasi pada seluruh modal
+        function setupConfirmButtons() {
             const btnDel = document.getElementById('confirmDeleteBtn');
             if (btnDel) {
                 btnDel.onclick = async () => {
-                    if(window.crewToDeleteId) {
+                    if (window.crewToDeleteId) {
                         const idToDelete = window.crewToDeleteId;
-                        if(window.selectedCrewId == idToDelete) { 
-                             window.selectedCrewId = null; 
-                             document.getElementById('welcomeScreen').classList.remove('hidden'); 
-                             document.getElementById('crewDetailView').classList.add('hidden'); 
-                         }
+                        if (String(window.selectedCrewId) === String(idToDelete)) {
+                            window.selectedCrewId = null;
+                            if (unsubscribePages) {
+                                unsubscribePages();
+                                unsubscribePages = null;
+                            }
+                            document.getElementById('welcomeScreen').classList.remove('hidden');
+                            document.getElementById('crewDetailView').classList.add('hidden');
+                        }
                         window.closeDeleteModal();
                         await deleteCrewFromFirestore(idToDelete);
-                        window.showToast("Personil Dihapus");
+                        window.showToast("Personil berhasil dihapus");
                     }
                 };
             }
@@ -689,17 +953,22 @@
             const btnDocDel = document.getElementById('confirmDocDeleteBtn');
             if (btnDocDel) {
                 btnDocDel.onclick = async () => {
-                    if(window.docToDeleteId) {
+                    if (window.docToDeleteId) {
                         const id = window.docToDeleteId;
-                        
-                        // Remove from custom docs collection
                         await deleteCustomDocFromFirestore(id);
-                        
-                        // Clean up this doc from all crews in Firestore
-                        for(let i = 0; i < window.crewData.length; i++) {
-                            if (window.crewData[i][`${id}Pages`]) {
-                                window.crewData[i][`${id}Pages`] = null;
-                                await saveCrewToFirestore(window.crewData[i]);
+
+                        // Bersihkan dokumen halaman terkait di subkoleksi pages setiap kru
+                        for (const crew of window.crewData) {
+                            try {
+                                const pagesRef = collection(db, 'artifacts', appId, 'public', 'data', 'crewProfiles', String(crew.id), 'pages');
+                                const pagesSnap = await getDocs(pagesRef);
+                                for (const pDoc of pagesSnap.docs) {
+                                    if (pDoc.data()?.docType === id) {
+                                        await deleteDoc(pDoc.ref);
+                                    }
+                                }
+                            } catch (e) {
+                                console.error("Cleanup doc pages error:", e);
                             }
                         }
 
@@ -715,39 +984,65 @@
                     if (window.fileToDeleteIndex !== null && window.fileToDeleteType !== null) {
                         const idx = window.crewData.findIndex(c => String(c.id) === String(window.selectedCrewId));
                         if (idx !== -1) {
-                            window.crewData[idx][`${window.fileToDeleteType}Pages`][window.fileToDeleteIndex] = null;
-                            window.renderGridPages(window.crewData[idx], window.fileToDeleteType); 
-                            window.renderDocumentCards(window.crewData[idx]); 
-                            
-                            // Save update to firestore
-                            await saveCrewToFirestore(window.crewData[idx]);
+                            if (window.crewData[idx][`${window.fileToDeleteType}Pages`]) {
+                                window.crewData[idx][`${window.fileToDeleteType}Pages`][window.fileToDeleteIndex] = null;
+                            }
+                            window.renderGridPages(window.crewData[idx], window.fileToDeleteType);
+                            window.renderDocumentCards(window.crewData[idx]);
+
+                            await deleteCrewPageFromFirestore(window.selectedCrewId, window.fileToDeleteType, window.fileToDeleteIndex);
                             window.showToast("Berkas berhasil dihapus");
                         }
                     }
                     window.closeFileDeleteModal();
                 };
             }
+
+            const btnMigrate = document.getElementById('confirmMigrateBtn');
+            if (btnMigrate) {
+                btnMigrate.onclick = async () => {
+                    window.closeMigrateModal();
+                    await window.executeMigrationFromGoogleSheets();
+                };
+            }
         }
 
+        // Cek parameter URL ?crewId=... untuk akses langsung kru
+        function checkDirectAccess() {
+            const params = new URLSearchParams(window.location.search);
+            const directCrewId = params.get('crewId');
+            if (directCrewId) {
+                const crew = window.crewData.find(c => String(c.id) === String(directCrewId));
+                if (crew) {
+                    directAccessHandled = true;
+                    window.enterApp('crew', crew);
+                }
+            }
+        }
+
+        // Login Admin & Kru
         window.handleLogin = function(e) {
             e.preventDefault();
-            const u = document.getElementById('loginUsername').value;
+            const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
-            
-            // Hardcoded Admin
-            if (u === 'admin' && p === 'TWA119-021') { window.enterApp('admin'); return; }
-            
-            // Check against loaded crew data
+
+            if (u === 'admin' && p === 'TWA119-021') {
+                window.enterApp('admin');
+                return;
+            }
             const foundCrew = window.crewData.find(c => (c.email === u || c.username === u) && c.password === p);
-            if (foundCrew) window.enterApp('crew', foundCrew);
-            else window.showToast("Login Gagal! Periksa kredensial.");
-        }
+            if (foundCrew) {
+                window.enterApp('crew', foundCrew);
+            } else {
+                window.showToast("Username atau Password salah!");
+            }
+        };
 
         window.enterApp = function(role, crewObj = null) {
             window.currentUserRole = role;
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
-            
+
             if (role === 'admin') {
                 document.getElementById('headerSubtext').innerText = "Administrator Panel";
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
@@ -760,19 +1055,22 @@
                 window.selectCrew(crewObj.id);
             }
             window.showToast(`Halo, ${role === 'admin' ? 'Admin' : crewObj.name}`);
-        }
+        };
 
         window.handleLogout = function() {
-            window.currentUserRole = null; 
+            if (unsubscribePages) {
+                unsubscribePages();
+                unsubscribePages = null;
+            }
+            window.currentUserRole = null;
             window.selectedCrewId = null;
             const url = new URL(window.location);
             url.searchParams.delete('crewId');
             window.history.replaceState({}, '', url);
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('loginPassword').value = '';
-        }
-        
+        };
+
         window.generateDirectLink = function(crewId) {
             const baseUrl = window.location.origin + window.location.pathname;
             const fullLink = `${baseUrl}?crewId=${crewId}`;
@@ -783,27 +1081,12 @@
             document.execCommand('copy');
             document.body.removeChild(el);
             window.showToast("Tautan langsung disalin!");
-        }
+        };
 
-        window.checkDirectAccess = function() {
-            const params = new URLSearchParams(window.location.search);
-            const directCrewId = params.get('crewId');
-            if (directCrewId) {
-                // Wait for data to load from firestore
-                const checkInterval = setInterval(() => {
-                    const found = window.crewData.find(c => String(c.id) === String(directCrewId));
-                    if (found) { 
-                        window.enterApp('crew', found); 
-                        clearInterval(checkInterval); 
-                    }
-                }, 500);
-                setTimeout(() => clearInterval(checkInterval), 8000);
-            }
-        }
-
+        // Render daftar kru di sidebar
         window.renderCrewList = function(data) {
-            const list = document.getElementById('crewList'); 
-            if(!list) return;
+            const list = document.getElementById('crewList');
+            if (!list) return;
             list.innerHTML = '';
 
             let displayData = data;
@@ -815,380 +1098,346 @@
                 const item = document.createElement('div');
                 const isSelected = String(window.selectedCrewId) === String(crew.id);
                 item.className = `p-3 md:p-5 border-b border-slate-800/30 cursor-pointer hover:bg-slate-800/40 transition-all flex items-center justify-between group ${isSelected ? 'sidebar-active' : ''}`;
-                
                 const imgSrc = window.getDirectImgUrl(crew.profilePhoto);
-                const avatar = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : '<span class="text-[10px] font-black aviation-accent">TW</span>';
-                
+                const avatar = imgSrc
+                    ? `<img src="${imgSrc}" class="w-full h-full object-cover">`
+                    : '<span class="text-[10px] font-black aviation-accent">TW</span>';
+
                 let actionButtons = "";
                 if (window.currentUserRole === 'admin') {
                     actionButtons = `
-                    <button onclick="event.stopPropagation(); window.generateDirectLink('${crew.id}')" class="p-2 text-slate-500 hover:text-emerald-500"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
-                    <button onclick="event.stopPropagation(); window.openEditCrewModal('${crew.id}')" class="p-2 text-slate-500 hover:text-amber-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 00 2 2h14a2 2 0 00 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                    <button onclick="event.stopPropagation(); window.openDeleteModal('${crew.id}')" class="p-2 text-slate-500 hover:text-red-500"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                        <button onclick="event.stopPropagation(); window.generateDirectLink('${crew.id}')" class="p-2 text-slate-500 hover:text-emerald-500" title="Salin Link"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
+                        <button onclick="event.stopPropagation(); window.openEditCrewModal('${crew.id}')" class="p-2 text-slate-500 hover:text-amber-500" title="Edit"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                        <button onclick="event.stopPropagation(); window.openDeleteModal('${crew.id}')" class="p-2 text-slate-500 hover:text-red-500" title="Hapus"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                     `;
                 }
 
-                item.innerHTML = `<div class="flex items-center gap-3 flex-1 min-w-0" onclick="window.selectCrew('${crew.id}')">
-                    <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center border border-slate-700 overflow-hidden shrink-0">${avatar}</div>
-                    <div class="min-w-0 flex-1">
-                        <p class="text-xs font-bold text-white/90 truncate">${crew.name}</p>
-                        <p class="text-[8px] text-slate-500 font-black uppercase">${crew.licenseNo}</p>
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 flex-1 min-w-0" onclick="window.selectCrew('${crew.id}')">
+                        <div class="w-10 h-10 rounded-xl aviation-blue flex items-center justify-center border border-slate-700 overflow-hidden shrink-0">${avatar}</div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-bold text-white/90 truncate">${crew.name}</p>
+                            <p class="text-[8px] text-slate-500 font-black uppercase">${crew.licenseNo || '-'}</p>
+                        </div>
                     </div>
-                </div><div class="flex gap-1 opacity-0 group-hover:opacity-100">
-                    ${actionButtons}
-                </div>`;
+                    <div class="flex gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                        ${actionButtons}
+                    </div>
+                `;
                 list.appendChild(item);
             });
-        }
+        };
+
+        window.updateCrewDetailUI = function(crew) {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('crewDetailView').classList.remove('hidden');
+
+            document.getElementById('detName').innerText = crew.name || '-';
+            document.getElementById('detRank').innerText = crew.rank || '-';
+            document.getElementById('detLicenseNo').innerText = crew.licenseNo || '-';
+            document.getElementById('detQualification').innerText = crew.qualification || "GENERAL PILOT";
+
+            const box = document.getElementById('detAvatarContainer');
+            const imgSrc = window.getDirectImgUrl(crew.profilePhoto);
+            box.innerHTML = imgSrc
+                ? `<img src="${imgSrc}" class="w-full h-full object-cover">`
+                : `<svg class="w-24 h-24 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+
+            window.renderDocumentCards(crew);
+        };
 
         window.selectCrew = function(id) {
-            window.selectedCrewId = id; 
-            const crew = window.crewData.find(c => String(c.id) === String(id)); 
-            if(!crew) return;
-            
-            window.renderCrewList(window.crewData); 
-            
-            document.getElementById('welcomeScreen').classList.add('hidden'); 
-            document.getElementById('crewDetailView').classList.remove('hidden');
-            
-            document.getElementById('detName').innerText = crew.name; 
-            document.getElementById('detRank').innerText = crew.rank;
-            document.getElementById('detLicenseNo').innerText = crew.licenseNo; 
-            document.getElementById('detQualification').innerText = crew.qualification || "GENERAL PILOT";
-            
-            const box = document.getElementById('detAvatarContainer'); 
-            const imgSrc = window.getDirectImgUrl(crew.profilePhoto);
-            box.innerHTML = imgSrc ? `<img src="${imgSrc}" class="w-full h-full object-cover">` : `<svg class="w-24 h-24 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
-            
-            window.renderDocumentCards(crew);
-        }
+            window.selectedCrewId = id;
+            const crew = window.crewData.find(c => String(c.id) === String(id));
+            if (!crew) return;
+
+            window.renderCrewList(window.crewData);
+            window.updateCrewDetailUI(crew);
+            listenToCrewPages(id);
+
+            // Tutup menu mobile otomatis setelah memilih kru
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+                if (overlay) overlay.classList.add('hidden');
+            }
+        };
 
         window.renderDocumentCards = function(crew) {
-            const container = document.getElementById('documentContainer'); 
-            if(!container) return;
+            const container = document.getElementById('documentContainer');
+            if (!container) return;
             container.innerHTML = '';
-            
-            const q = crew.qualification?.split(',').map(s => s.trim()) || [];
-            let activeDocs = [...defaultDocTypes.map(d => ({...d, isCustom: false}))];
-            
-            if(q.includes('CCP')) activeDocs.push({ id: 'ccp', name: "CCP Certificate", pages: 2, layout: 'portrait' });
-            if(q.includes('FI') || q.includes('GI')) activeDocs.push({ id: 'loa', name: "LOA", pages: 2, layout: 'portrait' });
-            
-            const customActive = window.customDocTypes.filter(dt => crew[`${dt.id}Pages`] !== undefined);
-            activeDocs = [...activeDocs, ...customActive];
 
-            activeDocs.forEach(doc => {
-                const pages = crew[`${doc.id}Pages`] || [];
+            const q = crew.qualification ? crew.qualification.split(',').map(s => s.trim()) : [];
+            let activeDocs = [...defaultDocTypes.map(d => ({ ...d, isCustom: false }))];
+
+            if (q.includes('CCP')) activeDocs.push({ id: 'ccp', name: "CCP Certificate", pages: 2, layout: 'portrait' });
+            if (q.includes('FI') || q.includes('GI')) activeDocs.push({ id: 'loa', name: "LOA", pages: 2, layout: 'portrait' });
+
+            activeDocs = [...activeDocs, ...window.customDocTypes];
+
+            // Deteksi otomatis dokumen kustom lama yang memiliki berkas namun belum terdaftar di customDocTypes
+            const existingIds = new Set(activeDocs.map(d => d.id));
+            Object.keys(crew).forEach(key => {
+                if (key.endsWith('Pages') && Array.isArray(crew[key])) {
+                    const docId = key.replace(/Pages$/, '');
+                    const hasAny = crew[key].some(p => p !== null);
+                    if (!existingIds.has(docId) && hasAny) {
+                        activeDocs.push({
+                            id: docId,
+                            name: docId.replace(/^custom_/, 'Dokumen ').toUpperCase(),
+                            pages: crew[key].length || 2,
+                            layout: 'portrait'
+                        });
+                        existingIds.add(docId);
+                    }
+                }
+            });
+
+            activeDocs.forEach(docItem => {
+                const pages = crew[`${docItem.id}Pages`] || [];
                 const hasFile = Array.isArray(pages) && pages.some(p => p !== null);
                 const card = document.createElement('div');
                 card.className = "glass-card p-4 rounded-3xl cursor-pointer hover:border-amber-500 transition-all border flex flex-col items-center text-center relative group";
-                
-                let deleteMenuBtn = (doc.id.startsWith('custom_') && window.currentUserRole === 'admin') ? 
-                    `<button onclick="event.stopPropagation(); window.openDocDeleteModal('${doc.id}')" class="absolute top-2 right-2 p-2 text-slate-300 hover:text-orange-500 z-20"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : "";
 
-                card.onclick = () => window.openMultiPageModal(doc.id, doc.name);
-                card.innerHTML = `${deleteMenuBtn}<h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">${doc.name}</h4><div class="mt-3 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} text-[8px] font-black uppercase">${hasFile ? 'Tersedia' : 'Kosong'}</div>`;
+                const deleteMenuBtn = (docItem.id.startsWith('custom_') && window.currentUserRole === 'admin')
+                    ? `<button onclick="event.stopPropagation(); window.openDocDeleteModal('${docItem.id}')" class="absolute top-2 right-2 p-2 text-slate-300 hover:text-orange-500 z-20"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>`
+                    : "";
+
+                card.onclick = () => window.openMultiPageModal(docItem.id, docItem.name);
+                card.innerHTML = `
+                    ${deleteMenuBtn}
+                    <h4 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">${docItem.name}</h4>
+                    <div class="mt-3 px-3 py-1 rounded-lg ${hasFile ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'} text-[8px] font-black uppercase">${hasFile ? 'Tersedia' : 'Kosong'}</div>
+                `;
                 container.appendChild(card);
             });
-        }
+        };
 
-        window.openMultiPageModal = function(type, title) { 
-            window.activeGridType = type; 
-            const crew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId)); 
-            if(!crew) return;
-            
-            document.getElementById('gridModalTitle').innerText = title; 
-            document.getElementById('gridModalCrewName').innerText = crew.name; 
-            window.renderGridPages(crew, type); 
-            document.getElementById('gridModal').classList.remove('hidden'); 
-        }
+        window.openMultiPageModal = function(type, title) {
+            window.activeGridType = type;
+            const crew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
+            if (!crew) return;
+            document.getElementById('gridModalTitle').innerText = title;
+            document.getElementById('gridModalCrewName').innerText = crew.name;
+            window.renderGridPages(crew, type);
+            document.getElementById('gridModal').classList.remove('hidden');
+        };
 
         window.renderGridPages = function(crew, type) {
-            const container = document.getElementById('gridPageContainer'); 
-            if(!container) return;
+            const container = document.getElementById('gridPageContainer');
+            if (!container) return;
             container.innerHTML = '';
-            
-            const docDef = [...defaultDocTypes, ...window.customDocTypes, {id:'ccp', pages:2, layout:'portrait'}, {id:'loa', pages:2, layout:'portrait'}].find(d => d.id === type);
+
+            const docDef = [
+                ...defaultDocTypes,
+                ...window.customDocTypes,
+                { id: 'ccp', pages: 2, layout: 'portrait' },
+                { id: 'loa', pages: 2, layout: 'portrait' }
+            ].find(d => d.id === type);
+
             const expectedCount = docDef?.pages || 2;
             const layoutType = docDef?.layout || 'portrait';
 
-            let slotClass = "license-slot"; 
+            let slotClass = "license-slot";
             if (layoutType === 'landscape') slotClass = "landscape-slot";
             else if (layoutType === 'idcard') slotClass = "idcard-slot";
             else if (layoutType === 'passport') slotClass = "passport-slot";
 
-            container.className = (layoutType === 'landscape' || layoutType === 'idcard' || layoutType === 'passport') 
-                ? "grid grid-cols-1 sm:grid-cols-2 gap-4" 
+            container.className = (layoutType === 'landscape' || layoutType === 'idcard' || layoutType === 'passport')
+                ? "grid grid-cols-1 sm:grid-cols-2 gap-4"
                 : "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8";
 
             if (!crew[`${type}Pages`]) crew[`${type}Pages`] = new Array(expectedCount).fill(null);
             const pages = crew[`${type}Pages`];
-            
-            for(let i=0; i < expectedCount; i++) {
+
+            for (let i = 0; i < expectedCount; i++) {
                 const s = document.createElement('div');
                 s.className = `${slotClass} flex flex-col items-center justify-center overflow-hidden`;
-                
-                s.onclick = () => { 
-                    const inp = document.createElement('input'); 
-                    inp.type='file'; 
-                    inp.accept="image/*"; 
-                    inp.onchange=(e) => window.handleGridFileUpload(e, i, type); 
-                    inp.click(); 
+                s.onclick = () => {
+                    const inp = document.createElement('input');
+                    inp.type = 'file';
+                    inp.accept = 'image/*';
+                    inp.onchange = (e) => window.handleGridFileUpload(e, i, type);
+                    inp.click();
                 };
-                
+
                 const pData = pages[i];
-                let delBtn = pData ? `<button onclick="event.stopPropagation(); window.openFileDeleteModal(${i}, '${type}')" class="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-lg shadow-lg z-20"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : "";
-                
-                s.innerHTML = `<div class="absolute top-2 left-0 w-full bg-slate-900/60 py-1 z-10"><p class="text-[7px] text-white text-center font-bold uppercase">Page ${i+1}</p></div>${delBtn}${pData ? `<img src="${window.getDirectImgUrl(pData.data)}" class="absolute inset-0 w-full h-full object-cover">` : '<svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>'}`;
+                const delBtn = pData
+                    ? `<button onclick="event.stopPropagation(); window.openFileDeleteModal(${i}, '${type}')" class="absolute top-2 right-2 p-1.5 bg-red-600 text-white rounded-lg shadow-lg z-20"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>`
+                    : "";
+
+                s.innerHTML = `
+                    <div class="absolute top-2 left-0 w-full bg-slate-900/60 py-1 z-10">
+                        <p class="text-[7px] text-white text-center font-bold uppercase">Page ${i + 1}</p>
+                    </div>
+                    ${delBtn}
+                    ${pData ? `<img src="${window.getDirectImgUrl(pData.data)}" class="absolute inset-0 w-full h-full object-cover">` : '<svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>'}
+                `;
                 container.appendChild(s);
             }
-        }
+        };
 
         window.handleGridFileUpload = async function(e, index, type) {
-            const f = e.target.files[0]; if(!f) return;
-            
-            // Show uploading overlay
+            const f = e.target.files[0];
+            if (!f) return;
+
             const overlay = document.getElementById('uploadingOverlay');
-            if(overlay) overlay.classList.replace('hidden', 'flex');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
 
             try {
-                // Compress image before saving to avoid 1MB Firestore limit
-                const compressedBase64 = await compressImage(f, 1200); 
-                
+                const compressedBase64 = await compressImage(f, 1100, 0.7);
                 const idx = window.crewData.findIndex(c => String(c.id) === String(window.selectedCrewId));
                 if (idx === -1) return;
-                
-                window.crewData[idx][`${type}Pages`][index] = { data: compressedBase64, type: 'image/jpeg' };
-                
-                // Immediately update local UI
-                window.renderGridPages(window.crewData[idx], type); 
+
+                if (!window.crewData[idx][`${type}Pages`]) {
+                    window.crewData[idx][`${type}Pages`] = [];
+                }
+                const pageObj = { data: compressedBase64, type: 'image/jpeg' };
+                window.crewData[idx][`${type}Pages`][index] = pageObj;
+
+                window.renderGridPages(window.crewData[idx], type);
                 window.renderDocumentCards(window.crewData[idx]);
-                
-                // Save to Firestore silently
-                await saveCrewToFirestore(window.crewData[idx]);
+
+                await saveCrewPageToFirestore(window.selectedCrewId, type, index, pageObj);
+                window.showToast("Halaman tersimpan di Firebase");
             } catch (err) {
                 console.error(err);
                 window.showToast("Gagal mengolah gambar");
             } finally {
-                if(overlay) overlay.classList.replace('flex', 'hidden');
-            }
-        }
-
-        window.handleCrewSubmit = async function(e) {
-            e.preventDefault();
-            
-            const overlay = document.getElementById('savingCrewOverlay');
-            if(overlay) overlay.classList.replace('hidden', 'flex');
-
-            try {
-                const n = document.getElementById('crewName').value;
-                const em = document.getElementById('crewEmail').value;
-                const u = document.getElementById('crewUsername').value;
-                const p = document.getElementById('crewPassword').value;
-                const l = document.getElementById('crewLicenseNo').value;
-                const r = document.getElementById('crewRank').value;
-                const quals = Array.from(document.querySelectorAll('.qual-checkbox:checked')).map(cb => cb.value).join(', ');
-                
-                let crewObj;
-                if (window.editingCrewId) {
-                    const i = window.crewData.findIndex(c => String(c.id) === String(window.editingCrewId));
-                    crewObj = { 
-                        ...window.crewData[i], 
-                        name: n, email: em, username: u, password: p, licenseNo: l, rank: r, 
-                        qualification: quals, profilePhoto: window.currentFormPhotoBase64 
-                    };
-                } else {
-                    crewObj = { 
-                        id: Date.now().toString(), // Ensure ID is string for firestore
-                        name: n, email: em, username: u, password: p, licenseNo: l, rank: r, 
-                        qualification: quals, profilePhoto: window.currentFormPhotoBase64, 
-                        licensePages: new Array(10).fill(null), medicalPages: new Array(2).fill(null), 
-                        passportPages: new Array(2).fill(null), ktpPages: new Array(2).fill(null), 
-                        kkPages: new Array(1).fill(null), ccpPages: new Array(2).fill(null), loaPages: new Array(2).fill(null) 
-                    };
-                    // Ensure custom doc arrays exist for new user
-                    window.customDocTypes.forEach(dt => {
-                        crewObj[`${dt.id}Pages`] = new Array(dt.pages).fill(null);
-                    });
-                }
-
-                await saveCrewToFirestore(crewObj);
-                window.closeCrewModal(); 
-                window.showToast("Data Kru Tersimpan");
-            } catch (err) {
-                console.error(err);
-            } finally {
-                if(overlay) overlay.classList.replace('flex', 'hidden');
-            }
-        }
-
-        window.handleDocSubmit = async function(e) {
-            e.preventDefault();
-            const name = document.getElementById('newDocName').value;
-            const pages = parseInt(document.getElementById('newDocPages').value);
-            const layout = document.getElementById('newDocLayout').value;
-            const id = 'custom_' + Date.now();
-            
-            const newDoc = { id, name, pages, layout, isCustom: true };
-            
-            await saveCustomDocToFirestore(newDoc);
-            
-            // Initialize arrays for all existing crews
-            for (let i = 0; i < window.crewData.length; i++) {
-                if (!window.crewData[i][`${id}Pages`]) {
-                    window.crewData[i][`${id}Pages`] = new Array(pages).fill(null);
-                    await saveCrewToFirestore(window.crewData[i]); // Background save
+                if (overlay) {
+                    overlay.classList.remove('flex');
+                    overlay.classList.add('hidden');
                 }
             }
+        };
 
-            window.closeDocModal();
-            window.showToast("Menu Dokument Ditambahkan");
-        }
+        window.syncAndCloseGrid = function() {
+            window.closeGridModal();
+        };
 
-        window.getDirectImgUrl = function(u) { 
-            if (!u) return null; 
-            if (u.startsWith('data:image')) return u; 
-            const m = u.match(/[-\w]{25,}/); 
-            return m ? `https://lh3.googleusercontent.com/d/${m[0]}` : u; 
-        }
-        
-        window.showToast = function(m) { 
-            const t = document.getElementById('toast'); 
-            t.innerText = m; 
-            t.classList.add('show'); 
-            setTimeout(() => t.classList.remove('show'), 3000); 
-        }
+        // Ekspor dokumen ke PDF multi-halaman
+        window.downloadMultiPagePDF = async function() {
+            const { jsPDF } = window.jspdf;
+            const crew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
+            if (!crew) return;
 
-        window.syncAndCloseGrid = function() { window.closeGridModal(); }
-        window.closeGridModal = function() { document.getElementById('gridModal').classList.add('hidden'); }
-        window.openAddDocModal = function() { document.getElementById('docFormModal').classList.remove('hidden'); }
-        window.closeDocModal = function() { document.getElementById('docFormModal').classList.add('hidden'); }
-        window.closeCrewModal = function() { document.getElementById('crewFormModal').classList.add('hidden'); }
-        window.openDeleteModal = function(id) { window.crewToDeleteId = id; document.getElementById('deleteConfirmModal').classList.remove('hidden'); }
-        window.closeDeleteModal = function() { document.getElementById('deleteConfirmModal').classList.add('hidden'); }
-        window.openDocDeleteModal = function(id) { window.docToDeleteId = id; document.getElementById('docDeleteConfirmModal').classList.remove('hidden'); }
-        window.closeDocDeleteModal = function() { document.getElementById('docDeleteConfirmModal').classList.add('hidden'); window.docToDeleteId = null; }
-        window.openFileDeleteModal = function(i, t) { window.fileToDeleteIndex = i; window.fileToDeleteType = t; document.getElementById('fileDeleteConfirmModal').classList.remove('hidden'); }
-        window.closeFileDeleteModal = function() { document.getElementById('fileDeleteConfirmModal').classList.add('hidden'); }
-        window.toggleMobileMenu = function() { document.getElementById('mainSidebar').classList.toggle('-translate-x-full'); document.getElementById('mobileOverlay').classList.toggle('hidden'); }
-        window.togglePassword = function() { const p = document.getElementById('crewPassword'); p.type = p.type === 'password' ? 'text' : 'password'; }
-        window.autoPopulateUsername = function(v) { document.getElementById('crewUsername').value = v; }
-        window.populatePageSelect = function() { const s = document.getElementById('newDocPages'); for(let i=1; i<=15; i++) { const o = document.createElement('option'); o.value = i; o.innerText = i + " Halaman"; s.appendChild(o); } }
-        window.triggerProfilePhotoUpload = function() { document.getElementById('crewProfilePhotoInput').click(); }
-        
-        window.migrateFromGoogleSheets = async function() {
-            if(!confirm("Proses ini akan menarik data dari Google Sheets lama dan memasukkannya ke Firebase. Pastikan koneksi stabil. Lanjutkan?")) return;
-            
-            // Endpoint App Script Google lama Anda
-            const OLD_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVMKuv7QTeYrsLeUganZzZ-mZGV4hw2l9CGwStBtF5LEUAeUNlWlXcxH-WUmi_A-3g/exec";
-            window.showToast("Mengunduh data dari G-Sheets...");
-            
+            const container = document.getElementById('pdfExportGrid');
+            container.innerHTML = '';
+
+            const docDef = [
+                ...defaultDocTypes,
+                ...window.customDocTypes,
+                { id: 'ccp', pages: 2, layout: 'portrait' },
+                { id: 'loa', pages: 2, layout: 'portrait' }
+            ].find(d => d.id === window.activeGridType);
+
+            const layoutType = docDef?.layout || 'portrait';
+            const pages = [...(crew[`${window.activeGridType}Pages`] || [])];
+
+            const isID = layoutType === 'idcard';
+            const isPassport = layoutType === 'passport';
+            const isLandscape = layoutType === 'landscape';
+            const reqSlots = (isID || isPassport) ? 2 : (isLandscape ? 1 : 4);
+
+            while (pages.length < reqSlots) pages.push(null);
+
+            const chunks = [];
+            for (let i = 0; i < pages.length; i += reqSlots) {
+                chunks.push(pages.slice(i, i + reqSlots));
+            }
+
+            const orientation = isLandscape ? 'l' : 'p';
+            const pdfDoc = new jsPDF(orientation, 'mm', 'a4');
+
+            window.showToast("Menyiapkan PDF...");
+
             try {
-                const response = await fetch(OLD_APP_SCRIPT_URL);
-                const cloudData = await response.json();
-                
-                if (Array.isArray(cloudData)) {
-                    window.showToast(`Ditemukan ${cloudData.length} data. Memulai migrasi...`);
-                    
-                    let successCount = 0;
-                    for (const c of cloudData) {
-                        try {
-                            // Format ulang struktur array yang mungkin kosong/corrupt dari G-Sheets
-                            const crewObj = {
-                                ...c,
-                                id: String(c.id || Date.now() + Math.random().toString(36).substr(2, 9)),
-                                licensePages: c.licensePages || new Array(10).fill(null),
-                                medicalPages: c.medicalPages || new Array(2).fill(null),
-                                passportPages: c.passportPages || new Array(2).fill(null),
-                                ktpPages: c.ktpPages || new Array(2).fill(null),
-                                kkPages: c.kkPages || new Array(1).fill(null),
-                                ccpPages: c.ccpPages || new Array(2).fill(null),
-                                loaPages: c.loaPages || new Array(2).fill(null)
-                            };
-                            
-                            // Eksekusi save routine Firebase yang ada (menyesuaikan tipe custom doc)
-                            window.customDocTypes.forEach(dt => {
-                                if (!crewObj[`${dt.id}Pages`]) {
-                                    crewObj[`${dt.id}Pages`] = new Array(dt.pages).fill(null);
-                                }
-                            });
+                for (let i = 0; i < chunks.length; i++) {
+                    const wrapper = document.createElement('div');
+                    if (isID) wrapper.className = 'pdf-ktp-wrapper';
+                    else if (isPassport) wrapper.className = 'pdf-passport-wrapper';
+                    else if (isLandscape) wrapper.className = 'pdf-landscape-wrapper';
+                    else if (reqSlots === 2) wrapper.className = 'pdf-two-box-wrapper';
+                    else wrapper.className = 'pdf-page-wrapper';
 
-                            // Simpan ke Firestore
-                            await saveCrewToFirestore(crewObj);
-                            
-                            successCount++;
-                            console.log(`Berhasil migrasi: ${crewObj.name}`);
-                        } catch (err) {
-                            console.error(`Gagal memigrasi data kru: ${c.name}`, err);
+                    chunks[i].forEach(f => {
+                        const card = document.createElement('div');
+                        let styles = `background:#fff; ${f?.data ? 'border:1px solid #e2e8f0;' : 'border:none;'} border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;`;
+                        if (isID) styles += ` width: 325px; height: 205px;`;
+                        else if (isPassport) styles += ` width: 475px; height: 334px;`;
+                        else styles += ` width: 100%; height: 100%;`;
+                        card.style.cssText = styles;
+                        if (f?.data) {
+                            card.innerHTML = `<img src="${window.getDirectImgUrl(f.data)}" style="width:100%; height:100%; object-fit:fill;" crossorigin="anonymous">`;
                         }
-                    }
-                    
-                    window.showToast(`Migrasi Selesai! ${successCount} kru berhasil dipindahkan ke Firebase.`);
-                } else {
-                    window.showToast("Format data dari G-Sheets tidak sesuai atau kosong.");
+                        wrapper.appendChild(card);
+                    });
+
+                    container.appendChild(wrapper);
+                    const canvas = await html2canvas(wrapper, { scale: 2, useCORS: true });
+                    if (i > 0) pdfDoc.addPage();
+                    pdfDoc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, (isLandscape ? 297 : 210), (isLandscape ? 210 : 297), null, 'FAST');
                 }
+
+                pdfDoc.save(`${window.activeGridType}_${crew.name}.pdf`);
             } catch (err) {
-                console.error("Migration Error:", err);
-                window.showToast("Gagal mengambil data dari G-Sheets.");
+                console.error("PDF Export Error:", err);
+                window.showToast("Gagal membuat PDF");
+            } finally {
+                container.innerHTML = '';
             }
-        }
+        };
 
-        window.handleCrewProfileUpload = async function(e) { 
-            const f = e.target.files[0]; 
-            if(!f) return;
-            // Compress profile photo to max 400px width/height
-            window.currentFormPhotoBase64 = await compressImage(f, 400); 
-            const p = document.getElementById('formPhotoPreview'); 
-            p.src = window.currentFormPhotoBase64; 
-            p.classList.remove('hidden'); 
-            document.getElementById('formPhotoIcon').classList.add('hidden');
-        }
-        
-        window.filterCrew = function() { 
-            const q = document.getElementById('crewSearch').value.toLowerCase(); 
-            const f = window.crewData.filter(c => c.name.toLowerCase().includes(q) || c.licenseNo.toLowerCase().includes(q)); 
-            window.renderCrewList(f); 
-        }
-
-        window.openAddCrewModal = function() { 
-            window.editingCrewId = null; 
-            window.currentFormPhotoBase64 = null; 
+        // Modal Tambah & Edit Kru
+        window.openAddCrewModal = function() {
+            window.editingCrewId = null;
+            window.currentFormPhotoBase64 = null;
             document.getElementById('crewFormTitle').innerText = "Registrasi Kru";
+
             document.getElementById('crewName').value = "";
             document.getElementById('crewEmail').value = "";
             document.getElementById('crewUsername').value = "";
             document.getElementById('crewPassword').value = "";
             document.getElementById('crewLicenseNo').value = "";
             document.getElementById('crewRank').value = "Captain";
+
             document.querySelectorAll('.qual-checkbox').forEach(cb => cb.checked = false);
+
             document.getElementById('formPhotoPreview').src = "";
             document.getElementById('formPhotoPreview').classList.add('hidden');
             document.getElementById('formPhotoIcon').classList.remove('hidden');
-            document.getElementById('crewFormModal').classList.remove('hidden'); 
-        }
+
+            document.getElementById('crewFormModal').classList.remove('hidden');
+        };
 
         window.openEditCrewModal = function(id) {
             const crew = window.crewData.find(c => String(c.id) === String(id));
             if (!crew) return;
-            
+
             window.editingCrewId = id;
             window.currentFormPhotoBase64 = crew.profilePhoto || null;
             document.getElementById('crewFormTitle').innerText = "Edit Kru";
+
             document.getElementById('crewName').value = crew.name || "";
             document.getElementById('crewEmail').value = crew.email || "";
             document.getElementById('crewUsername').value = crew.username || "";
             document.getElementById('crewPassword').value = crew.password || "";
             document.getElementById('crewLicenseNo').value = crew.licenseNo || "";
             document.getElementById('crewRank').value = crew.rank || "Captain";
-            
-            const quals = crew.qualification ? crew.qualification.split(', ') : [];
+
+            const quals = crew.qualification ? crew.qualification.split(',').map(s => s.trim()) : [];
             document.getElementById('qualCCP').checked = quals.includes('CCP');
             document.getElementById('qualFI').checked = quals.includes('FI');
             document.getElementById('qualGI').checked = quals.includes('GI');
-            
+
             const previewImg = document.getElementById('formPhotoPreview');
             const photoIcon = document.getElementById('formPhotoIcon');
-            
+
             if (window.currentFormPhotoBase64) {
                 previewImg.src = window.getDirectImgUrl(window.currentFormPhotoBase64);
                 previewImg.classList.remove('hidden');
@@ -1198,65 +1447,216 @@
                 previewImg.classList.add('hidden');
                 photoIcon.classList.remove('hidden');
             }
+
             document.getElementById('crewFormModal').classList.remove('hidden');
-        }
+        };
 
-        window.downloadMultiPagePDF = async function() {
-            const { jsPDF } = window.jspdf;
-            const crew = window.crewData.find(c => String(c.id) === String(window.selectedCrewId));
-            if(!crew) return;
+        window.handleCrewSubmit = async function(e) {
+            e.preventDefault();
 
-            const container = document.getElementById('pdfExportGrid');
-            container.innerHTML = '';
-            
-            const docDef = [...defaultDocTypes, ...window.customDocTypes, {id:'ccp', pages:2, layout:'portrait'}, {id:'loa', pages:2, layout:'portrait'}].find(d => d.id === window.activeGridType);
-            const layoutType = docDef?.layout || 'portrait';
-            const pages = [...(crew[`${window.activeGridType}Pages`] || [])];
-            
-            const isID = layoutType === 'idcard', isPassport = layoutType === 'passport', isLandscape = layoutType === 'landscape';
-            const reqSlots = (isID || isPassport) ? 2 : (isLandscape ? 1 : 4);
-            
-            while(pages.length < reqSlots) pages.push(null);
-            
-            const chunks = [];
-            for (let i = 0; i < pages.length; i += reqSlots) chunks.push(pages.slice(i, i + reqSlots));
-            
-            const orientation = isLandscape ? 'l' : 'p';
-            const pdfDoc = new jsPDF(orientation, 'mm', 'a4');
-            
-            for (let i = 0; i < chunks.length; i++) {
-                const wrapper = document.createElement('div');
-                if (isID) wrapper.className = 'pdf-ktp-wrapper';
-                else if (isPassport) wrapper.className = 'pdf-passport-wrapper';
-                else if (isLandscape) wrapper.className = 'pdf-landscape-wrapper';
-                else if (reqSlots === 2) wrapper.className = 'pdf-two-box-wrapper';
-                else wrapper.className = 'pdf-page-wrapper';
-                
-                chunks[i].forEach(f => {
-                    const card = document.createElement('div');
-                    let styles = `background:#fff; ${f?.data ? 'border:1px solid #e2e8f0;' : 'border:none;'} border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;`;
-                    if(isID) styles += ` width: 325px; height: 205px;`;
-                    else if(isPassport) styles += ` width: 475px; height: 334px;`;
-                    else styles += ` width: 100%; height: 100%;`;
-                    card.style.cssText = styles;
-                    if (f?.data) {
-                        card.innerHTML = `<img src="${window.getDirectImgUrl(f.data)}" style="width:100%; height:100%; object-fit:fill;">`;
-                    }
-                    wrapper.appendChild(card);
-                });
-                
-                container.appendChild(wrapper);
-                const canvas = await html2canvas(wrapper, { scale: 2, useCORS: true });
-                if (i > 0) pdfDoc.addPage();
-                pdfDoc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, (isLandscape ? 297 : 210), (isLandscape ? 210 : 297), null, 'FAST');
+            const overlay = document.getElementById('savingCrewOverlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
             }
-            
-            pdfDoc.save(`${window.activeGridType}_${crew.name}.pdf`);
-            container.innerHTML = '';
-        }
 
-        // Initialize Application
-        window.onload = window.initApp;
+            try {
+                const n = document.getElementById('crewName').value;
+                const em = document.getElementById('crewEmail').value;
+                const u = document.getElementById('crewUsername').value;
+                const p = document.getElementById('crewPassword').value;
+                const l = document.getElementById('crewLicenseNo').value;
+                const r = document.getElementById('crewRank').value;
+                const quals = Array.from(document.querySelectorAll('.qual-checkbox:checked')).map(cb => cb.value).join(', ');
+
+                let crewObj;
+                if (window.editingCrewId) {
+                    const i = window.crewData.findIndex(c => String(c.id) === String(window.editingCrewId));
+                    crewObj = {
+                        ...window.crewData[i],
+                        name: n, email: em, username: u, password: p, licenseNo: l, rank: r,
+                        qualification: quals, profilePhoto: window.currentFormPhotoBase64
+                    };
+                } else {
+                    crewObj = {
+                        id: Date.now().toString(),
+                        name: n, email: em, username: u, password: p, licenseNo: l, rank: r,
+                        qualification: quals, profilePhoto: window.currentFormPhotoBase64
+                    };
+                }
+
+                await saveCrewProfileToFirestore(crewObj);
+                window.closeCrewModal();
+                window.showToast("Data Kru Tersimpan");
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if (overlay) {
+                    overlay.classList.remove('flex');
+                    overlay.classList.add('hidden');
+                }
+            }
+        };
+
+        window.handleDocSubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('newDocName').value;
+            const pages = parseInt(document.getElementById('newDocPages').value, 10);
+            const layout = document.getElementById('newDocLayout').value;
+            const id = 'custom_' + Date.now();
+
+            const newDoc = { id, name, pages, layout, isCustom: true };
+            await saveCustomDocToFirestore(newDoc);
+
+            document.getElementById('newDocName').value = "";
+            window.closeDocModal();
+            window.showToast("Menu Dokument Ditambahkan");
+        };
+
+        // Alat Migrasi Data dari Google Sheets ke Firebase
+        window.migrateFromGoogleSheets = function() {
+            document.getElementById('migrateConfirmModal').classList.remove('hidden');
+        };
+
+        window.executeMigrationFromGoogleSheets = async function() {
+            const OLD_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVMKuv7QTeYrsLeUganZzZ-mZGV4hw2l9CGwStBtF5LEUAeUNlWlXcxH-WUmi_A-3g/exec";
+            window.showToast("Mengunduh data dari G-Sheets...");
+
+            try {
+                const response = await fetch(OLD_APP_SCRIPT_URL);
+                const cloudData = await response.json();
+
+                if (Array.isArray(cloudData)) {
+                    window.showToast(`Ditemukan ${cloudData.length} data. Memulai migrasi...`);
+
+                    let successCount = 0;
+                    for (const c of cloudData) {
+                        try {
+                            const crewId = String(c.id || (Date.now() + Math.random().toString(36).substring(2, 9)));
+                            const crewProfile = { ...c, id: crewId };
+
+                            // 1. Simpan profil utama (tanpa array *Pages) agar ukuran < 1MB
+                            await saveCrewProfileToFirestore(crewProfile);
+
+                            // 2. Simpan setiap halaman berkas ke subkoleksi pages secara terpisah
+                            for (const key of Object.keys(c)) {
+                                if (key.endsWith('Pages')) {
+                                    let arr = c[key];
+                                    if (typeof arr === 'string') {
+                                        try { arr = JSON.parse(arr); } catch (_) { arr = null; }
+                                    }
+                                    if (Array.isArray(arr)) {
+                                        const docType = key.replace(/Pages$/, '');
+                                        for (let idx = 0; idx < arr.length; idx++) {
+                                            const rawItem = arr[idx];
+                                            const pageItem = typeof rawItem === 'string'
+                                                ? { data: rawItem, type: 'image/jpeg' }
+                                                : rawItem;
+                                            if (pageItem && pageItem.data) {
+                                                await saveCrewPageToFirestore(crewId, docType, idx, pageItem);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            successCount++;
+                            console.log(`Berhasil migrasi: ${crewProfile.name}`);
+                        } catch (err) {
+                            console.error(`Gagal memigrasi data kru: ${c.name}`, err);
+                        }
+                    }
+
+                    window.showToast(`Migrasi Selesai! ${successCount} kru dipindahkan ke Firebase.`);
+                } else {
+                    window.showToast("Format data dari G-Sheets tidak sesuai atau kosong.");
+                }
+            } catch (err) {
+                console.error("Migration Error:", err);
+                window.showToast("Gagal mengambil data dari G-Sheets.");
+            }
+        };
+
+        // Fungsi Utilitas UI
+        window.getDirectImgUrl = function(u) {
+            if (!u || typeof u !== 'string') return null;
+            if (u.startsWith('data:image') || u.startsWith('http')) {
+                if (u.includes('drive.google.com')) {
+                    const m = u.match(/[-\w]{25,}/);
+                    return m ? `https://lh3.googleusercontent.com/d/${m[0]}` : u;
+                }
+                return u;
+            }
+            const m = u.match(/[-\w]{25,}/);
+            return m ? `https://lh3.googleusercontent.com/d/${m[0]}` : u;
+        };
+
+        window.showToast = function(m) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.innerText = m;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        };
+
+        window.closeGridModal = function() { document.getElementById('gridModal').classList.add('hidden'); };
+        window.openAddDocModal = function() { document.getElementById('docFormModal').classList.remove('hidden'); };
+        window.closeDocModal = function() { document.getElementById('docFormModal').classList.add('hidden'); };
+        window.closeCrewModal = function() { document.getElementById('crewFormModal').classList.add('hidden'); };
+        window.openDeleteModal = function(id) { window.crewToDeleteId = id; document.getElementById('deleteConfirmModal').classList.remove('hidden'); };
+        window.closeDeleteModal = function() { document.getElementById('deleteConfirmModal').classList.add('hidden'); };
+        window.openDocDeleteModal = function(id) { window.docToDeleteId = id; document.getElementById('docDeleteConfirmModal').classList.remove('hidden'); };
+        window.closeDocDeleteModal = function() { document.getElementById('docDeleteConfirmModal').classList.add('hidden'); window.docToDeleteId = null; };
+        window.openFileDeleteModal = function(i, t) { window.fileToDeleteIndex = i; window.fileToDeleteType = t; document.getElementById('fileDeleteConfirmModal').classList.remove('hidden'); };
+        window.closeFileDeleteModal = function() { document.getElementById('fileDeleteConfirmModal').classList.add('hidden'); };
+        window.closeMigrateModal = function() { document.getElementById('migrateConfirmModal').classList.add('hidden'); };
+        window.toggleMobileMenu = function() {
+            document.getElementById('mainSidebar').classList.toggle('-translate-x-full');
+            document.getElementById('mobileOverlay').classList.toggle('hidden');
+        };
+        window.togglePassword = function() {
+            const p = document.getElementById('crewPassword');
+            p.type = p.type === 'password' ? 'text' : 'password';
+        };
+        window.autoPopulateUsername = function(v) { document.getElementById('crewUsername').value = v; };
+        window.populatePageSelect = function() {
+            const s = document.getElementById('newDocPages');
+            if (!s) return;
+            s.innerHTML = '';
+            for (let i = 1; i <= 15; i++) {
+                const o = document.createElement('option');
+                o.value = i;
+                o.innerText = i + " Halaman";
+                s.appendChild(o);
+            }
+        };
+        window.triggerProfilePhotoUpload = function() { document.getElementById('crewProfilePhotoInput').click(); };
+        window.handleCrewProfileUpload = async function(e) {
+            const f = e.target.files[0];
+            if (!f) return;
+            try {
+                const compressed = await compressImage(f, 400, 0.7);
+                window.currentFormPhotoBase64 = compressed;
+                const p = document.getElementById('formPhotoPreview');
+                p.src = compressed;
+                p.classList.remove('hidden');
+                document.getElementById('formPhotoIcon').classList.add('hidden');
+            } catch (err) {
+                console.error(err);
+                window.showToast("Gagal memproses foto profil");
+            }
+        };
+        window.filterCrew = function() {
+            const q = document.getElementById('crewSearch').value.toLowerCase();
+            const f = window.crewData.filter(c =>
+                (c.name || '').toLowerCase().includes(q) ||
+                (c.licenseNo || '').toLowerCase().includes(q)
+            );
+            window.renderCrewList(f);
+        };
+
+        // Jalankan aplikasi saat DOM siap
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
